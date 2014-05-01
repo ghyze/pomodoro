@@ -29,7 +29,6 @@ public class PomoController implements ActionListener, SettingsChangeListener
       frame = new PomoFrame(this);
       frame.position(settings.getPosition());
       current = new Pomodoro(0, Type.WAIT);
-//      current = new Countdown(5, Type.BREAK);
       timer = new Timer(20, this);
       timer.start();
    }
@@ -41,7 +40,6 @@ public class PomoController implements ActionListener, SettingsChangeListener
          if (current.isDone()) {
             current = getNext(current.getType());
             current.setPomosDone(pomosDone);
-//            System.out.println("Autoswitch to next");
          }
       }
       
@@ -49,21 +47,24 @@ public class PomoController implements ActionListener, SettingsChangeListener
       SystemTrayManager.getInstance().update(current);
    }
    
-   private Pomodoro getNext(Type type)
+   protected Pomodoro getNext(Type type)
    {
       if (type == Type.POMO){
          if (pomosDone < settings.getPomosBeforeLongBreak()){
+            String message = "Well done: Short break";
+            showMessage(message);
             return new Pomodoro(settings.getShortBreakMinutes(), Type.BREAK);
          } else {
             pomosDone = 0;
+            String message = "Well done: Long break";
+            showMessage(message);
             return new Pomodoro(settings.getLongBreakMinutes(), Type.BREAK);
          }
       } else if (type == Type.BREAK){
+         String message = "Waiting to start next Pomodoro";
+         showMessage(message);
          return new Pomodoro(0, Type.WAIT);
-      } else if (type == Type.WAIT) {
-         pomosDone++;
-         return new Pomodoro(settings.getPomoMinutes(), Type.POMO);
-      }
+      } 
       return null;
    }
    
@@ -73,7 +74,9 @@ public class PomoController implements ActionListener, SettingsChangeListener
    
    public void startPomo(){
       current = new Pomodoro(25, Type.POMO);
-      System.out.println("Pomo started");
+      pomosDone++;
+      String message = "Starting Pomodoro number "+pomosDone;
+      showMessage(message);
    }
 
    public void stopProgram(){
@@ -95,5 +98,9 @@ public class PomoController implements ActionListener, SettingsChangeListener
    {
       this.settings = settings;
       frame.position(settings.getPosition());
+   }
+   
+   private void showMessage(String message){
+      SystemTrayManager.getInstance().message(message);
    }
 }

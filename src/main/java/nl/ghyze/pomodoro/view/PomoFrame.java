@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -30,6 +31,7 @@ public class PomoFrame extends JFrame
       this.controller = controller;
       this.setAlwaysOnTop(true);
       this.setUndecorated(true);
+      this.setType(Window.Type.UTILITY);
       this.add(panel);
       this.pack();
       createButtons();

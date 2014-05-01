@@ -5,7 +5,7 @@ import java.util.prefs.Preferences;
 
 public class Settings
 {
-   public enum Position {
+   public static enum Position {
       TOP_LEFT,
       TOP_RIGHT,
       BOTTOM_LEFT,

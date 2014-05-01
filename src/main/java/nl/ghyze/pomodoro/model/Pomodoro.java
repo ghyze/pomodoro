@@ -2,7 +2,7 @@ package nl.ghyze.pomodoro.model;
 
 public class Pomodoro {
    
-   public enum Type {
+   public static enum Type {
       POMO, BREAK, WAIT;
    }
 
