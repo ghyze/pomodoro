@@ -39,9 +39,10 @@ public class PomoPanel extends JPanel
             paintBreak(gr);
             break;
          }
+         drawButtons(gr);
+         drawPomosDone(gr);
       }
       
-      drawButtons(gr);
    }
    
    private void paintWait(Graphics gr){
@@ -90,6 +91,19 @@ public class PomoPanel extends JPanel
       paintText(timeLeft, gr);
       gr.setFont(f);
       
+   }
+   
+   private void drawPomosDone(Graphics gr){
+      gr.setColor(Color.white);
+      if (countdown != null){
+         for (int i = 0; i < countdown.getMaxPomosDone() ; i++){
+            int xOff = 2+(i*15);
+            gr.drawRect(xOff, 2, 12, 12);
+            if (i < countdown.getPomosDone()){
+               gr.fillRect(xOff + 3, 5, 7, 7);
+            }
+         }
+      }
    }
    
    

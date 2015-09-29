@@ -12,6 +12,7 @@ public class Pomodoro {
    private Type type;
    
    private int pomosDone = 0;
+   private int maxDone = 0;
    
    public Pomodoro(int minutes, Type type){
       this.minutes = minutes;
@@ -27,17 +28,13 @@ public class Pomodoro {
    
    public int secondsOfMinuteLeft(){
       long millisPassed = System.currentTimeMillis() - startTime;
-      if (millisPassed > startTime + (minutes * 60000)){
-         return 0;
-      }
       int secondsPassed = (int) millisPassed % 60000;
-      
       return Math.max(0, 59-(secondsPassed/1000));
    }
    
    public boolean isDone(){
       long stopTime = startTime + (minutes * 60000l);
-      return stopTime < System.currentTimeMillis();
+      return stopTime <= System.currentTimeMillis();
    }
    
    public Type getType(){
@@ -52,5 +49,17 @@ public class Pomodoro {
    public void setPomosDone(int pomosDone)
    {
       this.pomosDone = pomosDone;
+   }
+   
+   public int getMaxPomosDone(){
+      return Math.max(pomosDone, maxDone);
+   }
+   
+   public void setMaxPomosDone(int maxDone){
+      this.maxDone = maxDone;
+   }
+   
+   public long getMillisSinceStart(){
+      return System.currentTimeMillis() - startTime;
    }
 }

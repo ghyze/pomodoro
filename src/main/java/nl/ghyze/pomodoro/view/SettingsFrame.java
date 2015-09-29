@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
@@ -23,6 +24,8 @@ public class SettingsFrame extends JFrame
 
    private SpringLayout layout = new SpringLayout();
 
+   private JLabel lbScreen = new JLabel("Screen");
+   private JComboBox cbScreen = new JComboBox();
    private JLabel lbPosition = new JLabel("Position");
    private ButtonGroup bgPosition = new ButtonGroup();
    private JRadioButton rbTopLeft = new JRadioButton("Top left");
@@ -42,6 +45,7 @@ public class SettingsFrame extends JFrame
    private JTextField tfShortBreakTime = new JTextField();
    private JTextField tfLongBreakTime = new JTextField();
    private JTextField tfNrOfPomos = new JTextField();
+   
 
    public SettingsFrame(Settings settings)
    {
@@ -67,6 +71,8 @@ public class SettingsFrame extends JFrame
       int midHorizontalPoint = (winSize.y / 2) + (winSize.height / 2);
       this.setLocation(midVerticalPoint - (this.getWidth() / 2), midHorizontalPoint - (this.getHeight() / 2));
    }
+   
+   
 
    private void initPosition()
    {
