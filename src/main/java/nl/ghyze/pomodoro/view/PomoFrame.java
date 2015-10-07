@@ -48,10 +48,6 @@ public class PomoFrame extends JFrame
 	}
 	  
       });
-//      exit.addActionListener(e -> {
-////         System.out.println("Exit clicked, stopping program");
-//         controller.stopProgram();
-//      });
       
       popup.add(hide);
       hide.addActionListener(new ActionListener(){
@@ -62,15 +58,10 @@ public class PomoFrame extends JFrame
 	}
 	  
       });
-//      hide.addActionListener( e-> {
-//         this.setVisible(false);
-//      });
       
       this.addMouseListener( new MouseAdapter(){
          public void mouseClicked(MouseEvent e){
-//            System.out.println("Mouse clicked "+e.getButton());
             if (e.getButton() == 3){
-//               System.out.println("Popup triggered");
                popup.show(e.getComponent(), e.getX(), e.getY());
             } else if (e.getButton() == 1 ){
                PomoButton button = panel.buttonClicked(e);
@@ -114,7 +105,6 @@ public class PomoFrame extends JFrame
          @Override
          public void execute()
          {
-//            System.out.println("Stop Button Clicked!");
             controller.stopCurrent();
          }
          
@@ -148,7 +138,6 @@ public class PomoFrame extends JFrame
          @Override
          public void execute()
          {
-//            System.out.println("Play Button Clicked!");
             controller.startPomo();
          }
          
@@ -179,7 +168,6 @@ public class PomoFrame extends JFrame
          @Override
          public void execute()
          {
-//            System.out.println("Close Button Clicked!");
             controller.stopProgram();
          }
          
@@ -208,7 +196,6 @@ public class PomoFrame extends JFrame
          @Override
          public void execute()
          {
-//            System.out.println("Minimize Button Clicked!");
             setVisible(false);
          }
          
