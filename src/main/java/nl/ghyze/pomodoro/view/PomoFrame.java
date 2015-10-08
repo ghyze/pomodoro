@@ -6,6 +6,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -27,7 +29,7 @@ public class PomoFrame extends JFrame
    PomoPanel panel = new PomoPanel();
    PomoController controller;
    
-   public PomoFrame(PomoController controller){
+   public PomoFrame(final PomoController controller){
       this.controller = controller;
       this.setAlwaysOnTop(true);
       this.setUndecorated(true);
@@ -38,21 +40,28 @@ public class PomoFrame extends JFrame
       
       this.setVisible(true);
       popup.add(exit);
-      exit.addActionListener(e -> {
-//         System.out.println("Exit clicked, stopping program");
-         controller.stopProgram();
+      exit.addActionListener(new ActionListener(){
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    controller.stopProgram();
+	}
+	  
       });
       
       popup.add(hide);
-      hide.addActionListener( e-> {
-         this.setVisible(false);
+      hide.addActionListener(new ActionListener(){
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+	    setVisible(false);
+	}
+	  
       });
       
       this.addMouseListener( new MouseAdapter(){
          public void mouseClicked(MouseEvent e){
-//            System.out.println("Mouse clicked "+e.getButton());
             if (e.getButton() == 3){
-//               System.out.println("Popup triggered");
                popup.show(e.getComponent(), e.getX(), e.getY());
             } else if (e.getButton() == 1 ){
                PomoButton button = panel.buttonClicked(e);
@@ -96,7 +105,6 @@ public class PomoFrame extends JFrame
          @Override
          public void execute()
          {
-//            System.out.println("Stop Button Clicked!");
             controller.stopCurrent();
          }
          
@@ -130,7 +138,6 @@ public class PomoFrame extends JFrame
          @Override
          public void execute()
          {
-//            System.out.println("Play Button Clicked!");
             controller.startPomo();
          }
          
@@ -161,7 +168,6 @@ public class PomoFrame extends JFrame
          @Override
          public void execute()
          {
-//            System.out.println("Close Button Clicked!");
             controller.stopProgram();
          }
          
@@ -190,7 +196,6 @@ public class PomoFrame extends JFrame
          @Override
          public void execute()
          {
-//            System.out.println("Minimize Button Clicked!");
             setVisible(false);
          }
          
