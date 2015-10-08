@@ -3,6 +3,7 @@ package nl.ghyze.pomodoro.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import nl.ghyze.pomodoro.model.Settings;
@@ -27,6 +28,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
       frame = new PomoFrame(this);
       frame.position(settings.getPosition());
       stateMachine = new PomodoroStateMachine(settings);
+      stateMachine.setSystemTrayManager(SystemTrayManager.getInstance());
       stateMachine.updateCurrent();
       timer = new Timer(20, this);
       timer.start();
@@ -35,7 +37,16 @@ public class PomoController implements ActionListener, SettingsChangeListener
    @Override
    public void actionPerformed(ActionEvent event)
    {
-       stateMachine.handleAction(frame);
+       if (stateMachine.shouldChangeState()){
+	   OptionDialogModelFactory factory = new OptionDialogModelFactory(stateMachine.getCurrentType());
+	   OptionDialogModel model = factory.getOptions();
+	   int choice = JOptionPane.showOptionDialog(frame,
+		   model.getMessage(),
+		   model.getTitle(), JOptionPane.OK_CANCEL_OPTION,
+		    JOptionPane.QUESTION_MESSAGE, null, model.getChoices(),
+		    model.getDefaultChoice());
+	   stateMachine.handleAction(choice);
+       }
       frame.update(stateMachine.getCurrent());
       SystemTrayManager.getInstance().update(stateMachine.getCurrent());
    }

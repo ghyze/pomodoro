@@ -62,4 +62,20 @@ public class Pomodoro {
    public long getMillisSinceStart(){
       return System.currentTimeMillis() - startTime;
    }
+   
+   public boolean equals(Object other){
+       if (other instanceof Pomodoro){
+	   Pomodoro otherPomo = (Pomodoro) other;
+	   if (otherPomo.getType() != type){
+	       return false;
+	   }
+	   
+	   if (otherPomo.minutes != minutes){
+	       return false;
+	   }
+	   
+	   return true;
+       }
+       return false;
+   }
 }

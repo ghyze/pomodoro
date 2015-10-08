@@ -1,8 +1,5 @@
 package nl.ghyze.pomodoro.controller;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Pomodoro.Type;
 import nl.ghyze.pomodoro.model.Settings;
@@ -13,53 +10,50 @@ public class PomodoroStateMachine {
     private Pomodoro current;
     private Settings settings;
     private int pomosDone = 0;
+    private SystemTrayManager systemTrayManager;
 
     public PomodoroStateMachine(Settings settings) {
 	this.settings = settings;
 	current = new Pomodoro(0, Type.WAIT);
     }
+    
+    public void setSystemTrayManager(SystemTrayManager systemTrayManager){
+	this.systemTrayManager = systemTrayManager;
+    }
 
     public Pomodoro getCurrent() {
 	return current;
     }
-
-    public void handleAction(JFrame frame) {
-	if (current.getType() != Type.WAIT) {
-	    if (current.isDone()) {
-		if (current.getType() == Type.POMO) {
-		    Object[] options = { "Save", "Discard" };
-		    int choice = JOptionPane.showOptionDialog(frame,
-			    "Pomodoro finished. What would you like to do with this one?",
-			    "Pomodoro finished", JOptionPane.OK_CANCEL_OPTION,
-			    JOptionPane.QUESTION_MESSAGE, null, options,
-			    options[0]);
-		    System.out.println("Finished choice: " + choice);
-		    if (choice == 0) {
-			pomosDone++;
-		    }
-		    Pomodoro next = getNext(Type.POMO);
-		    current = next;
-		    updateCurrent();
-
-		} else if (current.getType() == Type.BREAK) {
-		    Object[] options = { "Ok", "Cancel" };
-		    int choice = JOptionPane.showOptionDialog(frame,
-			    "Ready to start next one??", "Break finished",
-			    JOptionPane.OK_CANCEL_OPTION,
-			    JOptionPane.QUESTION_MESSAGE, null, options,
-			    options[0]);
-		    System.out.println("New choice: " + choice);
-		    if (choice == 0) {
-			startPomo();
-		    } else {
-			startWait();
-		    }
-		}
-
-	    }
-	}
+    
+    public Pomodoro.Type getCurrentType(){
+	return current.getType();
     }
 
+    public boolean shouldChangeState() {
+	return (current.getType() != Type.WAIT && current.isDone());
+    }
+
+    public void handleAction(int choice) {
+	if (current.getType() == Type.POMO) {
+	    System.out.println("Finished choice: " + choice);
+	    if (choice == 0) {
+		pomosDone++;
+	    }
+	    Pomodoro next = getNext(Type.POMO);
+	    current = next;
+	    updateCurrent();
+
+	} else if (current.getType() == Type.BREAK) {
+	    System.out.println("New choice: " + choice);
+	    if (choice == 0) {
+		startPomo();
+	    } else {
+		startWait();
+	    }
+	}
+
+    }
+    
     protected Pomodoro getNext(Type type) {
 	if (type == Type.POMO) {
 	    if (pomosDone < settings.getPomosBeforeLongBreak()) {
@@ -96,7 +90,9 @@ public class PomodoroStateMachine {
     }
 
     private void showMessage(String message) {
-	SystemTrayManager.getInstance().message(message);
+	if (systemTrayManager != null){
+	    systemTrayManager.message(message);
+	}
     }
 
     public void updateCurrent() {
