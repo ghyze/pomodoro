@@ -35,15 +35,15 @@ public class PomodoroStateMachine {
 
 	public void handleAction(int choice) {
 		if (current.getType() == Type.POMO) {
-			if (choice == 0) {
+			if (choice == OptionDialogModel.SAVE) {
 				pomosDone++;
 			}
-			Pomodoro next = getNext(Type.POMO);
+			Pomodoro next = getNextFromPomo();
 			current = next;
 			updateCurrent();
 
 		} else if (current.getType() == Type.BREAK) {
-			if (choice == 0) {
+			if (choice == OptionDialogModel.OK) {
 				startPomo();
 			} else {
 				startWait();
@@ -52,22 +52,17 @@ public class PomodoroStateMachine {
 
 	}
 
-	private Pomodoro getNext(Type type) {
-		if (type == Type.POMO) {
-			if (pomosDone < settings.getPomosBeforeLongBreak()) {
-				String message = "Well done: Short break";
-				return new Pomodoro(settings.getShortBreakMinutes(), Type.BREAK);
-			} else {
-				pomosDone = 0;
-				String message = "Well done: Long break";
-				return new Pomodoro(settings.getLongBreakMinutes(), Type.BREAK);
-			}
-		} else if (type == Type.BREAK) {
-			String message = "Waiting to start next Pomodoro";
-			showMessage(message);
-			return new Pomodoro(0, Type.WAIT);
-		}
-		return null;
+	private Pomodoro getNextFromPomo() {
+	    if (pomosDone < settings.getPomosBeforeLongBreak()) {
+	    	String message = "Well done: Short break";
+	    	showMessage(message);
+	    	return new Pomodoro(settings.getShortBreakMinutes(), Type.BREAK);
+	    } else {
+	    	pomosDone = 0;
+	    	String message = "Well done: Long break";
+	    	showMessage(message);
+	    	return new Pomodoro(settings.getLongBreakMinutes(), Type.BREAK);
+	    }
 	}
 
 	public void stopCurrent() {

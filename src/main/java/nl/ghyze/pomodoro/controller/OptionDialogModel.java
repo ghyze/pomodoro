@@ -6,6 +6,12 @@ public class OptionDialogModel {
     private String message;
     private Object[] choices;
     
+    public static int SAVE = 0;
+    public static int DISCARD = 1;
+    
+    public static int OK = 0;
+    public static int CANCEL = 1;
+    
     public OptionDialogModel(){
 	
     }
