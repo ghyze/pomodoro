@@ -1,5 +1,7 @@
 package nl.ghyze.pomodoro.model;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public class Pomodoro {
    
    public static enum Type {
@@ -77,5 +79,13 @@ public class Pomodoro {
 	   return true;
        }
        return false;
+   }
+   
+   @Override
+   public int hashCode(){
+       HashCodeBuilder builder = new HashCodeBuilder(17,31);
+       builder.append(type);
+       builder.append(minutes);
+       return builder.hashCode();
    }
 }

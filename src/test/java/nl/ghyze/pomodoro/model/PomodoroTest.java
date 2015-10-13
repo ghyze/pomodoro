@@ -1,7 +1,11 @@
 package nl.ghyze.pomodoro.model;
 
+import static org.junit.Assert.*;
+
 import org.junit.Assert;
 import org.junit.Test;
+
+import nl.ghyze.pomodoro.model.Pomodoro.Type;
 
 public class PomodoroTest {
 
@@ -57,6 +61,23 @@ public class PomodoroTest {
 	
 	pomodoro.setMaxPomosDone(3);
 	Assert.assertEquals(3, pomodoro.getMaxPomosDone());
+    }
+    
+    @Test
+    public void testEquals() throws Exception {
+	Pomodoro pomodoro = new Pomodoro(0, Type.WAIT);
+	Assert.assertFalse(pomodoro.equals(null));
+	Assert.assertFalse(pomodoro.equals("Something"));
+	Assert.assertFalse(pomodoro.equals(new Pomodoro(0, Type.BREAK)));
+	Assert.assertFalse(pomodoro.equals(new Pomodoro(1, Type.WAIT)));
+	Assert.assertTrue(pomodoro.equals(new Pomodoro(0, Type.WAIT)));
+    }
+    
+    @Test
+    public void testHashcode() throws Exception {
+	Pomodoro pomodoro = new Pomodoro(0, Type.WAIT);
+	Assert.assertNotEquals(pomodoro.hashCode(), new Pomodoro(0, Type.BREAK).hashCode());
+	Assert.assertNotEquals(pomodoro.hashCode(), new Pomodoro(1, Type.WAIT).hashCode());
     }
     
     private void pause(long milliseconds){
