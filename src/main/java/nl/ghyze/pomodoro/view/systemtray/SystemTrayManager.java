@@ -31,47 +31,51 @@ public class SystemTrayManager {
     private PomoController controller;
 
     private SystemTrayManager() {
-	SystemTray tray = SystemTray.getSystemTray();
-
-	pomoMinutes = new Image[100];
-	for (int i = 0; i < 100; i++) {
-	    pomoMinutes[i] = createImage(Color.red, i);
-	}
-
-	breakMinutes = new Image[100];
-	for (int i = 0; i < 100; i++) {
-	    breakMinutes[i] = createImage(new Color(0, 192, 0), i);
-	}
-
+	createPomoMinutesImages();
+	createBreakMinutesImages();
 	waitImage = createWaitImage();
 
 	PopupMenu menu = new PopupMenu();
-	MenuItem show = new MenuItem("Show Frame");
-	// show.addActionListener(e -> {
-	// if (controller != null){
-	// controller.showFrame();
-	// }
-	// });
-	show.addActionListener(new ActionListener() {
+	MenuItem show = createShowMenuItem();
+	menu.add(show);
+
+	MenuItem settings = createSettingsMenuItem();
+	menu.add(settings);
+
+	MenuItem exit = createExitMenuItem();
+	menu.add(exit);
+
+	initTrayIcon(menu);
+
+    }
+
+    private void initTrayIcon(PopupMenu menu) {
+	SystemTray tray = SystemTray.getSystemTray();
+	icon = new TrayIcon(pomoMinutes[0], "Pomo", menu);
+	try {
+	    tray.add(icon);
+	} catch (AWTException e) {
+	    e.printStackTrace();
+	}
+    }
+
+    private MenuItem createExitMenuItem() {
+	MenuItem exit = new MenuItem("Exit");
+	exit.addActionListener(new ActionListener() {
 
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
 		if (controller != null) {
-		    controller.showFrame();
+		    controller.stopProgram();
 		}
 	    }
 
 	});
-	menu.add(show);
+	return exit;
+    }
 
+    private MenuItem createSettingsMenuItem() {
 	MenuItem settings = new MenuItem("Settings");
-	// settings.addActionListener(e -> {
-	// if (controller != null){
-	// SettingsFrame settingsFrame = new
-	// SettingsFrame(controller.getSettings());
-	// settingsFrame.setVisible(true);
-	// }
-	// });
 	settings.addActionListener(new ActionListener() {
 
 	    @Override
@@ -84,33 +88,36 @@ public class SystemTrayManager {
 	    }
 
 	});
-	menu.add(settings);
+	return settings;
+    }
 
-	MenuItem exit = new MenuItem("Exit");
-	exit.addActionListener(new ActionListener() {
+    private MenuItem createShowMenuItem() {
+	MenuItem show = new MenuItem("Show Frame");
+	show.addActionListener(new ActionListener() {
 
 	    @Override
 	    public void actionPerformed(ActionEvent arg0) {
 		if (controller != null) {
-		    controller.stopProgram();
+		    controller.showFrame();
 		}
 	    }
 
 	});
-	// exit.addActionListener(e -> {
-	// if (controller != null){
-	// controller.stopProgram();
-	// }
-	// });
-	menu.add(exit);
+	return show;
+    }
 
-	icon = new TrayIcon(pomoMinutes[0], "Pomo", menu);
-	try {
-	    tray.add(icon);
-	} catch (AWTException e) {
-	    e.printStackTrace();
+    private void createBreakMinutesImages() {
+	breakMinutes = new Image[100];
+	for (int i = 0; i < 100; i++) {
+	    breakMinutes[i] = createImage(new Color(0, 192, 0), i);
 	}
+    }
 
+    private void createPomoMinutesImages() {
+	pomoMinutes = new Image[100];
+	for (int i = 0; i < 100; i++) {
+	    pomoMinutes[i] = createImage(Color.red, i);
+	}
     }
 
     private Image createWaitImage() {

@@ -41,6 +41,9 @@ public class OptionDialogModel {
     }
     
     public Object getDefaultChoice(){
-	return choices[0];
+	if (choices.length > 0){
+	    return choices[0];
+	}
+	return null;
     }
 }
