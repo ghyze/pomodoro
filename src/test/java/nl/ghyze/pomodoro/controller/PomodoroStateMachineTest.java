@@ -12,13 +12,13 @@ import org.junit.Test;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Pomodoro.Type;
 import nl.ghyze.pomodoro.model.Settings;
-import nl.ghyze.pomodoro.view.systemtray.SystemTrayManager;
+import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
 public class PomodoroStateMachineTest {
 
 	private Settings settings;
 	private PomodoroStateMachine pomodoroStateMachine;
-	private SystemTrayManager systemTrayManager;
+	private AbstractSystemTrayManager systemTrayManager;
 
 	@Before
 	public void setUp() {
@@ -85,7 +85,7 @@ public class PomodoroStateMachineTest {
 	private void setupGetNextFromPomo() throws Exception{
 	    Pomodoro pomodoro = new Pomodoro(1, Type.POMO);
 	    setCurrent(pomodoro);
-	    systemTrayManager = EasyMock.createMock(SystemTrayManager.class);
+	    systemTrayManager = EasyMock.createMock(AbstractSystemTrayManager.class);
 	    pomodoroStateMachine.setSystemTrayManager(systemTrayManager);
 	    
 	    EasyMock.expect(settings.getPomosBeforeLongBreak()).andReturn(1).times(2);

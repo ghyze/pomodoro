@@ -3,21 +3,21 @@ package nl.ghyze.pomodoro.controller;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Pomodoro.Type;
 import nl.ghyze.pomodoro.model.Settings;
-import nl.ghyze.pomodoro.view.systemtray.SystemTrayManager;
+import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
 public class PomodoroStateMachine {
 
 	private Pomodoro current;
 	private Settings settings;
 	private int pomosDone = 0;
-	private SystemTrayManager systemTrayManager;
+	private AbstractSystemTrayManager systemTrayManager;
 
 	public PomodoroStateMachine(Settings settings) {
 		this.settings = settings;
 		current = new Pomodoro(0, Type.WAIT);
 	}
 
-	public void setSystemTrayManager(SystemTrayManager systemTrayManager) {
+	public void setSystemTrayManager(AbstractSystemTrayManager systemTrayManager) {
 		this.systemTrayManager = systemTrayManager;
 	}
 

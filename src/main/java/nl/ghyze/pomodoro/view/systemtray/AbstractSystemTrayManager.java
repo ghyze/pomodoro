@@ -20,9 +20,7 @@ import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.view.SettingsFrame;
 
-public class SystemTrayManager {
-
-    private static SystemTrayManager INSTANCE = new SystemTrayManager();
+public abstract class AbstractSystemTrayManager {
 
     private Image[] pomoMinutes;
     private Image[] breakMinutes;
@@ -30,26 +28,7 @@ public class SystemTrayManager {
     private TrayIcon icon;
     private PomoController controller;
 
-    private SystemTrayManager() {
-	createPomoMinutesImages();
-	createBreakMinutesImages();
-	waitImage = createWaitImage();
-
-	PopupMenu menu = new PopupMenu();
-	MenuItem show = createShowMenuItem();
-	menu.add(show);
-
-	MenuItem settings = createSettingsMenuItem();
-	menu.add(settings);
-
-	MenuItem exit = createExitMenuItem();
-	menu.add(exit);
-
-	initTrayIcon(menu);
-
-    }
-
-    private void initTrayIcon(PopupMenu menu) {
+    protected void initTrayIcon(PopupMenu menu) {
 	SystemTray tray = SystemTray.getSystemTray();
 	icon = new TrayIcon(pomoMinutes[0], "Pomo", menu);
 	try {
@@ -59,7 +38,7 @@ public class SystemTrayManager {
 	}
     }
 
-    private MenuItem createExitMenuItem() {
+    protected MenuItem createExitMenuItem() {
 	MenuItem exit = new MenuItem("Exit");
 	exit.addActionListener(new ActionListener() {
 
@@ -74,7 +53,7 @@ public class SystemTrayManager {
 	return exit;
     }
 
-    private MenuItem createSettingsMenuItem() {
+    protected MenuItem createSettingsMenuItem() {
 	MenuItem settings = new MenuItem("Settings");
 	settings.addActionListener(new ActionListener() {
 
@@ -91,7 +70,7 @@ public class SystemTrayManager {
 	return settings;
     }
 
-    private MenuItem createShowMenuItem() {
+    protected MenuItem createShowMenuItem() {
 	MenuItem show = new MenuItem("Show Frame");
 	show.addActionListener(new ActionListener() {
 
@@ -106,23 +85,22 @@ public class SystemTrayManager {
 	return show;
     }
 
-    private void createBreakMinutesImages() {
+    protected void createBreakMinutesImages() {
 	breakMinutes = new Image[100];
 	for (int i = 0; i < 100; i++) {
 	    breakMinutes[i] = createImage(new Color(0, 192, 0), i);
 	}
     }
 
-    private void createPomoMinutesImages() {
+    protected void createPomoMinutesImages() {
 	pomoMinutes = new Image[100];
 	for (int i = 0; i < 100; i++) {
 	    pomoMinutes[i] = createImage(Color.red, i);
 	}
     }
 
-    private Image createWaitImage() {
-	SystemTray tray = SystemTray.getSystemTray();
-	Dimension iconsize = tray.getTrayIconSize();
+    protected Image createWaitImage() {
+	Dimension iconsize = getTrayIconSize();
 	Image image = new BufferedImage(iconsize.width, iconsize.height,
 		BufferedImage.TYPE_INT_RGB);
 	Graphics gr = image.getGraphics();
@@ -137,9 +115,8 @@ public class SystemTrayManager {
 	return image;
     }
 
-    private Image createImage(Color color, int number) {
-	SystemTray tray = SystemTray.getSystemTray();
-	Dimension iconsize = tray.getTrayIconSize();
+	private Image createImage(Color color, int number) {
+	Dimension iconsize = getTrayIconSize();
 	Image image = new BufferedImage(iconsize.width, iconsize.height,
 		BufferedImage.TYPE_INT_RGB);
 	Graphics gr = image.getGraphics();
@@ -155,10 +132,8 @@ public class SystemTrayManager {
 		(int) (iconsize.height + bounds.getHeight()) / 2);
 	return image;
     }
-
-    public static SystemTrayManager getInstance() {
-	return INSTANCE;
-    }
+	
+	protected abstract Dimension getTrayIconSize();
 
     public void stop() {
 	SystemTray tray = SystemTray.getSystemTray();

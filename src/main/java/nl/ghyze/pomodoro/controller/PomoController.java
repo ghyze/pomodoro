@@ -9,7 +9,7 @@ import javax.swing.Timer;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.SettingsChangeListener;
 import nl.ghyze.pomodoro.view.PomoFrame;
-import nl.ghyze.pomodoro.view.systemtray.SystemTrayManager;
+import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
 public class PomoController implements ActionListener, SettingsChangeListener
 {
@@ -18,20 +18,29 @@ public class PomoController implements ActionListener, SettingsChangeListener
 
    private Settings settings;
    private PomodoroStateMachine stateMachine;
+   private AbstractSystemTrayManager systemTrayManager;
 
    public PomoController()
    {
-      settings = new Settings();
-      settings.addListener(this);
-      settings.load();
-      SystemTrayManager.getInstance().setPomoController(this);
-      frame = new PomoFrame(this);
-      frame.position(settings.getPosition());
-      stateMachine = new PomodoroStateMachine(settings);
-      stateMachine.setSystemTrayManager(SystemTrayManager.getInstance());
-      stateMachine.updateCurrent();
-      timer = new Timer(20, this);
-      timer.start();
+      
+   }
+   
+   public void initializeSystemTrayManager(AbstractSystemTrayManager systemTrayManager){
+	   this.systemTrayManager = systemTrayManager;
+	   this.systemTrayManager.setPomoController(this);
+	   stateMachine.setSystemTrayManager(this.systemTrayManager);
+   }
+   
+   public void initialize(){
+	   settings = new Settings();
+	      settings.addListener(this);
+	      settings.load();
+	      frame = new PomoFrame(this);
+	      frame.position(settings.getPosition());
+	      stateMachine = new PomodoroStateMachine(settings);
+	      stateMachine.updateCurrent();
+	      timer = new Timer(20, this);
+	      timer.start();
    }
 
    @Override
@@ -48,14 +57,14 @@ public class PomoController implements ActionListener, SettingsChangeListener
 	   stateMachine.handleAction(choice);
        }
       frame.update(stateMachine.getCurrent());
-      SystemTrayManager.getInstance().update(stateMachine.getCurrent());
+      systemTrayManager.update(stateMachine.getCurrent());
    }
 
 
 
    public void stopProgram()
    {
-      SystemTrayManager.getInstance().stop();
+	   systemTrayManager.stop();
       System.exit(0);
    }
 
