@@ -6,11 +6,11 @@ public class OptionDialogModel {
     private String message;
     private Object[] choices;
     
-    public static int SAVE = 0;
-    public static int DISCARD = 1;
+    public static final int SAVE = 0;
+    public static final int DISCARD = 1;
     
-    public static int OK = 0;
-    public static int CANCEL = 1;
+    public static final int OK = 0;
+    public static final int CANCEL = 1;
     
     public OptionDialogModel(){
 	
