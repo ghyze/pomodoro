@@ -22,7 +22,7 @@ public class SystemTrayManagerImpl extends AbstractSystemTrayManager {
 
     protected void initTrayIcon(PopupMenu menu) {
         SystemTray tray = SystemTray.getSystemTray();
-        icon = new TrayIcon(pomoMinutes[0], "Pomo", menu);
+        icon = new TrayIcon(waitImage, "Pomo", menu);
         try {
             tray.add(icon);
         } catch (AWTException e) {

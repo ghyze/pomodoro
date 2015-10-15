@@ -21,9 +21,9 @@ import nl.ghyze.pomodoro.view.SettingsFrame;
 
 public abstract class AbstractSystemTrayManager {
 
-    protected Image[] pomoMinutes;
-    private Image[] breakMinutes;
-    private Image waitImage;
+    protected Image[] pomoImages;
+    protected Image[] breakImages;
+    protected Image waitImage;
     protected TrayIcon icon;
     private PomoController controller;
 
@@ -97,16 +97,16 @@ public abstract class AbstractSystemTrayManager {
     }
 
     protected void createBreakMinutesImages() {
-        breakMinutes = new Image[100];
+        breakImages = new Image[100];
         for (int i = 0; i < 100; i++) {
-            breakMinutes[i] = createImage(new Color(0, 192, 0), "" + i);
+            breakImages[i] = createImage(new Color(0, 192, 0), "" + i);
         }
     }
 
     protected void createPomoMinutesImages() {
-        pomoMinutes = new Image[100];
+        pomoImages = new Image[100];
         for (int i = 0; i < 100; i++) {
-            pomoMinutes[i] = createImage(Color.red, "" + i);
+            pomoImages[i] = createImage(Color.red, "" + i);
         }
     }
 
@@ -141,9 +141,9 @@ public abstract class AbstractSystemTrayManager {
         if (countdown.getType() == Pomodoro.Type.WAIT) {
             icon.setImage(waitImage);
         } else if (countdown.getType() == Pomodoro.Type.POMO) {
-            icon.setImage(pomoMinutes[countdown.minutesLeft()]);
+            icon.setImage(pomoImages[countdown.minutesLeft()]);
         } else if (countdown.getType() == Pomodoro.Type.BREAK) {
-            icon.setImage(breakMinutes[countdown.minutesLeft()]);
+            icon.setImage(breakImages[countdown.minutesLeft()]);
         }
     }
 
