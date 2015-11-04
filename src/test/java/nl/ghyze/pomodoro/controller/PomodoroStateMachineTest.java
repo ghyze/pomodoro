@@ -130,5 +130,48 @@ public class PomodoroStateMachineTest {
 	    Assert.assertEquals(4, current.minutesLeft());
 	}
 	
+	@Test
+        public void testHandleNextForBreakWithOk() throws Exception {
+            Pomodoro breakPomo = new Pomodoro(5, Type.BREAK);
+            setCurrent(breakPomo);
+            
+            EasyMock.expect(settings.getPomoMinutes()).andReturn(1);
+            EasyMock.expect(settings.getPomosBeforeLongBreak()).andReturn(1);
+            
+            EasyMock.replay(settings);
+            pomodoroStateMachine.handleAction(OptionDialogModel.OK);
+            EasyMock.verify(settings);
+            
+            Assert.assertEquals(Type.POMO, pomodoroStateMachine.getCurrentType());
+        }
 	
+	@Test
+        public void testHandleNextForBreakWithCancel() throws Exception {
+            Pomodoro breakPomo = new Pomodoro(5, Type.BREAK);
+            setCurrent(breakPomo);
+            
+            pomodoroStateMachine.handleAction(OptionDialogModel.CANCEL);
+            
+            Assert.assertEquals(Type.WAIT, pomodoroStateMachine.getCurrentType());
+        }
+	
+	@Test
+        public void testHandleActionForWait() throws Exception {
+            Pomodoro waitPomo = new Pomodoro(0, Type.WAIT);
+            setCurrent(waitPomo);
+            
+            pomodoroStateMachine.handleAction(0);
+            
+            Assert.assertEquals(Type.WAIT, pomodoroStateMachine.getCurrentType());
+        }
+	
+	@Test
+        public void testStopCurrent() throws Exception {
+	    Pomodoro pomo = new Pomodoro(1, Type.POMO);
+            setCurrent(pomo);
+            
+            pomodoroStateMachine.stopCurrent();
+            
+            Assert.assertEquals(Type.WAIT, pomodoroStateMachine.getCurrentType());
+        }
 }
