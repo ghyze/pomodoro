@@ -16,7 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import nl.ghyze.pomodoro.controller.PomoButtonAction;
 import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Settings;

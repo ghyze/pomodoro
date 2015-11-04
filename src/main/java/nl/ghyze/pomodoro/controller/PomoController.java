@@ -8,6 +8,8 @@ import javax.swing.Timer;
 
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.SettingsChangeListener;
+import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModel;
+import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModelFactory;
 import nl.ghyze.pomodoro.view.PomoFrame;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 

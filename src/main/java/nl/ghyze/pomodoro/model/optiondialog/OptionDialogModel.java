@@ -1,4 +1,4 @@
-package nl.ghyze.pomodoro.controller;
+package nl.ghyze.pomodoro.model.optiondialog;
 
 public class OptionDialogModel {
 

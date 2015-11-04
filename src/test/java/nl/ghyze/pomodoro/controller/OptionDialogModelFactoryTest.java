@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import org.junit.Assert;
 import nl.ghyze.pomodoro.model.Pomodoro.Type;
+import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModel;
+import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModelFactory;
 
 public class OptionDialogModelFactoryTest {
 

@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Pomodoro.Type;
+import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 

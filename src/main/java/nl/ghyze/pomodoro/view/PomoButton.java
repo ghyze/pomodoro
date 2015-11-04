@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.ghyze.pomodoro.controller.PomoButtonAction;
 import nl.ghyze.pomodoro.model.Pomodoro;
 
 public class PomoButton
