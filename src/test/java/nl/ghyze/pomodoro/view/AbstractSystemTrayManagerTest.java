@@ -1,15 +1,17 @@
 package nl.ghyze.pomodoro.view;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.PopupMenu;
+import java.awt.event.ActionListener;
 
+import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
+import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
 public class AbstractSystemTrayManagerTest {
@@ -39,6 +41,40 @@ public class AbstractSystemTrayManagerTest {
         checkImageArray(manager.getBreakImages());
         assertNotNull(manager.getWaitImage());
         assertImageSize(manager.getWaitImage());
+    }
+    
+    @Test
+    public void testInvokeShowMenuAction() throws Exception {
+        PomoController mockPomoController = EasyMock.createMock(PomoController.class);
+        manager.setPomoController(mockPomoController);
+        mockPomoController.showFrame();
+        EasyMock.expectLastCall();
+        EasyMock.replay(mockPomoController);
+        
+        PopupMenu menu = manager.getPopupMenu();
+        ActionListener[] listeners = menu.getItem(0).getActionListeners();
+        callActionListeners(listeners);
+        EasyMock.verify(mockPomoController);
+    }
+    
+    @Test
+    public void testInvokeExitMenuAction() throws Exception {
+        PomoController mockPomoController = EasyMock.createMock(PomoController.class);
+        manager.setPomoController(mockPomoController);
+        mockPomoController.stopProgram();
+        EasyMock.expectLastCall();
+        EasyMock.replay(mockPomoController);
+        
+        PopupMenu menu = manager.getPopupMenu();
+        ActionListener[] listeners = menu.getItem(2).getActionListeners();
+        callActionListeners(listeners);
+        EasyMock.verify(mockPomoController);
+    }
+
+    private void callActionListeners(ActionListener[] listeners) {
+        for (ActionListener listener : listeners){
+            listener.actionPerformed(null);
+        }
     }
     
     private void checkImageArray(Image[] array){
