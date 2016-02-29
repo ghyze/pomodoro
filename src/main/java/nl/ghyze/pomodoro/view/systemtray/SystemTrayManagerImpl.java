@@ -6,28 +6,46 @@ import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 
-public class SystemTrayManagerImpl extends AbstractSystemTrayManager {
+import nl.ghyze.pomodoro.controller.PomoController;
+import nl.ghyze.pomodoro.view.menu.MenuController;
 
-    public SystemTrayManagerImpl() {
-        initializeImages();
-        PopupMenu menu = createPopupMenu();
-        initTrayIcon(menu);
-    }
+public class SystemTrayManagerImpl extends AbstractSystemTrayManager
+{
 
-    protected Dimension getTrayIconSize() {
-        SystemTray tray = SystemTray.getSystemTray();
-        Dimension iconsize = tray.getTrayIconSize();
-        return iconsize;
-    }
+   private MenuController menuController;
 
-    protected void initTrayIcon(PopupMenu menu) {
-        SystemTray tray = SystemTray.getSystemTray();
-        icon = new TrayIcon(waitImage, "Pomo", menu);
-        try {
-            tray.add(icon);
-        } catch (AWTException e) {
-            e.printStackTrace();
-        }
-    }
+   public void setPomoController(PomoController controller)
+   {
+      menuController.setPomoController(controller);
+   }
+
+   public SystemTrayManagerImpl()
+   {
+      initializeImages();
+      menuController = new MenuController();
+      PopupMenu menu = menuController.createPopupMenu();
+      initTrayIcon(menu);
+   }
+
+   protected Dimension getTrayIconSize()
+   {
+      SystemTray tray = SystemTray.getSystemTray();
+      Dimension iconsize = tray.getTrayIconSize();
+      return iconsize;
+   }
+
+   protected void initTrayIcon(PopupMenu menu)
+   {
+      SystemTray tray = SystemTray.getSystemTray();
+      icon = new TrayIcon(waitImage, "Pomo", menu);
+      try
+      {
+         tray.add(icon);
+      }
+      catch (AWTException e)
+      {
+         e.printStackTrace();
+      }
+   }
 
 }
