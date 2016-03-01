@@ -1,5 +1,7 @@
 package nl.ghyze.pomodoro.controller;
 
+import java.util.Date;
+
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Pomodoro.Type;
 import nl.ghyze.pomodoro.model.Settings;
@@ -13,6 +15,8 @@ public class PomodoroStateMachine
    private Settings settings;
    private int pomosDone = 0;
    private AbstractSystemTrayManager systemTrayManager;
+
+   private Date lastAction = new Date();
 
    public PomodoroStateMachine(Settings settings)
    {
@@ -50,6 +54,7 @@ public class PomodoroStateMachine
       {
          handleActionForBreak(choice);
       }
+      lastAction = new Date();
    }
 
    private void handleActionForPomo(int choice)
@@ -139,5 +144,10 @@ public class PomodoroStateMachine
    {
       pomosDone = 0;
       startWait();
+   }
+
+   public Date getLastAction()
+   {
+      return new Date(lastAction.getTime());
    }
 }

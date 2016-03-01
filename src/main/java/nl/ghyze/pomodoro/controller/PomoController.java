@@ -2,6 +2,7 @@ package nl.ghyze.pomodoro.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -21,6 +22,8 @@ public class PomoController implements ActionListener, SettingsChangeListener
    private Settings settings;
    private PomodoroStateMachine stateMachine;
    private AbstractSystemTrayManager systemTrayManager;
+
+   private int minutesSinceLastAction = 0;
 
    public PomoController()
    {
@@ -50,6 +53,8 @@ public class PomoController implements ActionListener, SettingsChangeListener
    @Override
    public void actionPerformed(ActionEvent event)
    {
+      checkMinutesSinceLastAction();
+
       if (stateMachine.shouldChangeState())
       {
          OptionDialogModelFactory factory = new OptionDialogModelFactory(stateMachine.getCurrentType());
@@ -60,6 +65,32 @@ public class PomoController implements ActionListener, SettingsChangeListener
       }
       frame.update(stateMachine.getCurrent());
       systemTrayManager.update(stateMachine.getCurrent());
+   }
+
+   private void checkMinutesSinceLastAction()
+   {
+      if (stateMachine.getCurrent().getPomosDone() > 0)
+      {
+         int localMinutesSinceLastAction = getMinutesSinceLastAction();
+         if (localMinutesSinceLastAction > minutesSinceLastAction)
+         {
+            minutesSinceLastAction = localMinutesSinceLastAction;
+            System.out.println("Minutes since last action: " + minutesSinceLastAction);
+         }
+
+         if (minutesSinceLastAction >= settings.getIdleTime())
+         {
+            System.out.println("Auto Reset!");
+            stateMachine.reset();
+         }
+      }
+   }
+
+   private int getMinutesSinceLastAction()
+   {
+      Date now = new Date();
+      long millis = (now.getTime() - stateMachine.getLastAction().getTime());
+      return (int) (millis / (60 * 1000));
    }
 
    public void stopProgram()
@@ -97,6 +128,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
 
    public void reset()
    {
+      // TODO: use DialogModel
       int choice = JOptionPane.showOptionDialog(frame, "Resetting will set the current pomos done to 0, and set the status to Waiting. Proceed?", "Reset", JOptionPane.OK_CANCEL_OPTION,
             JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Ok", "Cancel" }, "Ok");
       if (choice == 0)
