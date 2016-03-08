@@ -31,10 +31,11 @@ public class AbstractSystemTrayManagerTest
    public void testCreatePopupMenu() throws Exception
    {
       PopupMenu menu = manager.getPopupMenu();
-      assertEquals(3, menu.getItemCount());
+      assertEquals(4, menu.getItemCount());
       assertEquals("Show Frame", menu.getItem(0).getLabel());
       assertEquals("Settings", menu.getItem(1).getLabel());
       assertEquals("Exit", menu.getItem(2).getLabel());
+      assertEquals("Reset", menu.getItem(3).getLabel());
    }
 
    @Test

@@ -4,8 +4,8 @@ import java.util.Date;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Pomodoro.Type;
+import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.model.Settings;
-import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
 public class PomodoroStateMachine
@@ -46,6 +46,7 @@ public class PomodoroStateMachine
 
    public void handleAction(int choice)
    {
+      lastAction = new Date();
       if (current.getType() == Type.POMO)
       {
          handleActionForPomo(choice);
@@ -54,7 +55,6 @@ public class PomodoroStateMachine
       {
          handleActionForBreak(choice);
       }
-      lastAction = new Date();
    }
 
    private void handleActionForPomo(int choice)
@@ -82,6 +82,7 @@ public class PomodoroStateMachine
 
    private Pomodoro createNextBreak()
    {
+      lastAction = new Date();
       if (pomosDone < settings.getPomosBeforeLongBreak())
       {
          return createShortBreak();
@@ -120,6 +121,7 @@ public class PomodoroStateMachine
 
    public void startPomo()
    {
+      lastAction = new Date();
       current = new Pomodoro(settings.getPomoMinutes(), Type.POMO);
       updateCurrent();
       String message = "Starting Pomodoro number " + (pomosDone + 1);

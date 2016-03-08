@@ -4,13 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.SettingsChangeListener;
-import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModel;
-import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModelFactory;
+import nl.ghyze.pomodoro.optiondialog.OptionDialogController;
+import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
+import nl.ghyze.pomodoro.optiondialog.OptionDialogModelFactory;
+import nl.ghyze.pomodoro.optiondialog.ResetOptionDialogCallback;
+import nl.ghyze.pomodoro.optiondialog.StateMachineOptionDialogCallback;
 import nl.ghyze.pomodoro.view.PomoFrame;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
@@ -53,16 +55,20 @@ public class PomoController implements ActionListener, SettingsChangeListener
    @Override
    public void actionPerformed(ActionEvent event)
    {
-      checkMinutesSinceLastAction();
-
       if (stateMachine.shouldChangeState())
       {
          OptionDialogModelFactory factory = new OptionDialogModelFactory(stateMachine.getCurrentType());
+
          OptionDialogModel model = factory.getOptions();
-         int choice = JOptionPane.showOptionDialog(frame, model.getMessage(), model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(),
-               model.getDefaultChoice());
-         stateMachine.handleAction(choice);
+
+         StateMachineOptionDialogCallback callback = new StateMachineOptionDialogCallback(stateMachine);
+
+         OptionDialogController.showDialog(model, callback);
+         //         int choice = JOptionPane.showOptionDialog(frame, model.getMessage(), model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(),
+         //               model.getDefaultChoice());
+         //         stateMachine.handleAction(choice);
       }
+      checkMinutesSinceLastAction();
       frame.update(stateMachine.getCurrent());
       systemTrayManager.update(stateMachine.getCurrent());
    }
@@ -129,11 +135,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
    public void reset()
    {
       // TODO: use DialogModel
-      int choice = JOptionPane.showOptionDialog(frame, "Resetting will set the current pomos done to 0, and set the status to Waiting. Proceed?", "Reset", JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.QUESTION_MESSAGE, null, new Object[] { "Ok", "Cancel" }, "Ok");
-      if (choice == 0)
-      {
-         stateMachine.reset();
-      }
+      OptionDialogModel resetModel = OptionDialogModelFactory.createResetModel();
+      OptionDialogController.showDialog(resetModel, new ResetOptionDialogCallback(stateMachine));
    }
 }

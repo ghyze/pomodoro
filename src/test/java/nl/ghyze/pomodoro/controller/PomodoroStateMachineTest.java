@@ -1,6 +1,7 @@
 package nl.ghyze.pomodoro.controller;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -9,8 +10,8 @@ import org.junit.Test;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Pomodoro.Type;
+import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.model.Settings;
-import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
 public class PomodoroStateMachineTest
@@ -51,6 +52,7 @@ public class PomodoroStateMachineTest
       Pomodoro current = pomodoroStateMachine.getCurrent();
       Assert.assertEquals(current.getType(), Type.POMO);
 
+      Assert.assertTrue(isDateCorrect(pomodoroStateMachine.getLastAction()));
    }
 
    private void setupStartPomo()
@@ -97,6 +99,14 @@ public class PomodoroStateMachineTest
       pomodoroStateMachine.setSystemTrayManager(systemTrayManager);
 
       EasyMock.expect(settings.getPomosBeforeLongBreak()).andReturn(1).times(2);
+      Assert.assertTrue(isDateCorrect(pomodoroStateMachine.getLastAction()));
+   }
+
+   private boolean isDateCorrect(Date date)
+   {
+      Date now = new Date();
+      long dateLong = date.getTime() + 100l;
+      return now.getTime() <= dateLong;
    }
 
    @Test
@@ -200,4 +210,5 @@ public class PomodoroStateMachineTest
       Assert.assertEquals(0, wait.getPomosDone());
       Assert.assertEquals(Type.WAIT, wait.getType());
    }
+
 }

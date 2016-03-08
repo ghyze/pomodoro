@@ -1,4 +1,4 @@
-package nl.ghyze.pomodoro.controller;
+package nl.ghyze.pomodoro.model.optiondialog;
 
 import static org.junit.Assert.*;
 
@@ -6,8 +6,8 @@ import org.junit.Test;
 
 import org.junit.Assert;
 import nl.ghyze.pomodoro.model.Pomodoro.Type;
-import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModel;
-import nl.ghyze.pomodoro.model.optiondialog.OptionDialogModelFactory;
+import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
+import nl.ghyze.pomodoro.optiondialog.OptionDialogModelFactory;
 
 public class OptionDialogModelFactoryTest {
 
