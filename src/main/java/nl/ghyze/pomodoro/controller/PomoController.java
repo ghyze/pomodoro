@@ -57,16 +57,9 @@ public class PomoController implements ActionListener, SettingsChangeListener
    {
       if (stateMachine.shouldChangeState())
       {
-         OptionDialogModelFactory factory = new OptionDialogModelFactory(stateMachine.getCurrentType());
-
-         OptionDialogModel model = factory.getOptions();
-
+         OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(stateMachine.getCurrentType());
          StateMachineOptionDialogCallback callback = new StateMachineOptionDialogCallback(stateMachine);
-
-         OptionDialogController.showDialog(model, callback);
-         //         int choice = JOptionPane.showOptionDialog(frame, model.getMessage(), model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(),
-         //               model.getDefaultChoice());
-         //         stateMachine.handleAction(choice);
+         OptionDialogController.showDialog(frame, model, callback);
       }
       checkMinutesSinceLastAction();
       frame.update(stateMachine.getCurrent());
@@ -81,12 +74,10 @@ public class PomoController implements ActionListener, SettingsChangeListener
          if (localMinutesSinceLastAction > minutesSinceLastAction)
          {
             minutesSinceLastAction = localMinutesSinceLastAction;
-            System.out.println("Minutes since last action: " + minutesSinceLastAction);
          }
 
          if (minutesSinceLastAction >= settings.getIdleTime())
          {
-            System.out.println("Auto Reset!");
             stateMachine.reset();
          }
       }
@@ -134,8 +125,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
 
    public void reset()
    {
-      // TODO: use DialogModel
       OptionDialogModel resetModel = OptionDialogModelFactory.createResetModel();
-      OptionDialogController.showDialog(resetModel, new ResetOptionDialogCallback(stateMachine));
+      OptionDialogController.showDialog(frame, resetModel, new ResetOptionDialogCallback(stateMachine));
    }
 }

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -24,7 +25,7 @@ public class OptionDialogController
    }
 
    @SuppressWarnings("serial")
-   public static void showDialog(OptionDialogModel model, OptionDialogCallback callback)
+   public static void showDialog(JFrame frame, OptionDialogModel model, OptionDialogCallback callback)
    {
       if (!isShowing())
       {
@@ -52,7 +53,7 @@ public class OptionDialogController
                }
             }.start();
 
-         int result = JOptionPane.showOptionDialog(null, label, model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(), model.getDefaultChoice());
+         int result = JOptionPane.showOptionDialog(frame, label, model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(), model.getDefaultChoice());
          handleResult(callback, result);
          instance.showing = false;
       }

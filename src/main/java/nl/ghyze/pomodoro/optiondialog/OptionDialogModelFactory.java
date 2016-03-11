@@ -4,24 +4,27 @@ import nl.ghyze.pomodoro.model.Pomodoro.Type;
 
 public class OptionDialogModelFactory
 {
-
-   private Type type;
-
-   public OptionDialogModelFactory(Type type)
-   {
-      this.type = type;
-   }
-
-   public OptionDialogModel getOptions()
+   public static OptionDialogModel createChangeStateModel(Type type)
    {
       OptionDialogModel model = new OptionDialogModel();
-      model.setTitle(getDialogTitle());
-      model.setMessage(getDialogMessage());
-      model.setChoices(getDialogChoices());
+      model.setTitle(getDialogTitle(type));
+      model.setMessage(getDialogMessage(type));
+      model.setChoices(getDialogChoices(type));
       return model;
    }
 
-   private String getDialogMessage()
+   public static OptionDialogModel createResetModel()
+   {
+      OptionDialogModel model = new OptionDialogModel();
+
+      model.setTitle("Reset");
+      model.setMessage("Resetting will set the current pomos done to 0, and set the status to Waiting. Proceed?");
+      model.setChoices(okCancelOptions());
+
+      return model;
+   }
+
+   private static String getDialogMessage(Type type)
    {
       if (Type.POMO == type)
       {
@@ -34,7 +37,7 @@ public class OptionDialogModelFactory
       return "";
    }
 
-   private String getDialogTitle()
+   private static String getDialogTitle(Type type)
    {
       if (Type.POMO == type)
       {
@@ -47,7 +50,7 @@ public class OptionDialogModelFactory
       return "";
    }
 
-   private Object[] getDialogChoices()
+   private static Object[] getDialogChoices(Type type)
    {
       if (Type.POMO == type)
       {
@@ -65,14 +68,4 @@ public class OptionDialogModelFactory
       return new Object[] { "Ok", "Cancel" };
    }
 
-   public static OptionDialogModel createResetModel()
-   {
-      OptionDialogModel model = new OptionDialogModel();
-
-      model.setTitle("Reset");
-      model.setMessage("Resetting will set the current pomos done to 0, and set the status to Waiting. Proceed?");
-      model.setChoices(okCancelOptions());
-
-      return model;
-   }
 }
