@@ -21,6 +21,8 @@ public class PomoPanel extends JPanel
    
    private List<PomoButton> buttons = new ArrayList<PomoButton>();
    
+   private boolean printFont = true;
+   
    public PomoPanel(){
       this.setPreferredSize(new Dimension(140, 100));
       this.setLayout(null);
@@ -50,7 +52,11 @@ public class PomoPanel extends JPanel
       gr.fillRect(0, 0, this.getWidth(), this.getHeight());
       Font f = gr.getFont();
       gr.setColor(Color.white);
-      Font bigFont = f.deriveFont(20f);
+      Font bigFont = f.deriveFont(16f);
+      if (printFont){
+    	  printFont = false;
+//    	  System.out.println(bigFont);
+      }
       gr.setFont(bigFont);
       paintText("Waiting for next", gr);
       
