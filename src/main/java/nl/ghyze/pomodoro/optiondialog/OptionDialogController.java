@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import nl.ghyze.pomodoro.DateUtil;
+
 public class OptionDialogController
 {
    private static OptionDialogController instance = new OptionDialogController();
@@ -42,8 +44,11 @@ public class OptionDialogController
                   if (instance.isTimedOut())
                   {
                      ((Timer) e.getSource()).stop();
-                     Window win = SwingUtilities.getWindowAncestor(label);
-                     win.setVisible(false);
+                     if (instance.showing)
+                     {
+                        Window win = SwingUtilities.getWindowAncestor(label);
+                        win.setVisible(false);
+                     }
                   }
                }
             })
@@ -54,8 +59,9 @@ public class OptionDialogController
             }.start();
 
          int result = JOptionPane.showOptionDialog(frame, label, model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(), model.getDefaultChoice());
-         handleResult(callback, result);
          instance.showing = false;
+         System.out.println(DateUtil.format(new Date()) + "Result: " + result);
+         handleResult(callback, result);
       }
    }
 
