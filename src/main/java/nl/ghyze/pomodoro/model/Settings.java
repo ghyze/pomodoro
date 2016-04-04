@@ -17,6 +17,10 @@ public class Settings
    public static final String KEY_POMOS_BEFORE_LONG_BREAK = "pomosBeforeLongBreak";
    public static final String KEY_AUTORESET = "autoReset";
    public static final String KEY_IDLE_TIME = "idleTime";
+   public static final String KEY_HABITICA_USER = "habiticaUser";
+   public static final String KEY_HABITICA_API = "habiticaApi";
+   public static final String KEY_USE_HABITICA = "useHabitica";
+   public static final String KEY_HABITICA_TASK_ID = "habiticaTaskId";
 
    private Position position;
 
@@ -26,6 +30,10 @@ public class Settings
    private int pomosBeforeLongBreak;
    private int idleTime;
    private boolean autoreset;
+   private String habiticaUser;
+   private String habiticaApi;
+   private boolean useHabitica;
+   private String habiticaTaskId;
 
    private ArrayList<SettingsChangeListener> listeners = new ArrayList<SettingsChangeListener>();
 
@@ -100,6 +108,46 @@ public class Settings
       return idleTime;
    }
 
+   public void setHabiticaUser(String habiticaUser)
+   {
+      this.habiticaUser = habiticaUser;
+   }
+
+   public String getHabiticaUser()
+   {
+      return habiticaUser;
+   }
+
+   public void setHabiticaApi(String habiticaApi)
+   {
+      this.habiticaApi = habiticaApi;
+   }
+
+   public String getHabiticaApi()
+   {
+      return habiticaApi;
+   }
+
+   public void setUseHabitica(boolean useHabitica)
+   {
+      this.useHabitica = useHabitica;
+   }
+
+   public boolean isUseHabitica()
+   {
+      return useHabitica;
+   }
+
+   public void setHabiticaTaskId(String habiticaTaskId)
+   {
+      this.habiticaTaskId = habiticaTaskId;
+   }
+
+   public String getHabiticaTaskId()
+   {
+      return habiticaTaskId;
+   }
+
    private void notifyListeners()
    {
       for (SettingsChangeListener listener : listeners)
@@ -131,6 +179,10 @@ public class Settings
 
       prefs.putBoolean(KEY_AUTORESET, autoreset);
       prefs.putInt(KEY_IDLE_TIME, idleTime);
+      prefs.put(KEY_HABITICA_USER, habiticaUser);
+      prefs.put(KEY_HABITICA_API, habiticaApi);
+      prefs.putBoolean(KEY_USE_HABITICA, useHabitica);
+      prefs.put(KEY_HABITICA_TASK_ID, habiticaTaskId);
    }
 
    public void load()
@@ -147,5 +199,10 @@ public class Settings
       autoreset = prefs.getBoolean(KEY_AUTORESET, false);
       idleTime = prefs.getInt(KEY_IDLE_TIME, 60);
 
+      habiticaUser = prefs.get(KEY_HABITICA_USER, "");
+      habiticaApi = prefs.get(KEY_HABITICA_API, "");
+      useHabitica = prefs.getBoolean(KEY_USE_HABITICA, false);
+
+      habiticaTaskId = prefs.get(KEY_HABITICA_TASK_ID, "");
    }
 }

@@ -1,11 +1,13 @@
 package nl.ghyze.pomodoro.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Pomodoro.Type;
-import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
 public class PomodoroStateMachine
@@ -17,6 +19,8 @@ public class PomodoroStateMachine
    private AbstractSystemTrayManager systemTrayManager;
 
    private Date lastAction = new Date();
+
+   private List<PomodoroHook> pomodoroHooks = new ArrayList<PomodoroHook>();
 
    public PomodoroStateMachine(Settings settings)
    {
@@ -62,6 +66,11 @@ public class PomodoroStateMachine
       if (choice == OptionDialogModel.SAVE)
       {
          pomosDone++;
+         completeHooks();
+      }
+      else
+      {
+         cancelHooks();
       }
       Pomodoro next = createNextBreak();
       current = next;
@@ -110,6 +119,7 @@ public class PomodoroStateMachine
 
    public void stopCurrent()
    {
+      cancelHooks();
       startWait();
    }
 
@@ -151,5 +161,31 @@ public class PomodoroStateMachine
    public Date getLastAction()
    {
       return new Date(lastAction.getTime());
+   }
+
+   public void addPomodoroHook(PomodoroHook hook)
+   {
+      pomodoroHooks.add(hook);
+   }
+
+   public List<PomodoroHook> getPomodoroHooks()
+   {
+      return pomodoroHooks;
+   }
+
+   private void completeHooks()
+   {
+      for (PomodoroHook hook : pomodoroHooks)
+      {
+         hook.completed();
+      }
+   }
+
+   private void cancelHooks()
+   {
+      for (PomodoroHook hook : pomodoroHooks)
+      {
+         hook.canceled();
+      }
    }
 }

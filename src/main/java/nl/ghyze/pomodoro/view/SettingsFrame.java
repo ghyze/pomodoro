@@ -15,6 +15,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import nl.ghyze.pomodoro.habitica.ConfigurationFrame;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.Settings.Position;
 
@@ -49,6 +50,9 @@ public class SettingsFrame extends JFrame
    private JCheckBox cbAutoReset = new JCheckBox("Autoreset after idle time");
    private JTextField tfIdleTime = new JTextField();
 
+   private JCheckBox cbHabitica = new JCheckBox("Integrate with Habitica");
+   private JButton btHabitica = new JButton("Configure Habitica");
+
    public SettingsFrame(Settings settings)
    {
       this.settings = settings;
@@ -65,6 +69,7 @@ public class SettingsFrame extends JFrame
       initButtons();
       initTimes();
       initIdleTime();
+      initHabitica();
 
       pack();
 
@@ -236,6 +241,43 @@ public class SettingsFrame extends JFrame
       tfIdleTime.setEnabled(cbAutoReset.isSelected());
    }
 
+   private void initHabitica()
+   {
+      layout.putConstraint(SpringLayout.WEST, cbHabitica, 5, SpringLayout.WEST, getContentPane());
+      layout.putConstraint(SpringLayout.EAST, cbHabitica, LABEL_WIDTH, SpringLayout.WEST, getContentPane());
+      layout.putConstraint(SpringLayout.NORTH, cbHabitica, 5, SpringLayout.SOUTH, cbAutoReset);
+      layout.putConstraint(SpringLayout.SOUTH, cbHabitica, 25, SpringLayout.SOUTH, cbAutoReset);
+      this.add(cbHabitica);
+      cbHabitica.addActionListener(new ActionListener()
+         {
+
+            @Override
+            public void actionPerformed(ActionEvent event)
+            {
+               btHabitica.setEnabled(cbHabitica.isSelected());
+            }
+
+         });
+      cbHabitica.setSelected(settings.isUseHabitica());
+
+      layout.putConstraint(SpringLayout.WEST, btHabitica, 5, SpringLayout.EAST, lbPosition);
+      layout.putConstraint(SpringLayout.EAST, btHabitica, -5, SpringLayout.EAST, getContentPane());
+      layout.putConstraint(SpringLayout.NORTH, btHabitica, 5, SpringLayout.SOUTH, tfIdleTime);
+      layout.putConstraint(SpringLayout.SOUTH, btHabitica, 25, SpringLayout.SOUTH, tfIdleTime);
+      this.add(btHabitica);
+      btHabitica.setEnabled(cbHabitica.isSelected());
+
+      btHabitica.addActionListener(new ActionListener()
+         {
+            @Override
+            public void actionPerformed(ActionEvent event)
+            {
+               ConfigurationFrame frame = new ConfigurationFrame(settings);
+               frame.setVisible(true);
+            }
+         });
+   }
+
    private void updateSettings()
    {
       Position position = Position.BOTTOM_RIGHT;
@@ -285,6 +327,9 @@ public class SettingsFrame extends JFrame
       {
          settings.setIdleTime(idleTime);
       }
+
+      boolean habitica = cbHabitica.isSelected();
+      settings.setUseHabitica(habitica);
 
       settings.save();
    }
