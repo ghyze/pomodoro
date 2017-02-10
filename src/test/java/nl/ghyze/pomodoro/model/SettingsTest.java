@@ -125,6 +125,7 @@ public class SettingsTest
       testSettings.setUseHabitica(true);
       testSettings.setHabiticaUser("habiticaUser");
       testSettings.setHabiticaApi("habiticaApi");
+      testSettings.setHabiticaTaskId("habiticaTaskId");
       testSettings.save();
 
       Settings loadedSettings = new Settings();
@@ -139,5 +140,6 @@ public class SettingsTest
       Assert.assertTrue(loadedSettings.isUseHabitica());
       Assert.assertEquals("habiticaUser", loadedSettings.getHabiticaUser());
       Assert.assertEquals("habiticaApi", loadedSettings.getHabiticaApi());
+      Assert.assertEquals("habiticaTaskId", loadedSettings.getHabiticaTaskId());
    }
 }

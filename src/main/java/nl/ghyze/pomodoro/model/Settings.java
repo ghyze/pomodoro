@@ -21,7 +21,9 @@ public class Settings
    public static final String KEY_HABITICA_API = "habiticaApi";
    public static final String KEY_USE_HABITICA = "useHabitica";
    public static final String KEY_HABITICA_TASK_ID = "habiticaTaskId";
+   public static final String KEY_SCREEN_INDEX = "screenIndex";
 
+   private int screenIndex;
    private Position position;
 
    private int pomoMinutes;
@@ -147,6 +149,14 @@ public class Settings
    {
       return habiticaTaskId;
    }
+   
+   public int getScreenIndex(){
+	   return screenIndex;
+   }
+   
+   public void setScreenIndex(int screenIndex){
+	   this.screenIndex = screenIndex;
+   }
 
    private void notifyListeners()
    {
@@ -175,6 +185,7 @@ public class Settings
       prefs.putInt(KEY_LONG_BREAK_MINUTES, longBreakMinutes);
       prefs.putInt(KEY_POMOS_BEFORE_LONG_BREAK, pomosBeforeLongBreak);
 
+      prefs.putInt(KEY_SCREEN_INDEX, screenIndex);
       prefs.putInt(KEY_POSITION, position.ordinal());
 
       prefs.putBoolean(KEY_AUTORESET, autoreset);
@@ -194,6 +205,7 @@ public class Settings
       longBreakMinutes = prefs.getInt(KEY_LONG_BREAK_MINUTES, 15);
       pomosBeforeLongBreak = prefs.getInt(KEY_POMOS_BEFORE_LONG_BREAK, 3);
 
+      screenIndex = prefs.getInt(KEY_SCREEN_INDEX, 0);
       position = Position.values()[prefs.getInt(KEY_POSITION, 3)];
 
       autoreset = prefs.getBoolean(KEY_AUTORESET, false);

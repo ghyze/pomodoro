@@ -5,16 +5,19 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import nl.ghyze.pomodoro.MultiScreenFactory;
 import nl.ghyze.pomodoro.habitica.ConfigurationFrame;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.Settings.Position;
@@ -24,10 +27,12 @@ public class SettingsFrame extends JFrame
    private static int LABEL_WIDTH = 200;
 
    private Settings settings;
+   private MultiScreenFactory multiScreenFactory = new MultiScreenFactory();
 
    private SpringLayout layout = new SpringLayout();
 
    private JLabel lbPosition = new JLabel("Position");
+   private JComboBox<Screen> jcbScreen = new JComboBox<Screen>();
    private ButtonGroup bgPosition = new ButtonGroup();
    private JRadioButton rbTopLeft = new JRadioButton("Top left");
    private JRadioButton rbTopRight = new JRadioButton("Top right");
@@ -82,6 +87,10 @@ public class SettingsFrame extends JFrame
 
    private void initPosition()
    {
+	  for (Screen screen : multiScreenFactory.getAvailableScreenList()){
+    	  jcbScreen.addItem(screen);
+      }
+	   
       bgPosition.add(rbTopLeft);
       bgPosition.add(rbTopRight);
       bgPosition.add(rbBottomLeft);
@@ -92,11 +101,21 @@ public class SettingsFrame extends JFrame
       layout.putConstraint(SpringLayout.NORTH, lbPosition, 5, SpringLayout.NORTH, getContentPane());
       layout.putConstraint(SpringLayout.SOUTH, lbPosition, 25, SpringLayout.NORTH, getContentPane());
       this.add(lbPosition);
+      
+      layout.putConstraint(SpringLayout.WEST, jcbScreen, 5, SpringLayout.EAST, lbPosition);
+      layout.putConstraint(SpringLayout.EAST, jcbScreen, -5, SpringLayout.EAST, getContentPane());
+      layout.putConstraint(SpringLayout.NORTH, jcbScreen, 5, SpringLayout.NORTH, getContentPane());
+      layout.putConstraint(SpringLayout.SOUTH, jcbScreen, 25, SpringLayout.NORTH, getContentPane());
+      this.add(jcbScreen);
+	  jcbScreen.setEnabled(jcbScreen.getItemCount() > 1);
+	  if (settings.getScreenIndex() < jcbScreen.getItemCount() ){
+		  jcbScreen.setSelectedIndex(settings.getScreenIndex());
+	  }
 
       layout.putConstraint(SpringLayout.WEST, rbTopLeft, 5, SpringLayout.EAST, lbPosition);
       layout.putConstraint(SpringLayout.EAST, rbTopLeft, 100, SpringLayout.EAST, lbPosition);
-      layout.putConstraint(SpringLayout.NORTH, rbTopLeft, 5, SpringLayout.NORTH, getContentPane());
-      layout.putConstraint(SpringLayout.SOUTH, rbTopLeft, 25, SpringLayout.NORTH, getContentPane());
+      layout.putConstraint(SpringLayout.NORTH, rbTopLeft, 5, SpringLayout.SOUTH, jcbScreen);
+      layout.putConstraint(SpringLayout.SOUTH, rbTopLeft, 25, SpringLayout.SOUTH, jcbScreen);
       this.add(rbTopLeft);
       rbTopLeft.setSelected(settings.getPosition() == Position.TOP_LEFT);
 
@@ -121,6 +140,8 @@ public class SettingsFrame extends JFrame
       this.add(rbBottomRight);
       rbBottomRight.setSelected(settings.getPosition() == Position.BOTTOM_RIGHT);
    }
+
+	
 
    private void initButtons()
    {
@@ -280,6 +301,9 @@ public class SettingsFrame extends JFrame
 
    private void updateSettings()
    {
+	   Screen screen = (Screen) jcbScreen.getSelectedItem();
+	   settings.setScreenIndex(screen.index);
+	   
       Position position = Position.BOTTOM_RIGHT;
       if (rbTopLeft.isSelected())
       {
@@ -348,4 +372,9 @@ public class SettingsFrame extends JFrame
       return -1;
    }
 
+   public static void main(String[] args){
+	   SettingsFrame frame = new SettingsFrame(new Settings());
+	   frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	   frame.setVisible(true);
+   }
 }

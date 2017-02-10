@@ -45,7 +45,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
       settings.addListener(this);
       settings.load();
       frame = new PomoFrame(this);
-      frame.position(settings.getPosition());
+      frame.position(settings);
       stateMachine = new PomodoroStateMachine(settings);
       stateMachine.setSystemTrayManager(this.systemTrayManager);
       HabiticaHook hook = new HabiticaHook(settings);
@@ -107,7 +107,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
    public void onChange(Settings settings)
    {
       this.settings = settings;
-      frame.position(settings.getPosition());
+      frame.position(settings);
    }
 
    public void stopCurrent()
