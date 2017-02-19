@@ -113,28 +113,28 @@ public class SettingsFrame extends JFrame
 	  }
 
       layout.putConstraint(SpringLayout.WEST, rbTopLeft, 5, SpringLayout.EAST, lbPosition);
-      layout.putConstraint(SpringLayout.EAST, rbTopLeft, 100, SpringLayout.EAST, lbPosition);
+      layout.putConstraint(SpringLayout.EAST, rbTopLeft, LABEL_WIDTH, SpringLayout.EAST, lbPosition);
       layout.putConstraint(SpringLayout.NORTH, rbTopLeft, 5, SpringLayout.SOUTH, jcbScreen);
       layout.putConstraint(SpringLayout.SOUTH, rbTopLeft, 25, SpringLayout.SOUTH, jcbScreen);
       this.add(rbTopLeft);
       rbTopLeft.setSelected(settings.getPosition() == Position.TOP_LEFT);
 
       layout.putConstraint(SpringLayout.WEST, rbTopRight, 5, SpringLayout.EAST, lbPosition);
-      layout.putConstraint(SpringLayout.EAST, rbTopRight, 100, SpringLayout.EAST, lbPosition);
+      layout.putConstraint(SpringLayout.EAST, rbTopRight, LABEL_WIDTH, SpringLayout.EAST, lbPosition);
       layout.putConstraint(SpringLayout.NORTH, rbTopRight, 5, SpringLayout.SOUTH, rbTopLeft);
       layout.putConstraint(SpringLayout.SOUTH, rbTopRight, 25, SpringLayout.SOUTH, rbTopLeft);
       this.add(rbTopRight);
       rbTopRight.setSelected(settings.getPosition() == Position.TOP_RIGHT);
 
       layout.putConstraint(SpringLayout.WEST, rbBottomLeft, 5, SpringLayout.EAST, lbPosition);
-      layout.putConstraint(SpringLayout.EAST, rbBottomLeft, 100, SpringLayout.EAST, lbPosition);
+      layout.putConstraint(SpringLayout.EAST, rbBottomLeft, LABEL_WIDTH, SpringLayout.EAST, lbPosition);
       layout.putConstraint(SpringLayout.NORTH, rbBottomLeft, 5, SpringLayout.SOUTH, rbTopRight);
       layout.putConstraint(SpringLayout.SOUTH, rbBottomLeft, 25, SpringLayout.SOUTH, rbTopRight);
       this.add(rbBottomLeft);
       rbBottomLeft.setSelected(settings.getPosition() == Position.BOTTOM_LEFT);
 
       layout.putConstraint(SpringLayout.WEST, rbBottomRight, 5, SpringLayout.EAST, lbPosition);
-      layout.putConstraint(SpringLayout.EAST, rbBottomRight, 100, SpringLayout.EAST, lbPosition);
+      layout.putConstraint(SpringLayout.EAST, rbBottomRight, LABEL_WIDTH, SpringLayout.EAST, lbPosition);
       layout.putConstraint(SpringLayout.NORTH, rbBottomRight, 5, SpringLayout.SOUTH, rbBottomLeft);
       layout.putConstraint(SpringLayout.SOUTH, rbBottomRight, 25, SpringLayout.SOUTH, rbBottomLeft);
       this.add(rbBottomRight);
@@ -302,7 +302,7 @@ public class SettingsFrame extends JFrame
    private void updateSettings()
    {
 	   Screen screen = (Screen) jcbScreen.getSelectedItem();
-	   settings.setScreenIndex(screen.index);
+	   settings.setScreenIndex(screen.getIndex());
 	   
       Position position = Position.BOTTOM_RIGHT;
       if (rbTopLeft.isSelected())

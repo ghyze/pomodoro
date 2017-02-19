@@ -3,7 +3,6 @@ package nl.ghyze.pomodoro;
 import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,30 +21,25 @@ public class MultiScreenFactory {
 		for (int i = 0; i < graphicsDevices.length; i++) {
 			GraphicsDevice device = graphicsDevices[i];
 			DisplayMode mode = device.getDisplayMode();
-			Screen screen = new Screen("Screen " + (i + 1) + " (" + mode.getWidth() + ", " + mode.getHeight() + ")", i);
+			Screen screen = new Screen(mode, i, getAvailableArea(i));
 			screenList.add(screen);
 		}
 		return screenList;
 	}
 
-	public Point getGraphicsDeviceOffset(Settings settings) {
-		GraphicsDevice[] graphicsDevices = getAvailableGraphicsDevices();
-		if (isGraphicsDeviceOtherThanDefault(settings, graphicsDevices)) {
-			Rectangle bounds = getBoundsOfSelectedGraphicsDevice(settings, graphicsDevices);
-			return new Point(bounds.x, bounds.y);
-		} else {
-			return new Point(0, 0);
-		}
+	public Screen getSelectedScreen(Settings settings) {
+		List<Screen> screenList = getAvailableScreenList();
+		int screenIndex = settings.getScreenIndex();
+		int actualIndex = screenIndex <= screenList.size()?screenIndex:1;
+		return screenList.get(actualIndex);
 	}
-
-	public Point getMostBottomRightPoint(Settings settings) {
+	
+	private Rectangle getAvailableArea(int index){
 		GraphicsDevice[] graphicsDevices = getAvailableGraphicsDevices();
-		if (isGraphicsDeviceOtherThanDefault(settings, graphicsDevices)) {
-			Rectangle bounds = getBoundsOfSelectedGraphicsDevice(settings, graphicsDevices);
-			return new Point(bounds.width, bounds.height);
+		if (isGraphicsDeviceOtherThanDefault(index, graphicsDevices)) {
+			return getBoundsOfSelectedGraphicsDevice(index, graphicsDevices);
 		} else {
-			Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-			return new Point(winSize.x + winSize.width, winSize.y + winSize.height);
+			return GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		}
 	}
 
@@ -61,15 +55,15 @@ public class MultiScreenFactory {
 		return graphicsDevices;
 	}
 
-	private Rectangle getBoundsOfSelectedGraphicsDevice(Settings settings, GraphicsDevice[] graphicsDevices) {
-		GraphicsDevice device = graphicsDevices[settings.getScreenIndex()];
+	private Rectangle getBoundsOfSelectedGraphicsDevice(int index, GraphicsDevice[] graphicsDevices) {
+		GraphicsDevice device = graphicsDevices[index];
 		Rectangle bounds = device.getDefaultConfiguration().getBounds();
 		return bounds;
 	}
 
-	private boolean isGraphicsDeviceOtherThanDefault(Settings settings, GraphicsDevice[] graphicsDevices) {
-		return settings.getScreenIndex() > 0 && graphicsDevices.length > 1
-				&& settings.getScreenIndex() < graphicsDevices.length;
+	private boolean isGraphicsDeviceOtherThanDefault(int screenIndex, GraphicsDevice[] graphicsDevices) {
+		return screenIndex > 0 && graphicsDevices.length > 1
+				&& screenIndex < graphicsDevices.length;
 	}
 	
 	protected void setAvailableGraphicsDevices(GraphicsDevice[] availableGraphicsDevices){

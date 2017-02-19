@@ -40,8 +40,8 @@ public class MultiScreenFactoryTest {
 		List<Screen> screenList = factory.getAvailableScreenList();
 		
 		assertEquals(2, screenList.size());
-		assertEquals("Screen 1 (800, 600)", screenList.get(0).toString());
-		assertEquals("Screen 2 (1024, 768)", screenList.get(1).toString());
+		assertEquals("Screen: 1 (800, 600)", screenList.get(0).toString());
+		assertEquals("Screen: 2 (1024, 768)", screenList.get(1).toString());
 		EasyMock.verify(graphicsDevice1);
 		EasyMock.verify(graphicsDevice2);
 	}
@@ -51,7 +51,7 @@ public class MultiScreenFactoryTest {
 		Settings settings = new Settings();
 		settings.setScreenIndex(0);
 		
-		Point offset = factory.getGraphicsDeviceOffset(settings);
+		Point offset = factory.getSelectedScreen(settings).getGraphicsDeviceOffset();
 		
 		assertEquals(new Point(0,0), offset);
 	}
@@ -61,7 +61,7 @@ public class MultiScreenFactoryTest {
 		Settings settings = new Settings();
 		settings.setScreenIndex(1);
 		
-		Point offset = factory.getGraphicsDeviceOffset(settings);
+		Point offset = factory.getSelectedScreen(settings).getGraphicsDeviceOffset();
 		
 		assertEquals(new Point(800,150), offset);
 	}
@@ -72,9 +72,8 @@ public class MultiScreenFactoryTest {
 		Settings settings = new Settings();
 		settings.setScreenIndex(1);
 		
-		Point point = factory.getMostBottomRightPoint(settings);
-		
-		assertEquals(new Point(1024,768), point);
+		Point point = factory.getSelectedScreen(settings).getMostBottomRightPoint();
+		assertEquals(new Point(800+1024,150+768), point);
 	}
 
 	private GraphicsDevice createGraphicsDeviceMock(int x, int y, int width, int height) {

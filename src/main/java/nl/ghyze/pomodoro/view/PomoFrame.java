@@ -209,10 +209,11 @@ public class PomoFrame extends JFrame
    
    public void position(Settings settings){
 	   Settings.Position position = settings.getPosition();
+      Screen screen = multiScreenFactory.getSelectedScreen(settings);
+	   
+      Point mostBottomRightPoint = screen.getMostBottomRightPoint();
       
-      Point mostBottomRightPoint = multiScreenFactory.getMostBottomRightPoint(settings);
-      
-      Point graphicsDeviceOffset = multiScreenFactory.getGraphicsDeviceOffset(settings);
+      Point graphicsDeviceOffset = screen.getGraphicsDeviceOffset();
       
       switch (position) {
          case BOTTOM_RIGHT:
