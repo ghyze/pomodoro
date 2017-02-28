@@ -6,7 +6,6 @@ import java.util.Date;
 
 import javax.swing.Timer;
 
-import nl.ghyze.pomodoro.habitica.HabiticaHook;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.SettingsChangeListener;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogController;
@@ -41,17 +40,6 @@ public class PomoController implements ActionListener, SettingsChangeListener
 
    public void initialize()
    {
-      settings = new Settings();
-      settings.addListener(this);
-      settings.load();
-      frame = new PomoFrame(this);
-      frame.position(settings);
-      stateMachine = new PomodoroStateMachine(settings);
-      stateMachine.setSystemTrayManager(this.systemTrayManager);
-      HabiticaHook hook = new HabiticaHook(settings);
-      settings.addListener(hook);
-      stateMachine.addPomodoroHook(hook);
-      stateMachine.updateCurrent();
       timer = new Timer(20, this);
       timer.start();
    }
@@ -124,5 +112,17 @@ public class PomoController implements ActionListener, SettingsChangeListener
    {
       OptionDialogModel resetModel = OptionDialogModelFactory.createResetModel();
       OptionDialogController.showDialog(frame, resetModel, new ResetOptionDialogCallback(stateMachine));
+   }
+   
+   public void setSettings(Settings settings){
+	   this.settings = settings;
+   }
+   
+   public void setPomoFrame(PomoFrame frame){
+	   this.frame = frame;
+   }
+   
+   public void setStateMachine(PomodoroStateMachine stateMachine){
+	   this.stateMachine = stateMachine;
    }
 }

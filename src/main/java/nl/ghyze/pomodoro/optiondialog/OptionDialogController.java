@@ -60,7 +60,6 @@ public class OptionDialogController
 
          int result = JOptionPane.showOptionDialog(frame, label, model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(), model.getDefaultChoice());
          instance.showing = false;
-         System.out.println(DateUtil.format(new Date()) + "Result: " + result);
          handleResult(callback, result);
       }
    }
