@@ -7,6 +7,7 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 
 import nl.ghyze.pomodoro.controller.PomoController;
+import nl.ghyze.pomodoro.view.TaskFrame;
 import nl.ghyze.pomodoro.view.menu.MenuController;
 
 public class SystemTrayManagerImpl extends AbstractSystemTrayManager
@@ -14,17 +15,21 @@ public class SystemTrayManagerImpl extends AbstractSystemTrayManager
 
    private MenuController menuController;
 
-   public void setPomoController(PomoController controller)
-   {
-      menuController.setPomoController(controller);
-   }
-
    public SystemTrayManagerImpl()
    {
       initializeImages();
       menuController = new MenuController();
       PopupMenu menu = menuController.createPopupMenu();
       initTrayIcon(menu);
+   }
+   
+   public void setPomoController(PomoController controller)
+   {
+      menuController.setPomoController(controller);
+   }
+   
+   public void setTaskFrame(TaskFrame taskFrame){
+	   menuController.setTaskFrame(taskFrame);
    }
 
    protected Dimension getTrayIconSize()

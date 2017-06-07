@@ -1,0 +1,28 @@
+package nl.ghyze.pomodoro.model;
+
+import nl.ghyze.pomodoro.controller.PomodoroHook;
+
+public class TaskHook implements PomodoroHook {
+
+	private Task currentTask = new Task();
+	
+	@Override
+	public void completed() {
+		currentTask.addCompletedPomo();
+	}
+
+	@Override
+	public void canceled() {
+		// nothing to do
+	}
+	
+	public void setCurrentTask(Task task){
+		assert task != null: "task should not be null";
+		currentTask = task;
+	}
+	
+	public Task getCurrentTask(){
+		return currentTask;
+	}
+
+}

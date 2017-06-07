@@ -6,6 +6,7 @@ import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.statistics.StatisticsHook;
 import nl.ghyze.pomodoro.view.PomoButtonFactory;
 import nl.ghyze.pomodoro.view.PomoFrame;
+import nl.ghyze.pomodoro.view.TaskFrame;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 import nl.ghyze.pomodoro.view.systemtray.SystemTrayManagerImpl;
 
@@ -18,8 +19,6 @@ public class PomoApp
 	
 	public void init(){
 		PomoController controller = new PomoController();
-	      AbstractSystemTrayManager systemTrayManager = new SystemTrayManagerImpl();
-	      controller.initializeSystemTrayManager(systemTrayManager);
 	      
 	      Settings settings = new Settings();
 	      settings.addListener(controller);
@@ -34,9 +33,16 @@ public class PomoApp
 	      frame.position(settings);
 	      controller.setPomoFrame(frame);
 	      
+	      TaskFrame taskFrame = new TaskFrame();
+	      
+	      AbstractSystemTrayManager systemTrayManager = new SystemTrayManagerImpl();
+	      systemTrayManager.setTaskFrame(taskFrame);
+	      controller.initializeSystemTrayManager(systemTrayManager);
+	      
 	      PomodoroStateMachine stateMachine = new PomodoroStateMachine(settings);
 	      stateMachine.setSystemTrayManager(systemTrayManager);
 	      stateMachine.addPomodoroHook(new StatisticsHook());
+	      stateMachine.addPomodoroHook(taskFrame.getTaskHook());
 	      stateMachine.updateCurrent();
 	      controller.setStateMachine(stateMachine);
 	      

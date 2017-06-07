@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 
 import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.model.Pomodoro;
+import nl.ghyze.pomodoro.view.TaskFrame;
 
 public abstract class AbstractSystemTrayManager
 {
@@ -23,6 +24,8 @@ public abstract class AbstractSystemTrayManager
    protected TrayIcon icon;
 
    public abstract void setPomoController(PomoController controller);
+   
+   public abstract void setTaskFrame(TaskFrame taskFrame);
 
    protected void initializeImages()
    {

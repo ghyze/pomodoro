@@ -7,11 +7,13 @@ import java.awt.event.ActionListener;
 
 import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.view.SettingsFrame;
+import nl.ghyze.pomodoro.view.TaskFrame;
 
 public class MenuController
 {
 
    private PomoController controller;
+   private TaskFrame taskFrame;
 
    public MenuController()
    {
@@ -20,6 +22,10 @@ public class MenuController
    public void setPomoController(PomoController controller)
    {
       this.controller = controller;
+   }
+   
+   public void setTaskFrame(TaskFrame taskFrame){
+	   this.taskFrame = taskFrame;
    }
 
    public PopupMenu createPopupMenu()
@@ -30,12 +36,16 @@ public class MenuController
 
       MenuItem settings = createSettingsMenuItem();
       menu.add(settings);
+      
+      MenuItem tasks = createTaskMenuItem();
+      menu.add(tasks);
 
       MenuItem exit = createExitMenuItem();
       menu.add(exit);
 
       MenuItem reset = createResetMenuItem();
       menu.add(reset);
+      
       return menu;
    }
 
@@ -112,5 +122,20 @@ public class MenuController
             }
          });
       return reset;
+   }
+   
+   protected MenuItem createTaskMenuItem()
+   {
+	   MenuItem tasks = new MenuItem("Tasks");
+	   tasks.addActionListener(new ActionListener(){
+		   @Override
+		   public void actionPerformed(ActionEvent event){
+			   if (controller != null)
+               {
+                  taskFrame.setVisible(true);
+               }
+		   }
+	   });
+	   return tasks;
    }
 }
