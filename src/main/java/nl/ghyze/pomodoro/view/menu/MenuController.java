@@ -130,7 +130,7 @@ public class MenuController
 	   tasks.addActionListener(new ActionListener(){
 		   @Override
 		   public void actionPerformed(ActionEvent event){
-			   if (controller != null)
+			   if (taskFrame != null)
                {
                   taskFrame.setVisible(true);
                }

@@ -31,11 +31,12 @@ public class AbstractSystemTrayManagerTest
    public void testCreatePopupMenu() throws Exception
    {
       PopupMenu menu = manager.getPopupMenu();
-      assertEquals(4, menu.getItemCount());
+      assertEquals(5, menu.getItemCount());
       assertEquals("Show Frame", menu.getItem(0).getLabel());
       assertEquals("Settings", menu.getItem(1).getLabel());
-      assertEquals("Exit", menu.getItem(2).getLabel());
-      assertEquals("Reset", menu.getItem(3).getLabel());
+      assertEquals("Tasks", menu.getItem(2).getLabel());
+      assertEquals("Exit", menu.getItem(3).getLabel());
+      assertEquals("Reset", menu.getItem(4).getLabel());
    }
 
    @Test
@@ -75,7 +76,7 @@ public class AbstractSystemTrayManagerTest
       EasyMock.replay(mockPomoController);
 
       PopupMenu menu = manager.getPopupMenu();
-      ActionListener[] listeners = menu.getItem(2).getActionListeners();
+      ActionListener[] listeners = menu.getItem(3).getActionListeners();
       callActionListeners(listeners);
       EasyMock.verify(mockPomoController);
    }
@@ -147,5 +148,11 @@ public class AbstractSystemTrayManagerTest
          this.controller = controller;
 
       }
+
+	@Override
+	public void setTaskFrame(TaskFrame taskFrame) {
+		// TODO Auto-generated method stub
+		
+	}
    }
 }
