@@ -1,12 +1,9 @@
-package nl.ghyze.pomodoro.view;
+package nl.ghyze.pomodoro.tasks;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
-
-import nl.ghyze.pomodoro.model.Task;
-import nl.ghyze.pomodoro.model.TaskManager;
 
 public class TaskTableModel extends AbstractTableModel implements Observer {
 

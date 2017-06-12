@@ -7,7 +7,7 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 
 import nl.ghyze.pomodoro.controller.PomoController;
-import nl.ghyze.pomodoro.view.TaskFrame;
+import nl.ghyze.pomodoro.tasks.TaskFrame;
 import nl.ghyze.pomodoro.view.menu.MenuController;
 
 public class SystemTrayManagerImpl extends AbstractSystemTrayManager

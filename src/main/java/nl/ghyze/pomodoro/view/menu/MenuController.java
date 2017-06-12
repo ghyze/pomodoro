@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import nl.ghyze.pomodoro.controller.PomoController;
+import nl.ghyze.pomodoro.tasks.TaskFrame;
 import nl.ghyze.pomodoro.view.SettingsFrame;
-import nl.ghyze.pomodoro.view.TaskFrame;
 
 public class MenuController
 {

@@ -1,4 +1,4 @@
-package nl.ghyze.pomodoro.view;
+package nl.ghyze.pomodoro.tasks;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -7,9 +7,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
-import nl.ghyze.pomodoro.model.Task;
-import nl.ghyze.pomodoro.model.TaskHook;
 
 public class TaskFrame extends JFrame {
 

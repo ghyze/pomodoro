@@ -1,4 +1,4 @@
-package nl.ghyze.pomodoro.model;
+package nl.ghyze.pomodoro.tasks;
 
 import java.util.Observable;
 

@@ -4,9 +4,9 @@ import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.controller.PomodoroStateMachine;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.statistics.StatisticsHook;
+import nl.ghyze.pomodoro.tasks.TaskFrame;
 import nl.ghyze.pomodoro.view.PomoButtonFactory;
 import nl.ghyze.pomodoro.view.PomoFrame;
-import nl.ghyze.pomodoro.view.TaskFrame;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 import nl.ghyze.pomodoro.view.systemtray.SystemTrayManagerImpl;
 

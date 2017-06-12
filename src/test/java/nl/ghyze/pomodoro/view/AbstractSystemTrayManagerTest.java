@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import nl.ghyze.pomodoro.controller.PomoController;
+import nl.ghyze.pomodoro.tasks.TaskFrame;
 import nl.ghyze.pomodoro.view.menu.MenuController;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
