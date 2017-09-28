@@ -13,6 +13,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
+import nl.ghyze.pomodoro.type.PomodoroType;
 
 public class PomoPanel extends JPanel {
 
@@ -32,33 +33,29 @@ public class PomoPanel extends JPanel {
 
 	protected void paintComponent(Graphics gr) {
 		if (countdown != null) {
-			switch (countdown.getType()) {
-			case WAIT:
-				paintWait(gr);
-				break;
-			case POMO:
-				paintPomo(gr);
-				break;
-			case BREAK:
-				paintBreak(gr);
-				break;
-			}
+			PomodoroType type = countdown.getType();
+			paintBackground(gr, type.getBackgroundColor());
+			float fontSize = type.getFontSize();
+			paintText(gr, countdown.getText(), fontSize);
 			drawButtons(gr);
 			drawPomosDone(gr);
 		}
 
 	}
 
-	private void paintWait(Graphics gr) {
-		gr.setColor(Color.BLUE);
-		gr.fillRect(0, 0, this.getWidth(), this.getHeight());
+	private void paintText(Graphics gr, String text, float size) {
 		Font f = gr.getFont();
 		gr.setColor(Color.white);
-		Font bigFont = f.deriveFont(16f);
+		Font bigFont = f.deriveFont(size);
 		gr.setFont(bigFont);
-		paintText("Waiting for next", gr);
+		Font originalFont = f;
+		paintText(text, gr);
+		gr.setFont(originalFont);
+	}
 
-		gr.setFont(f);
+	private void paintBackground(Graphics gr, Color backgroundColor) {
+		gr.setColor(backgroundColor);
+		gr.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 
 	private void paintText(String text, Graphics gr) {
@@ -67,34 +64,6 @@ public class PomoPanel extends JPanel {
 		int x = (int) (this.getWidth() - rect.getWidth()) / 2;
 		int y = (int) (this.getHeight() + rect.getHeight()) / 2;
 		gr.drawString(text, x, y);
-	}
-
-	private void paintPomo(Graphics gr) {
-		gr.setColor(Color.RED);
-		gr.fillRect(0, 0, this.getWidth(), this.getHeight());
-		Font f = gr.getFont();
-		gr.setColor(Color.white);
-		Font bigFont = f.deriveFont(30f);
-		gr.setFont(bigFont);
-		int secondsLeft = countdown.secondsOfMinuteLeft();
-		String timeLeft = countdown.minutesLeft() + ":" + (secondsLeft < 10 ? "0" : "") + secondsLeft;
-		paintText(timeLeft, gr);
-		gr.setFont(f);
-
-	}
-
-	private void paintBreak(Graphics gr) {
-		gr.setColor(new Color(0, 192, 0));
-		gr.fillRect(0, 0, this.getWidth(), this.getHeight());
-		Font f = gr.getFont();
-		gr.setColor(Color.white);
-		Font bigFont = f.deriveFont(30f);
-		gr.setFont(bigFont);
-		int secondsLeft = countdown.secondsOfMinuteLeft();
-		String timeLeft = countdown.minutesLeft() + ":" + (secondsLeft < 10 ? "0" : "") + secondsLeft;
-		paintText(timeLeft, gr);
-		gr.setFont(f);
-
 	}
 
 	private void drawPomosDone(Graphics gr) {

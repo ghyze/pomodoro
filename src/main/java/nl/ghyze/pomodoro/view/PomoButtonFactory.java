@@ -6,7 +6,7 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
 import nl.ghyze.pomodoro.controller.PomoController;
-import nl.ghyze.pomodoro.model.Pomodoro;
+import nl.ghyze.pomodoro.type.PomodoroType;
 
 public class PomoButtonFactory {
 	
@@ -24,8 +24,8 @@ public class PomoButtonFactory {
 				(controlButtonHeight / 2) + 1);
 	
 		PomoButton stopButton = new PomoButton(2, 80, controlButtonWidth, controlButtonHeight);
-		stopButton.addVisibleType(Pomodoro.Type.BREAK);
-		stopButton.addVisibleType(Pomodoro.Type.POMO);
+		stopButton.addVisibleType(PomodoroType.BREAK);
+		stopButton.addVisibleType(PomodoroType.POMO);
 		stopButton.setImage(image);
 		stopButton.setAction(new PomoButtonAction() {
 	
@@ -55,7 +55,7 @@ public class PomoButtonFactory {
 		gr.fillPolygon(pol);
 	
 		PomoButton playButton = new PomoButton(22, 80, 18, 18);
-		playButton.addVisibleType(Pomodoro.Type.WAIT);
+		playButton.addVisibleType(PomodoroType.WAIT);
 		playButton.setImage(image);
 		playButton.setAction(new PomoButtonAction() {
 	
@@ -82,9 +82,9 @@ public class PomoButtonFactory {
 				controlButtonHeight - (controlButtonHeight / 4));
 	
 		PomoButton closeButton = new PomoButton(118, 2, 18, 18);
-		closeButton.addVisibleType(Pomodoro.Type.BREAK);
-		closeButton.addVisibleType(Pomodoro.Type.POMO);
-		closeButton.addVisibleType(Pomodoro.Type.WAIT);
+		closeButton.addVisibleType(PomodoroType.BREAK);
+		closeButton.addVisibleType(PomodoroType.POMO);
+		closeButton.addVisibleType(PomodoroType.WAIT);
 		closeButton.setImage(image);
 		closeButton.setAction(new PomoButtonAction() {
 	
@@ -108,9 +108,9 @@ public class PomoButtonFactory {
 				controlButtonWidth - (controlButtonWidth / 4), controlButtonHeight - (controlButtonHeight / 4));
 	
 		PomoButton minimizeButton = new PomoButton(98, 2, 18, 18);
-		minimizeButton.addVisibleType(Pomodoro.Type.BREAK);
-		minimizeButton.addVisibleType(Pomodoro.Type.POMO);
-		minimizeButton.addVisibleType(Pomodoro.Type.WAIT);
+		minimizeButton.addVisibleType(PomodoroType.BREAK);
+		minimizeButton.addVisibleType(PomodoroType.POMO);
+		minimizeButton.addVisibleType(PomodoroType.WAIT);
 		minimizeButton.setImage(image);
 		minimizeButton.setAction(new PomoButtonAction() {
 	

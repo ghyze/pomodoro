@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
-import nl.ghyze.pomodoro.model.Pomodoro.Type;
+import nl.ghyze.pomodoro.type.PomodoroType;
 
 public class PomoButtonTest {
 
@@ -20,7 +20,7 @@ public class PomoButtonTest {
     @Before
     public void setUp(){
 	button = new PomoButton(0,0,10,10);
-	pomodoro = new Pomodoro(5, Type.BREAK);
+	pomodoro = new Pomodoro(5, PomodoroType.BREAK);
     }
     
     @Test
@@ -34,10 +34,10 @@ public class PomoButtonTest {
     
     @Test
     public void testIsVisible(){
-	button.addVisibleType(Type.POMO);
+	button.addVisibleType(PomodoroType.POMO);
 	Assert.assertFalse(button.isVisible(pomodoro));
 
-	button.addVisibleType(Type.BREAK);
+	button.addVisibleType(PomodoroType.BREAK);
 	Assert.assertTrue(button.isVisible(pomodoro));
 	
     }

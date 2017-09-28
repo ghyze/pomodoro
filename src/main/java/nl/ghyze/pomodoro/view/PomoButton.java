@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
+import nl.ghyze.pomodoro.type.PomodoroType;
 
 public class PomoButton
 {
@@ -15,7 +16,7 @@ public class PomoButton
    private int y;
    private int width;
    private int height;
-   private List<Pomodoro.Type> visibleTypes;
+   private List<PomodoroType> visibleTypes;
    
    private PomoButtonAction action;
    
@@ -26,7 +27,7 @@ public class PomoButton
       this.y = y;
       this.width = width;
       this.height = height;
-      visibleTypes = new ArrayList<Pomodoro.Type>();
+      visibleTypes = new ArrayList<PomodoroType>();
    }
    
    public boolean isVisible(Pomodoro countdown){
@@ -64,7 +65,7 @@ public class PomoButton
       return y;
    }
    
-   public void addVisibleType(Pomodoro.Type type){
+   public void addVisibleType(PomodoroType type){
       visibleTypes.add(type);
    }
 }

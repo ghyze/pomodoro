@@ -1,10 +1,10 @@
 package nl.ghyze.pomodoro.optiondialog;
 
-import nl.ghyze.pomodoro.model.Pomodoro.Type;
+import nl.ghyze.pomodoro.type.PomodoroType;
 
 public class OptionDialogModelFactory
 {
-   public static OptionDialogModel createChangeStateModel(Type type)
+   public static OptionDialogModel createChangeStateModel(PomodoroType type)
    {
       OptionDialogModel model = new OptionDialogModel();
       model.setTitle(getDialogTitle(type));
@@ -24,39 +24,39 @@ public class OptionDialogModelFactory
       return model;
    }
 
-   private static String getDialogMessage(Type type)
+   private static String getDialogMessage(PomodoroType type)
    {
-      if (Type.POMO == type)
+      if (PomodoroType.POMO == type)
       {
          return "Pomodoro finished. What would you like to do with this one?";
       }
-      else if (Type.BREAK == type)
+      else if (PomodoroType.BREAK == type)
       {
          return "Ready to start next one?";
       }
       return "";
    }
 
-   private static String getDialogTitle(Type type)
+   private static String getDialogTitle(PomodoroType type)
    {
-      if (Type.POMO == type)
+      if (PomodoroType.POMO == type)
       {
          return "Pomodoro finished";
       }
-      else if (Type.BREAK == type)
+      else if (PomodoroType.BREAK == type)
       {
          return "Break finished";
       }
       return "";
    }
 
-   private static Object[] getDialogChoices(Type type)
+   private static Object[] getDialogChoices(PomodoroType type)
    {
-      if (Type.POMO == type)
+      if (PomodoroType.POMO == type)
       {
          return new Object[] { "Save", "Discard" };
       }
-      else if (Type.BREAK == type)
+      else if (PomodoroType.BREAK == type)
       {
          return okCancelOptions();
       }

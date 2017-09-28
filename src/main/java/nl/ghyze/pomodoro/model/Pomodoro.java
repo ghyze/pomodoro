@@ -1,22 +1,20 @@
 package nl.ghyze.pomodoro.model;
 
+import nl.ghyze.pomodoro.type.PomodoroType;
+
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Pomodoro {
    
-   public static enum Type {
-      POMO, BREAK, WAIT;
-   }
-
    private int minutes = 0;
    private long startTime;
    
-   private Type type;
+   private PomodoroType type;
    
    private int pomosDone = 0;
    private int maxDone = 0;
    
-   public Pomodoro(int minutes, Type type){
+   public Pomodoro(int minutes, PomodoroType type){
       this.minutes = minutes;
       this.type = type;
       startTime = System.currentTimeMillis();
@@ -39,7 +37,7 @@ public class Pomodoro {
       return stopTime <= System.currentTimeMillis();
    }
    
-   public Type getType(){
+   public PomodoroType getType(){
       return type;
    }
 
@@ -88,4 +86,18 @@ public class Pomodoro {
        builder.append(minutes);
        return builder.hashCode();
    }
+
+	public String calculateTimeLeft() {
+		int secondsLeft = secondsOfMinuteLeft();
+		String timeLeft = minutesLeft() + ":" + (secondsLeft < 10 ? "0" : "") + secondsLeft;
+		return timeLeft;
+	}
+	
+	public String getText(){
+		if (type == PomodoroType.WAIT){
+			return "Waiting for next";
+		} else {
+			return calculateTimeLeft();
+		}
+	}
 }

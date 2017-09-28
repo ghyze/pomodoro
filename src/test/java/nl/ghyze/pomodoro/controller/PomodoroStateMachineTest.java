@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
-import nl.ghyze.pomodoro.model.Pomodoro.Type;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
+import nl.ghyze.pomodoro.type.PomodoroType;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
@@ -31,14 +31,14 @@ public class PomodoroStateMachineTest
    @Test
    public void testGetCurrent()
    {
-      Pomodoro expected = new Pomodoro(0, Pomodoro.Type.WAIT);
+      Pomodoro expected = new Pomodoro(0, PomodoroType.WAIT);
       Assert.assertEquals(expected, pomodoroStateMachine.getCurrent());
    }
 
    @Test
    public void testGetCurrentType()
    {
-      Assert.assertEquals(Pomodoro.Type.WAIT, pomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentType());
    }
 
    @Test
@@ -50,7 +50,7 @@ public class PomodoroStateMachineTest
       EasyMock.verify(settings);
 
       Pomodoro current = pomodoroStateMachine.getCurrent();
-      Assert.assertEquals(current.getType(), Type.POMO);
+      Assert.assertEquals(current.getType(), PomodoroType.POMO);
 
       Assert.assertTrue(isDateCorrect(pomodoroStateMachine.getLastAction()));
    }
@@ -67,7 +67,7 @@ public class PomodoroStateMachineTest
       Assert.assertFalse(pomodoroStateMachine.shouldChangeState());
 
       Pomodoro pomodoroMock = EasyMock.createMock(Pomodoro.class);
-      EasyMock.expect(pomodoroMock.getType()).andReturn(Type.POMO);
+      EasyMock.expect(pomodoroMock.getType()).andReturn(PomodoroType.POMO);
       EasyMock.expect(pomodoroMock.isDone()).andReturn(false);
       setCurrent(pomodoroMock);
       EasyMock.replay(pomodoroMock);
@@ -76,7 +76,7 @@ public class PomodoroStateMachineTest
 
       EasyMock.reset(pomodoroMock);
 
-      EasyMock.expect(pomodoroMock.getType()).andReturn(Type.POMO);
+      EasyMock.expect(pomodoroMock.getType()).andReturn(PomodoroType.POMO);
       EasyMock.expect(pomodoroMock.isDone()).andReturn(true);
       EasyMock.replay(pomodoroMock);
       Assert.assertTrue(pomodoroStateMachine.shouldChangeState());
@@ -93,7 +93,7 @@ public class PomodoroStateMachineTest
 
    private void setupGetNextFromPomo() throws Exception
    {
-      Pomodoro pomodoro = new Pomodoro(1, Type.POMO);
+      Pomodoro pomodoro = new Pomodoro(1, PomodoroType.POMO);
       setCurrent(pomodoro);
       systemTrayManager = EasyMock.createMock(AbstractSystemTrayManager.class);
       pomodoroStateMachine.setSystemTrayManager(systemTrayManager);
@@ -114,7 +114,7 @@ public class PomodoroStateMachineTest
    {
       setupGetNextFromPomo();
 
-      systemTrayManager.message(EasyMock.eq("Well done: Short break"));
+      systemTrayManager.message(EasyMock.eq("Well done! Short break"));
       EasyMock.expectLastCall();
 
       EasyMock.expect(settings.getShortBreakMinutes()).andReturn(1);
@@ -125,7 +125,7 @@ public class PomodoroStateMachineTest
 
       Pomodoro current = pomodoroStateMachine.getCurrent();
       Assert.assertEquals(0, current.getPomosDone());
-      Assert.assertEquals(Type.BREAK, current.getType());
+      Assert.assertEquals(PomodoroType.BREAK, current.getType());
       Assert.assertEquals(0, current.minutesLeft());
    }
 
@@ -134,7 +134,7 @@ public class PomodoroStateMachineTest
    {
       setupGetNextFromPomo();
 
-      systemTrayManager.message(EasyMock.eq("Well done: Long break"));
+      systemTrayManager.message(EasyMock.eq("Well done! Long break"));
       EasyMock.expectLastCall();
 
       EasyMock.expect(settings.getLongBreakMinutes()).andReturn(5);
@@ -145,14 +145,14 @@ public class PomodoroStateMachineTest
 
       Pomodoro current = pomodoroStateMachine.getCurrent();
       Assert.assertEquals(0, current.getPomosDone());
-      Assert.assertEquals(Type.BREAK, current.getType());
+      Assert.assertEquals(PomodoroType.BREAK, current.getType());
       Assert.assertEquals(4, current.minutesLeft());
    }
 
    @Test
    public void testHandleNextForBreakWithOk() throws Exception
    {
-      Pomodoro breakPomo = new Pomodoro(5, Type.BREAK);
+      Pomodoro breakPomo = new Pomodoro(5, PomodoroType.BREAK);
       setCurrent(breakPomo);
 
       EasyMock.expect(settings.getPomoMinutes()).andReturn(1);
@@ -162,40 +162,40 @@ public class PomodoroStateMachineTest
       pomodoroStateMachine.handleAction(OptionDialogModel.OK);
       EasyMock.verify(settings);
 
-      Assert.assertEquals(Type.POMO, pomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.POMO, pomodoroStateMachine.getCurrentType());
    }
 
    @Test
    public void testHandleNextForBreakWithCancel() throws Exception
    {
-      Pomodoro breakPomo = new Pomodoro(5, Type.BREAK);
+      Pomodoro breakPomo = new Pomodoro(5, PomodoroType.BREAK);
       setCurrent(breakPomo);
 
       pomodoroStateMachine.handleAction(OptionDialogModel.CANCEL);
 
-      Assert.assertEquals(Type.WAIT, pomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentType());
    }
 
    @Test
    public void testHandleActionForWait() throws Exception
    {
-      Pomodoro waitPomo = new Pomodoro(0, Type.WAIT);
+      Pomodoro waitPomo = new Pomodoro(0, PomodoroType.WAIT);
       setCurrent(waitPomo);
 
       pomodoroStateMachine.handleAction(0);
 
-      Assert.assertEquals(Type.WAIT, pomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentType());
    }
 
    @Test
    public void testStopCurrent() throws Exception
    {
-      Pomodoro pomo = new Pomodoro(1, Type.POMO);
+      Pomodoro pomo = new Pomodoro(1, PomodoroType.POMO);
       setCurrent(pomo);
 
       pomodoroStateMachine.stopCurrent();
 
-      Assert.assertEquals(Type.WAIT, pomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentType());
    }
 
    @Test
@@ -208,7 +208,7 @@ public class PomodoroStateMachineTest
       pomodoroStateMachine.reset();
       Pomodoro wait = pomodoroStateMachine.getCurrent();
       Assert.assertEquals(0, wait.getPomosDone());
-      Assert.assertEquals(Type.WAIT, wait.getType());
+      Assert.assertEquals(PomodoroType.WAIT, wait.getType());
    }
 
 }

@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.tasks.TaskFrame;
+import nl.ghyze.pomodoro.type.PomodoroType;
 
 public abstract class AbstractSystemTrayManager
 {
@@ -83,15 +84,15 @@ public abstract class AbstractSystemTrayManager
 
    public void update(Pomodoro countdown)
    {
-      if (countdown.getType() == Pomodoro.Type.WAIT)
+      if (countdown.getType() == PomodoroType.WAIT)
       {
          icon.setImage(waitImage);
       }
-      else if (countdown.getType() == Pomodoro.Type.POMO)
+      else if (countdown.getType() == PomodoroType.POMO)
       {
          icon.setImage(pomoImages[countdown.minutesLeft()]);
       }
-      else if (countdown.getType() == Pomodoro.Type.BREAK)
+      else if (countdown.getType() == PomodoroType.BREAK)
       {
          icon.setImage(breakImages[countdown.minutesLeft()]);
       }
