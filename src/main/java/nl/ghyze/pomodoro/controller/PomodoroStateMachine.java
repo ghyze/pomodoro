@@ -45,17 +45,17 @@ public class PomodoroStateMachine
 
    public boolean shouldChangeState()
    {
-      return (current.getType() != PomodoroType.WAIT && current.isDone());
+      return (!getCurrentType().isWait() && current.isDone());
    }
 
    public void handleAction(int choice)
    {
       lastAction = new Date();
-      if (current.getType() == PomodoroType.POMO)
+      if (getCurrentType().isPomo())
       {
          handleActionForPomo(choice);
       }
-      else if (current.getType() == PomodoroType.BREAK)
+      else if (getCurrentType().isBreak())
       {
          handleActionForBreak(choice);
       }

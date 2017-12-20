@@ -2,6 +2,7 @@ package nl.ghyze.pomodoro;
 
 import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.controller.PomodoroStateMachine;
+import nl.ghyze.pomodoro.experimental.Quote;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.statistics.StatisticsHook;
 import nl.ghyze.pomodoro.tasks.TaskFrame;
@@ -9,6 +10,8 @@ import nl.ghyze.pomodoro.view.PomoButtonFactory;
 import nl.ghyze.pomodoro.view.PomoFrame;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 import nl.ghyze.pomodoro.view.systemtray.SystemTrayManagerImpl;
+
+//import org.springframework.web.client.RestTemplate;
 
 public class PomoApp
 {
@@ -48,11 +51,12 @@ public class PomoApp
 	      
 	      controller.initialize();
 	}
-
+	
    public static void main(String[] args)
    {
       PomoApp pomoApp = new PomoApp();
       pomoApp.init();
+      
    }
 
 }

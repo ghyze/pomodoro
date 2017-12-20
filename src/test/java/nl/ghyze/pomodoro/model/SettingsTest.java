@@ -122,10 +122,6 @@ public class SettingsTest
       testSettings.setPosition(Settings.Position.TOP_LEFT);
       testSettings.setAutoreset(true);
       testSettings.setIdleTime(5);
-      testSettings.setUseHabitica(true);
-      testSettings.setHabiticaUser("habiticaUser");
-      testSettings.setHabiticaApi("habiticaApi");
-      testSettings.setHabiticaTaskId("habiticaTaskId");
       testSettings.save();
 
       Settings loadedSettings = new Settings();
@@ -137,9 +133,5 @@ public class SettingsTest
       Assert.assertTrue(loadedSettings.isAutoreset());
       Assert.assertEquals(5, loadedSettings.getIdleTime());
       Assert.assertEquals(Settings.Position.TOP_LEFT, loadedSettings.getPosition());
-      Assert.assertTrue(loadedSettings.isUseHabitica());
-      Assert.assertEquals("habiticaUser", loadedSettings.getHabiticaUser());
-      Assert.assertEquals("habiticaApi", loadedSettings.getHabiticaApi());
-      Assert.assertEquals("habiticaTaskId", loadedSettings.getHabiticaTaskId());
    }
 }

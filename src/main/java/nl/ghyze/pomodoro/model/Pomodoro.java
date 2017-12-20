@@ -94,7 +94,7 @@ public class Pomodoro {
 	}
 	
 	public String getText(){
-		if (type == PomodoroType.WAIT){
+		if (type.isWait()){
 			return "Waiting for next";
 		} else {
 			return calculateTimeLeft();
