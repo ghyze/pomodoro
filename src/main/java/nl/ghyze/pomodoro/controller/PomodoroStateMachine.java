@@ -13,7 +13,7 @@ import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 public class PomodoroStateMachine
 {
 
-   private Pomodoro current;
+   private static Pomodoro current;
    private Settings settings;
    private int pomosDone = 0;
    private AbstractSystemTrayManager systemTrayManager;
@@ -33,12 +33,12 @@ public class PomodoroStateMachine
       this.systemTrayManager = systemTrayManager;
    }
 
-   public Pomodoro getCurrent()
+   public static Pomodoro getCurrent()
    {
       return current;
    }
 
-   public PomodoroType getCurrentType()
+   public static PomodoroType getCurrentType()
    {
       return current.getType();
    }
@@ -134,6 +134,7 @@ public class PomodoroStateMachine
       lastAction = new Date();
       current = new Pomodoro(settings.getPomoMinutes(), PomodoroType.POMO);
       updateCurrent();
+      startHooks();
       String message = "Starting Pomodoro number " + (pomosDone + 1);
       showMessage(message);
    }
@@ -186,6 +187,14 @@ public class PomodoroStateMachine
       for (PomodoroHook hook : pomodoroHooks)
       {
          hook.canceled();
+      }
+   }
+   
+   private void startHooks()
+   {
+      for (PomodoroHook hook : pomodoroHooks)
+      {
+         hook.started();
       }
    }
 }

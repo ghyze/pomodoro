@@ -22,6 +22,11 @@ public class StatisticsHook implements PomodoroHook{
 		printStats();
 	}
 	
+	@Override
+	public void started(){
+		
+	}
+	
 	public void printStats(){
 		System.out.println(DateUtil.format(new Date())+" Completed: "+numberCompleted+", Cancelled: "+numberCancelled);
 	}

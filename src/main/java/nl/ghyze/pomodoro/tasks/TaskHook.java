@@ -16,6 +16,11 @@ public class TaskHook implements PomodoroHook {
 		// nothing to do
 	}
 	
+	@Override
+	public void started(){
+		
+	}
+	
 	public void setCurrentTask(Task task){
 		assert task != null: "task should not be null";
 		currentTask = task;

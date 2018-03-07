@@ -8,6 +8,8 @@ public class Task extends Observable{
 	private int estimated ;
 	private int actual;
 	
+	private boolean active = false;
+	
 	public String getName() {
 		return name;
 	}
@@ -43,6 +45,13 @@ public class Task extends Observable{
 		System.out.println("Completed pomo added to "+name);
 		actual++;
 	}
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
 	
 	
 }
