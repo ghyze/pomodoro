@@ -12,3 +12,6 @@
 hs_err_pid*
 /target
 /todo.txt
+
+# Workspace specific files
+.settings/
