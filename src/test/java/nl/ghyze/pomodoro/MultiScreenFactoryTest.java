@@ -2,14 +2,22 @@ package nl.ghyze.pomodoro;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.DisplayMode;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.InvalidDnDOperationException;
+import java.awt.dnd.peer.DragSourceContextPeer;
+import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
+import java.awt.im.InputMethodHighlight;
 import java.awt.image.ColorModel;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
+import java.awt.peer.*;
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.view.Screen;
@@ -32,6 +40,7 @@ public class MultiScreenFactoryTest {
 		devices = new GraphicsDevice[]{graphicsDevice1, graphicsDevice2};
 		factory = new MultiScreenFactory();
 		factory.setAvailableGraphicsDevices(devices);
+		factory.setToolkit(new TestToolkit());
 	}
 	
 	@Test

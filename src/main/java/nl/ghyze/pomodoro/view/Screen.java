@@ -20,10 +20,6 @@ public class Screen {
 		return "Screen: "+ (index+1)+" ("+mode.getWidth()+", "+mode.getHeight()+")";
 	}
 	
-	public Rectangle getAvailableArea(){
-		return availableArea;
-	}
-	
 	public int getIndex(){
 		return index;
 	}

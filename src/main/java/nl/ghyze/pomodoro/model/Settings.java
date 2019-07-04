@@ -5,19 +5,19 @@ import java.util.prefs.Preferences;
 
 public class Settings
 {
-   public static enum Position
+   public enum Position
    {
       TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
    }
 
-   public static final String KEY_POSITION = "position";
-   public static final String KEY_POMO_MINUTES = "pomoMinutes";
-   public static final String KEY_SHORT_BREAK_MINUTES = "shortBreakNMinutes";
-   public static final String KEY_LONG_BREAK_MINUTES = "longBreakMinutes";
-   public static final String KEY_POMOS_BEFORE_LONG_BREAK = "pomosBeforeLongBreak";
-   public static final String KEY_AUTORESET = "autoReset";
-   public static final String KEY_IDLE_TIME = "idleTime";
-   public static final String KEY_SCREEN_INDEX = "screenIndex";
+   private static final String KEY_POSITION = "position";
+   private static final String KEY_POMO_MINUTES = "pomoMinutes";
+   private static final String KEY_SHORT_BREAK_MINUTES = "shortBreakNMinutes";
+   private static final String KEY_LONG_BREAK_MINUTES = "longBreakMinutes";
+   private static final String KEY_POMOS_BEFORE_LONG_BREAK = "pomosBeforeLongBreak";
+   private static final String KEY_AUTORESET = "autoReset";
+   private static final String KEY_IDLE_TIME = "idleTime";
+   private static final String KEY_SCREEN_INDEX = "screenIndex";
 
    private int screenIndex;
    private Position position;
@@ -123,7 +123,7 @@ public class Settings
       listeners.add(listener);
    }
 
-   public void removeListener(SettingsChangeListener listener)
+   void removeListener(SettingsChangeListener listener)
    {
       listeners.remove(listener);
    }

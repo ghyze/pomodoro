@@ -1,9 +1,6 @@
 package nl.ghyze.pomodoro;
 
-import java.awt.DisplayMode;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,63 +8,61 @@ import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.view.Screen;
 
 public class MultiScreenFactory {
-	
-	private GraphicsDevice[] availableGraphicsDevices = null;
 
-	public List<Screen> getAvailableScreenList() {
-		GraphicsDevice[] graphicsDevices = getAvailableGraphicsDevices();
+    private GraphicsDevice[] availableGraphicsDevices = null;
+    private Toolkit toolkit = Toolkit.getDefaultToolkit();
 
-		List<Screen> screenList = new ArrayList<Screen>();
-		for (int i = 0; i < graphicsDevices.length; i++) {
-			GraphicsDevice device = graphicsDevices[i];
-			DisplayMode mode = device.getDisplayMode();
-			Screen screen = new Screen(mode, i, getAvailableArea(i));
-			screenList.add(screen);
-		}
-		return screenList;
-	}
+    public List<Screen> getAvailableScreenList() {
+        GraphicsDevice[] graphicsDevices = getAvailableGraphicsDevices();
 
-	public Screen getSelectedScreen(Settings settings) {
-		List<Screen> screenList = getAvailableScreenList();
-		int screenIndex = settings.getScreenIndex();
-		int actualIndex = screenIndex <= screenList.size()?screenIndex:1;
-		return screenList.get(actualIndex);
-	}
-	
-	private Rectangle getAvailableArea(int index){
-		GraphicsDevice[] graphicsDevices = getAvailableGraphicsDevices();
-		if (isGraphicsDeviceOtherThanDefault(index, graphicsDevices)) {
-			return getBoundsOfSelectedGraphicsDevice(index, graphicsDevices);
-		} else {
-			return GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-		}
-	}
+        List<Screen> screenList = new ArrayList<Screen>();
+        for (int i = 0; i < graphicsDevices.length; i++) {
+            GraphicsDevice device = graphicsDevices[i];
+            DisplayMode mode = device.getDisplayMode();
+            Screen screen = new Screen(mode, i, getAvailableArea(i));
+            screenList.add(screen);
+        }
+        return screenList;
+    }
 
-	private GraphicsDevice[] getAvailableGraphicsDevices() {
-		
-		if (availableGraphicsDevices != null){
-			// for testing purposes
-			return availableGraphicsDevices;
-		}
-		
-		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice[] graphicsDevices = env.getScreenDevices();
-		return graphicsDevices;
-	}
+    public Screen getSelectedScreen(Settings settings) {
+        List<Screen> screenList = getAvailableScreenList();
+        int screenIndex = settings.getScreenIndex();
+        int actualIndex = screenIndex <= screenList.size() ? screenIndex : 1;
+        return screenList.get(actualIndex);
+    }
 
-	private Rectangle getBoundsOfSelectedGraphicsDevice(int index, GraphicsDevice[] graphicsDevices) {
-		GraphicsDevice device = graphicsDevices[index];
-		Rectangle bounds = device.getDefaultConfiguration().getBounds();
-		return bounds;
-	}
+    private Rectangle getAvailableArea(int index) {
+        GraphicsDevice[] graphicsDevices = getAvailableGraphicsDevices();
+        GraphicsDevice device = graphicsDevices[index];
+        // get total window size for device
+        Rectangle bounds = device.getDefaultConfiguration().getBounds();
 
-	private boolean isGraphicsDeviceOtherThanDefault(int screenIndex, GraphicsDevice[] graphicsDevices) {
-		return screenIndex > 0 && graphicsDevices.length > 1
-				&& screenIndex < graphicsDevices.length;
-	}
-	
-	protected void setAvailableGraphicsDevices(GraphicsDevice[] availableGraphicsDevices){
-		this.availableGraphicsDevices = availableGraphicsDevices;
-	}
+        // adjust for taskbar at the bottom
+        Insets insets = toolkit.getScreenInsets(device.getDefaultConfiguration());
+        bounds.height -= insets.bottom;
+
+        return bounds;
+    }
+
+    private GraphicsDevice[] getAvailableGraphicsDevices() {
+
+        if (availableGraphicsDevices != null) {
+            // for testing purposes
+            return availableGraphicsDevices;
+        }
+
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice[] graphicsDevices = env.getScreenDevices();
+        return graphicsDevices;
+    }
+
+    protected void setAvailableGraphicsDevices(GraphicsDevice[] availableGraphicsDevices) {
+        this.availableGraphicsDevices = availableGraphicsDevices;
+    }
+
+    protected void setToolkit(Toolkit toolkit){
+        this.toolkit = toolkit;
+    }
 
 }
