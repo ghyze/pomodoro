@@ -13,43 +13,51 @@ import nl.ghyze.pomodoro.view.systemtray.SystemTrayManagerImpl;
 public class PomoApp
 {
 	
-	public PomoApp(){
+	private PomoApp(){
 		
 	}
 	
-	public void init(){
+	private void init(){
 		PomoController controller = new PomoController();
 	      
-	      Settings settings = new Settings();
-	      settings.addListener(controller);
-	      settings.load();
-	      controller.setSettings(settings);
-	      
-	      PomoFrame frame = new PomoFrame(controller);
-	      frame.addButton(PomoButtonFactory.createStopButton(controller));
-	      frame.addButton(PomoButtonFactory.createPlayButton(controller));
-	      frame.addButton(PomoButtonFactory.createCloseButton(controller));
-	      frame.addButton(PomoButtonFactory.createMinimizeButton(frame));
-	      frame.position(settings);
-	      controller.setPomoFrame(frame);
-	      
-	      TaskFrame taskFrame = new TaskFrame();
-	      
-	      AbstractSystemTrayManager systemTrayManager = new SystemTrayManagerImpl();
-	      systemTrayManager.setTaskFrame(taskFrame);
-	      controller.initializeSystemTrayManager(systemTrayManager);
-	      
-	      PomodoroStateMachine stateMachine = new PomodoroStateMachine(settings);
-	      stateMachine.setSystemTrayManager(systemTrayManager);
-	      stateMachine.addPomodoroHook(new StatisticsHook());
-	      stateMachine.addPomodoroHook(taskFrame.getTaskHook());
-	      stateMachine.updateCurrent();
-	      controller.setStateMachine(stateMachine);
-	      
-	      controller.initialize();
+		Settings settings = new Settings();
+		settings.addListener(controller);
+		settings.load();
+		controller.setSettings(settings);
+
+		initPomoFrame(controller, settings);
+
+		TaskFrame taskFrame = new TaskFrame();
+
+		AbstractSystemTrayManager systemTrayManager = new SystemTrayManagerImpl();
+		systemTrayManager.setTaskFrame(taskFrame);
+		controller.initializeSystemTrayManager(systemTrayManager);
+
+		initStateMachine(controller, settings, taskFrame, systemTrayManager);
+
+		controller.initialize();
 	}
-	
-   public static void main(String[] args)
+
+	private void initPomoFrame(PomoController controller, Settings settings) {
+		PomoFrame frame = new PomoFrame(controller);
+		frame.addButton(PomoButtonFactory.createStopButton(controller));
+		frame.addButton(PomoButtonFactory.createPlayButton(controller));
+		frame.addButton(PomoButtonFactory.createCloseButton(controller));
+		frame.addButton(PomoButtonFactory.createMinimizeButton(frame));
+		frame.position(settings);
+		controller.setPomoFrame(frame);
+	}
+
+	private void initStateMachine(PomoController controller, Settings settings, TaskFrame taskFrame, AbstractSystemTrayManager systemTrayManager) {
+		PomodoroStateMachine stateMachine = new PomodoroStateMachine(settings);
+		stateMachine.setSystemTrayManager(systemTrayManager);
+		stateMachine.addPomodoroHook(new StatisticsHook());
+		stateMachine.addPomodoroHook(taskFrame.getTaskHook());
+		stateMachine.updateCurrent();
+		controller.setStateMachine(stateMachine);
+	}
+
+	public static void main(String[] args)
    {
       PomoApp pomoApp = new PomoApp();
       pomoApp.init();

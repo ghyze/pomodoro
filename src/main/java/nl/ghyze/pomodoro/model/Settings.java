@@ -1,8 +1,11 @@
 package nl.ghyze.pomodoro.model;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
+@Data
 public class Settings
 {
    public enum Position
@@ -29,7 +32,7 @@ public class Settings
    private int idleTime;
    private boolean autoreset;
 
-   private ArrayList<SettingsChangeListener> listeners = new ArrayList<SettingsChangeListener>();
+   private ArrayList<SettingsChangeListener> listeners = new ArrayList<>();
 
    public Position getPosition()
    {
@@ -40,74 +43,6 @@ public class Settings
    {
       this.position = position;
       notifyListeners();
-   }
-
-   public int getPomoMinutes()
-   {
-      return pomoMinutes;
-   }
-
-   public void setPomoMinutes(int minutes)
-   {
-      this.pomoMinutes = minutes;
-   }
-
-   public int getShortBreakMinutes()
-   {
-      return shortBreakMinutes;
-   }
-
-   public void setShortBreakMinutes(int minutes)
-   {
-      this.shortBreakMinutes = minutes;
-   }
-
-   public int getLongBreakMinutes()
-   {
-      return longBreakMinutes;
-   }
-
-   public void setLongBreakMinutes(int minutes)
-   {
-      this.longBreakMinutes = minutes;
-   }
-
-   public int getPomosBeforeLongBreak()
-   {
-      return pomosBeforeLongBreak;
-   }
-
-   public void setPomosBeforeLongBreak(int number)
-   {
-      this.pomosBeforeLongBreak = number;
-   }
-
-   public void setAutoreset(boolean autoreset)
-   {
-      this.autoreset = autoreset;
-   }
-
-   public boolean isAutoreset()
-   {
-      return autoreset;
-   }
-
-   public void setIdleTime(int idleTime)
-   {
-      this.idleTime = idleTime;
-   }
-
-   public int getIdleTime()
-   {
-      return idleTime;
-   }
-
-   public int getScreenIndex(){
-	   return screenIndex;
-   }
-   
-   public void setScreenIndex(int screenIndex){
-	   this.screenIndex = screenIndex;
    }
 
    private void notifyListeners()
