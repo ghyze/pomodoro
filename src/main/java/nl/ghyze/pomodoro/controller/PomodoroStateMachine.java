@@ -20,7 +20,7 @@ public class PomodoroStateMachine
 
    private Date lastAction = new Date();
 
-   private List<PomodoroHook> pomodoroHooks = new ArrayList<PomodoroHook>();
+   private List<PomodoroHook> pomodoroHooks = new ArrayList<>();
 
    public PomodoroStateMachine(Settings settings)
    {
@@ -33,17 +33,17 @@ public class PomodoroStateMachine
       this.systemTrayManager = systemTrayManager;
    }
 
-   public static Pomodoro getCurrent()
+   static Pomodoro getCurrent()
    {
       return current;
    }
 
-   public static PomodoroType getCurrentType()
+   static PomodoroType getCurrentType()
    {
       return current.getType();
    }
 
-   public boolean shouldChangeState()
+   boolean shouldChangeState()
    {
       return (!getCurrentType().isWait() && current.isDone());
    }
@@ -72,8 +72,7 @@ public class PomodoroStateMachine
       {
          cancelHooks();
       }
-      Pomodoro next = createNextBreak();
-      current = next;
+      current = createNextBreak();
       updateCurrent();
    }
 
@@ -117,7 +116,7 @@ public class PomodoroStateMachine
       return new Pomodoro(settings.getLongBreakMinutes(), PomodoroType.BREAK);
    }
 
-   public void stopCurrent()
+   void stopCurrent()
    {
       cancelHooks();
       startWait();
@@ -129,7 +128,7 @@ public class PomodoroStateMachine
       updateCurrent();
    }
 
-   public void startPomo()
+   void startPomo()
    {
       lastAction = new Date();
       current = new Pomodoro(settings.getPomoMinutes(), PomodoroType.POMO);
@@ -159,7 +158,7 @@ public class PomodoroStateMachine
       startWait();
    }
 
-   public Date getLastAction()
+   Date getLastAction()
    {
       return new Date(lastAction.getTime());
    }
@@ -169,10 +168,10 @@ public class PomodoroStateMachine
       pomodoroHooks.add(hook);
    }
 
-   public List<PomodoroHook> getPomodoroHooks()
-   {
-      return pomodoroHooks;
-   }
+//   public List<PomodoroHook> getPomodoroHooks()
+//   {
+//      return pomodoroHooks;
+//   }
 
    private void completeHooks()
    {

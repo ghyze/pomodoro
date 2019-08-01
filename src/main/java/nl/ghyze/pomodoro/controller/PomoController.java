@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.swing.Timer;
 
+import lombok.NoArgsConstructor;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.SettingsChangeListener;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogController;
@@ -16,21 +17,14 @@ import nl.ghyze.pomodoro.optiondialog.StateMachineOptionDialogCallback;
 import nl.ghyze.pomodoro.view.PomoFrame;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
+@NoArgsConstructor
 public class PomoController implements ActionListener, SettingsChangeListener
 {
    private PomoFrame frame;
-   private Timer timer;
 
    private Settings settings;
    private PomodoroStateMachine stateMachine;
    private AbstractSystemTrayManager systemTrayManager;
-
-   private int minutesSinceLastAction = 0;
-
-   public PomoController()
-   {
-
-   }
 
    public void initializeSystemTrayManager(AbstractSystemTrayManager systemTrayManager)
    {
@@ -40,7 +34,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
 
    public void initialize()
    {
-      timer = new Timer(20, this);
+      Timer timer = new Timer(20, this);
       timer.start();
    }
 
@@ -49,18 +43,18 @@ public class PomoController implements ActionListener, SettingsChangeListener
    {
       if (stateMachine.shouldChangeState())
       {
-         OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(stateMachine.getCurrentType());
+         OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroStateMachine.getCurrentType());
          StateMachineOptionDialogCallback callback = new StateMachineOptionDialogCallback(stateMachine);
          OptionDialogController.showDialog(frame, model, callback);
       }
       checkMinutesSinceLastAction();
-      frame.update(stateMachine.getCurrent());
-      systemTrayManager.update(stateMachine.getCurrent());
+      frame.update(PomodoroStateMachine.getCurrent());
+      systemTrayManager.update(PomodoroStateMachine.getCurrent());
    }
 
    private void checkMinutesSinceLastAction()
    {
-      minutesSinceLastAction = getMinutesSinceLastAction();
+      int minutesSinceLastAction = getMinutesSinceLastAction();
 
       if (minutesSinceLastAction >= settings.getIdleTime())
       {

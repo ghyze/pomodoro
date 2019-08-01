@@ -8,7 +8,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Data
 public class Pomodoro {
 
-    public static final int MILLISECONDS_PER_MINUTE = 60000;
+    public static final int MILLISECONDS_PER_SECOND = 1000;
+    public static final int MILLISECONDS_PER_MINUTE = 60 * MILLISECONDS_PER_SECOND;
     private int minutes;
     private long startTime;
 
@@ -25,14 +26,14 @@ public class Pomodoro {
 
     public int minutesLeft() {
         long millisPassed = System.currentTimeMillis() - startTime;
-        int minutesPassed = (int) millisPassed / 60000;
+        int minutesPassed = (int) millisPassed / MILLISECONDS_PER_MINUTE;
         return Math.max(0, minutes - minutesPassed - 1);
     }
 
     int secondsOfMinuteLeft() {
         long millisPassed = System.currentTimeMillis() - startTime;
         int secondsPassed = (int) millisPassed % MILLISECONDS_PER_MINUTE;
-        return Math.max(0, 59 - (secondsPassed / 1000));
+        return Math.max(0, 59 - (secondsPassed / MILLISECONDS_PER_SECOND));
     }
 
     public boolean isDone() {
