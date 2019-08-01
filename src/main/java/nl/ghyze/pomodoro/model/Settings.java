@@ -34,11 +34,6 @@ public class Settings
 
    private ArrayList<SettingsChangeListener> listeners = new ArrayList<>();
 
-   public Position getPosition()
-   {
-      return position;
-   }
-
    public void setPosition(Position position)
    {
       this.position = position;
