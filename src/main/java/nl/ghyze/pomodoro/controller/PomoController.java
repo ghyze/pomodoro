@@ -2,13 +2,13 @@ package nl.ghyze.pomodoro.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 import javax.swing.Timer;
 
 import lombok.NoArgsConstructor;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.SettingsChangeListener;
+import nl.ghyze.pomodoro.model.Time;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogController;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModelFactory;
@@ -64,9 +64,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
 
    private int getMinutesSinceLastAction()
    {
-      Date now = new Date();
-      long millis = (now.getTime() - stateMachine.getLastAction().getTime());
-      return (int) (millis / (60 * 1000));
+      return Time.minutesSince(stateMachine.getLastAction().getTime());
    }
 
    public void stopProgram()

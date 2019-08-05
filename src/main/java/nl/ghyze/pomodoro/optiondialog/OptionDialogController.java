@@ -11,20 +11,18 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import nl.ghyze.pomodoro.DateUtil;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import nl.ghyze.pomodoro.model.Time;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OptionDialogController
 {
    private static OptionDialogController instance = new OptionDialogController();
-   private long timeout = 5 * 60 * 1000l; // 5 minutes
+   private long timeout = 5 * Time.MILLISECONDS_PER_MINUTE; // 5 minutes
    private long showingSince;
 
    private boolean showing = false;
-
-   private OptionDialogController()
-   {
-
-   }
 
    @SuppressWarnings("serial")
    public static void showDialog(JFrame frame, OptionDialogModel model, OptionDialogCallback callback)
@@ -34,24 +32,18 @@ public class OptionDialogController
          instance.showing = true;
          instance.showingSince = new Date().getTime();
          final JLabel label = new JLabel(model.getMessage());
-         int timerDelay = 1000;
-         new Timer(timerDelay, new ActionListener()
+         int timerDelay = Time.MILLISECONDS_PER_SECOND;
+         new Timer(timerDelay, e -> {
+            if (instance.isTimedOut())
             {
-
-               @Override
-               public void actionPerformed(ActionEvent e)
+               ((Timer) e.getSource()).stop();
+               if (instance.showing)
                {
-                  if (instance.isTimedOut())
-                  {
-                     ((Timer) e.getSource()).stop();
-                     if (instance.showing)
-                     {
-                        Window win = SwingUtilities.getWindowAncestor(label);
-                        win.setVisible(false);
-                     }
-                  }
+                  Window win = SwingUtilities.getWindowAncestor(label);
+                  win.setVisible(false);
                }
-            })
+            }
+         })
             {
                {
                   setInitialDelay(0);
@@ -91,7 +83,7 @@ public class OptionDialogController
       return now.getTime() > showingSince + timeout;
    }
 
-   public static boolean isShowing()
+   private static boolean isShowing()
    {
       return instance.showing;
    }

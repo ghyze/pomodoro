@@ -168,11 +168,6 @@ public class PomodoroStateMachine
       pomodoroHooks.add(hook);
    }
 
-//   public List<PomodoroHook> getPomodoroHooks()
-//   {
-//      return pomodoroHooks;
-//   }
-
    private void completeHooks()
    {
       for (PomodoroHook hook : pomodoroHooks)
