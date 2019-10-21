@@ -2,7 +2,7 @@ package nl.ghyze.pomodoro.statistics;
 
 import java.util.Date;
 
-import nl.ghyze.pomodoro.DateUtil;
+import nl.ghyze.pomodoro.DateTimeUtil;
 import nl.ghyze.pomodoro.controller.PomodoroHook;
 
 public class StatisticsHook implements PomodoroHook{
@@ -27,8 +27,8 @@ public class StatisticsHook implements PomodoroHook{
 		
 	}
 	
-	public void printStats(){
-		System.out.println(DateUtil.format(new Date())+" Completed: "+numberCompleted+", Cancelled: "+numberCancelled);
+	private void printStats(){
+		System.out.println(DateTimeUtil.format(new Date())+" Completed: "+numberCompleted+", Cancelled: "+numberCancelled);
 	}
 
 }

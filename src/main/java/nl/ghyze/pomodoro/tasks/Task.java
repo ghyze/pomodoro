@@ -1,57 +1,37 @@
 package nl.ghyze.pomodoro.tasks;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import java.util.Observable;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class Task extends Observable{
 
-	private String name = "";
-	private int estimated ;
+	private final String name;
+	private final int estimated;
 	private int actual;
 	
 	private boolean active = false;
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
+
+	Task(String name, int estimated){
 		this.name = name;
-		changed();
-	}
-	public int getEstimated() {
-		return estimated;
-	}
-	public void setEstimated(int estimated) {
 		this.estimated = estimated;
-		changed();
 	}
-	public int getActual() {
-		return actual;
-	}
-	public void setActual(int actual) {
-		this.actual = actual;
-		changed();
-	}
-	
+
 	private void changed(){
 		setChanged();
 		notifyObservers();
 	}
 	
-	public boolean isEmpty(){
-		return (name == null || name.length() == 0) && estimated == 0 && actual == 0;
-	}
-	
-	public void addCompletedPomo(){
-		System.out.println("Completed pomo added to "+name);
+	void addCompletedPomo(){
 		actual++;
+		changed();
 	}
-	public boolean isActive() {
-		return active;
+
+	public String toString(){
+		return "Task name: " + name + ", estimated: " + estimated + ", actual: " + actual + ", Active: " + active;
 	}
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-	
-	
 	
 }

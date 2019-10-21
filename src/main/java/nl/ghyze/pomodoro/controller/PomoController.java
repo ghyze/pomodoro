@@ -6,9 +6,9 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import lombok.NoArgsConstructor;
+import nl.ghyze.pomodoro.DateTimeUtil;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.SettingsChangeListener;
-import nl.ghyze.pomodoro.model.Time;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogController;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModelFactory;
@@ -64,7 +64,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
 
    private int getMinutesSinceLastAction()
    {
-      return Time.minutesSince(stateMachine.getLastAction().getTime());
+      return DateTimeUtil.minutesSince(stateMachine.getLastAction().getTime());
    }
 
    public void stopProgram()

@@ -15,3 +15,4 @@ hs_err_pid*
 
 # Workspace specific files
 .settings/
+/.idea/

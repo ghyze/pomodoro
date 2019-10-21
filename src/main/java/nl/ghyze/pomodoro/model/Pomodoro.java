@@ -1,6 +1,7 @@
 package nl.ghyze.pomodoro.model;
 
 import lombok.Data;
+import nl.ghyze.pomodoro.DateTimeUtil;
 import nl.ghyze.pomodoro.type.PomodoroType;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -24,18 +25,18 @@ public class Pomodoro {
 
     public int minutesLeft() {
         long millisPassed = System.currentTimeMillis() - startTime;
-        int minutesPassed = (int) millisPassed / Time.MILLISECONDS_PER_MINUTE;
+        int minutesPassed = (int) millisPassed / DateTimeUtil.MILLISECONDS_PER_MINUTE;
         return Math.max(0, minutes - minutesPassed - 1);
     }
 
     int secondsOfMinuteLeft() {
         long millisPassed = System.currentTimeMillis() - startTime;
-        int secondsPassed = (int) millisPassed % Time.MILLISECONDS_PER_MINUTE;
-        return Math.max(0, 59 - (secondsPassed / Time.MILLISECONDS_PER_SECOND));
+        int secondsPassed = (int) millisPassed % DateTimeUtil.MILLISECONDS_PER_MINUTE;
+        return Math.max(0, 59 - (secondsPassed / DateTimeUtil.MILLISECONDS_PER_SECOND));
     }
 
     public boolean isDone() {
-        long stopTime = startTime + (minutes * Time.MILLISECONDS_PER_MINUTE);
+        long stopTime = startTime + (minutes * DateTimeUtil.MILLISECONDS_PER_MINUTE);
         return stopTime <= System.currentTimeMillis();
     }
 

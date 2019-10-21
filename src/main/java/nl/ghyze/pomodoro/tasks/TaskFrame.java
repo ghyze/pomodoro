@@ -17,13 +17,10 @@ import javax.swing.SpringLayout;
 public class TaskFrame extends JFrame {
 
 	private SpringLayout layout = new SpringLayout();
-	private JScrollPane scrollPane;
-	
+
 	private TaskHook taskHook = new TaskHook();
 	
 	private List<Task> tasks = new ArrayList<>();
-	
-	private JButton btAddTask = new JButton(new AddAction());
 	
 	private JPanel tasksPanel = new JPanel();
 	
@@ -35,15 +32,16 @@ public class TaskFrame extends JFrame {
 		
 		tasksPanel.setLayout(new BoxLayout(tasksPanel, BoxLayout.PAGE_AXIS	));
 		initTasks();
-		
-		scrollPane = new JScrollPane(tasksPanel);
+
+		JScrollPane scrollPane = new JScrollPane(tasksPanel);
 		layout.putConstraint(SpringLayout.WEST, scrollPane, 5, SpringLayout.WEST, getContentPane());
 		layout.putConstraint(SpringLayout.EAST, scrollPane, -5, SpringLayout.EAST, getContentPane());
 		layout.putConstraint(SpringLayout.NORTH, scrollPane, 35, SpringLayout.NORTH, getContentPane());
 		layout.putConstraint(SpringLayout.SOUTH, scrollPane, -35, SpringLayout.SOUTH, getContentPane());
 		this.add(scrollPane);
-		
 
+
+		JButton btAddTask = new JButton(new AddAction());
 		layout.putConstraint(SpringLayout.WEST, btAddTask, -120, SpringLayout.EAST, getContentPane());
 		layout.putConstraint(SpringLayout.EAST, btAddTask, -5, SpringLayout.EAST, getContentPane());
 		layout.putConstraint(SpringLayout.NORTH, btAddTask, -30, SpringLayout.SOUTH, getContentPane());
@@ -53,7 +51,6 @@ public class TaskFrame extends JFrame {
 	}
 	
 	private void initTasks(){
-		System.out.println("Number of tasks: "+tasks.size());
 		tasksPanel.removeAll();
 		if (activePanel != null){
 			activePanel.setVisible(false);
@@ -62,22 +59,9 @@ public class TaskFrame extends JFrame {
 		tasksPanel.invalidate();
 		for (Task task : tasks){
 			TaskPanel taskPanel = createTaskPanel(task);
-			taskPanel.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					if (e.getClickCount() >= 2){
-						System.out.println("Doubleclick detected");
-						for (Task task : tasks){
-							task.setActive(false);
-						}
-						TaskPanel source = (TaskPanel) e.getSource();
-						source.getTask().setActive(true);
-						initTasks();
-					}
-				}
-			});
+			taskPanel.addMouseListener(new TaskPanelMouseAdapter());
 
 			if (task.isActive()){
-				System.out.println("Active panel: "+task.getName());
 				activePanel = taskPanel;
 				layout.putConstraint(SpringLayout.WEST, activePanel, 5, SpringLayout.WEST, getContentPane());
 				layout.putConstraint(SpringLayout.EAST, activePanel, -5, SpringLayout.EAST, getContentPane());
@@ -93,29 +77,40 @@ public class TaskFrame extends JFrame {
 	}
 	
 	private TaskPanel createTaskPanel(Task task) {
-		TaskPanel panel = new TaskPanel(task);
-		return panel;
+		return new TaskPanel(task);
 	}
 	
-	public TaskHook getTaskHook(){
+	public TaskHook getTaskHook() {
 		return taskHook;
 	}
 
-	public static void main(String[] args) {
-		TaskFrame taskFrame = new TaskFrame();
-		taskFrame.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		taskFrame.setVisible(true);
-	}
-	
-	class AddAction extends AbstractAction{
-		
-		public AddAction(){
+	private class AddAction extends AbstractAction {
+
+		AddAction(){
 			super("Add Task");
 		}
-		
+
 		public void actionPerformed(ActionEvent e){
-			tasks.add(new Task());
+			Task task = AddTaskDialog.createTask();
+			if (task != null) {
+				tasks.add(task);
+			}
 			initTasks();
+		}
+
+	}
+
+	private class TaskPanelMouseAdapter extends MouseAdapter {
+		public void mouseClicked(MouseEvent e){
+			if (e.getClickCount() >= 2){
+				for (Task task : tasks){
+					task.setActive(false);
+				}
+				TaskPanel source = (TaskPanel) e.getSource();
+				source.getTask().setActive(true);
+				taskHook.setCurrentTask(source.getTask());
+				initTasks();
+			}
 		}
 	}
 }

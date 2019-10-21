@@ -1,8 +1,6 @@
 package nl.ghyze.pomodoro.optiondialog;
 
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -13,13 +11,13 @@ import javax.swing.Timer;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import nl.ghyze.pomodoro.model.Time;
+import nl.ghyze.pomodoro.DateTimeUtil;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OptionDialogController
 {
    private static OptionDialogController instance = new OptionDialogController();
-   private long timeout = 5 * Time.MILLISECONDS_PER_MINUTE; // 5 minutes
+   private long timeout = 5 * DateTimeUtil.MILLISECONDS_PER_MINUTE; // 5 minutes
    private long showingSince;
 
    private boolean showing = false;
@@ -32,7 +30,7 @@ public class OptionDialogController
          instance.showing = true;
          instance.showingSince = new Date().getTime();
          final JLabel label = new JLabel(model.getMessage());
-         int timerDelay = Time.MILLISECONDS_PER_SECOND;
+         int timerDelay = DateTimeUtil.MILLISECONDS_PER_SECOND;
          new Timer(timerDelay, e -> {
             if (instance.isTimedOut())
             {
