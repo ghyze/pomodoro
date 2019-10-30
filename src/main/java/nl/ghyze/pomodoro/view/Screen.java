@@ -20,7 +20,7 @@ public class Screen {
 		return "Screen: "+ (index+1)+" ("+mode.getWidth()+", "+mode.getHeight()+")";
 	}
 	
-	public int getIndex(){
+	int getIndex(){
 		return index;
 	}
 	

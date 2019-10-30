@@ -10,8 +10,8 @@ import nl.ghyze.pomodoro.type.PomodoroType;
 
 public class PomoButtonFactory {
 	
-	static int controlButtonWidth = 18;
-	static int controlButtonHeight = 18;
+	private static int controlButtonWidth = 18;
+	private static int controlButtonHeight = 18;
 
 	public static PomoButton createStopButton(final PomoController controller) {
 	
@@ -27,14 +27,7 @@ public class PomoButtonFactory {
 		stopButton.addVisibleType(PomodoroType.BREAK);
 		stopButton.addVisibleType(PomodoroType.POMO);
 		stopButton.setImage(image);
-		stopButton.setAction(new PomoButtonAction() {
-	
-			@Override
-			public void execute() {
-				controller.stopCurrent();
-			}
-	
-		});
+		stopButton.setAction(controller::stopCurrent);
 	
 		return stopButton;
 	}
@@ -57,14 +50,7 @@ public class PomoButtonFactory {
 		PomoButton playButton = new PomoButton(22, 80, 18, 18);
 		playButton.addVisibleType(PomodoroType.WAIT);
 		playButton.setImage(image);
-		playButton.setAction(new PomoButtonAction() {
-	
-			@Override
-			public void execute() {
-				controller.startPomo();
-			}
-	
-		});
+		playButton.setAction(controller::startPomo);
 	
 		return playButton;
 	}
@@ -86,14 +72,7 @@ public class PomoButtonFactory {
 		closeButton.addVisibleType(PomodoroType.POMO);
 		closeButton.addVisibleType(PomodoroType.WAIT);
 		closeButton.setImage(image);
-		closeButton.setAction(new PomoButtonAction() {
-	
-			@Override
-			public void execute() {
-				controller.stopProgram();
-			}
-	
-		});
+		closeButton.setAction(controller::stopProgram);
 		return closeButton;
 	}
 
@@ -112,14 +91,7 @@ public class PomoButtonFactory {
 		minimizeButton.addVisibleType(PomodoroType.POMO);
 		minimizeButton.addVisibleType(PomodoroType.WAIT);
 		minimizeButton.setImage(image);
-		minimizeButton.setAction(new PomoButtonAction() {
-	
-			@Override
-			public void execute() {
-				frame.setVisible(false);
-			}
-	
-		});
+		minimizeButton.setAction(() -> frame.setVisible(false));
 	
 		return minimizeButton;
 	}

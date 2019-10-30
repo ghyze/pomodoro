@@ -22,7 +22,7 @@ public abstract class AbstractSystemTrayManager
    protected Image[] pomoImages;
    protected Image[] breakImages;
    protected Image waitImage;
-   protected TrayIcon icon;
+   TrayIcon icon;
 
    public abstract void setPomoController(PomoController controller);
    
@@ -35,7 +35,7 @@ public abstract class AbstractSystemTrayManager
       createWaitImage();
    }
 
-   protected void createBreakMinutesImages()
+   private void createBreakMinutesImages()
    {
       breakImages = new Image[100];
       for (int i = 0; i < 100; i++)
@@ -44,7 +44,7 @@ public abstract class AbstractSystemTrayManager
       }
    }
 
-   protected void createPomoMinutesImages()
+   private void createPomoMinutesImages()
    {
       pomoImages = new Image[100];
       for (int i = 0; i < 100; i++)
@@ -53,7 +53,7 @@ public abstract class AbstractSystemTrayManager
       }
    }
 
-   protected void createWaitImage()
+   private void createWaitImage()
    {
       waitImage = createImage(Color.BLUE, "...");
    }

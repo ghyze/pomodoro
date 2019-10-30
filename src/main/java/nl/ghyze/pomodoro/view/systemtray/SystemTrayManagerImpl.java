@@ -35,11 +35,10 @@ public class SystemTrayManagerImpl extends AbstractSystemTrayManager
    protected Dimension getTrayIconSize()
    {
       SystemTray tray = SystemTray.getSystemTray();
-      Dimension iconsize = tray.getTrayIconSize();
-      return iconsize;
+      return tray.getTrayIconSize();
    }
 
-   protected void initTrayIcon(PopupMenu menu)
+   private void initTrayIcon(PopupMenu menu)
    {
       SystemTray tray = SystemTray.getSystemTray();
       icon = new TrayIcon(waitImage, "Pomo", menu);

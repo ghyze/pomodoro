@@ -69,7 +69,6 @@ public class TaskFrame extends JFrame {
 				layout.putConstraint(SpringLayout.SOUTH, activePanel, 30, SpringLayout.NORTH, getContentPane());
 				this.add(activePanel);
 			} else {
-				System.out.println("NonActive panel: "+task.getName());
 				tasksPanel.add(taskPanel);
 			}
 		}

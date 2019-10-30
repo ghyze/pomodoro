@@ -24,9 +24,9 @@ public class PomoPanel extends JPanel {
 
 	private Pomodoro countdown = null;
 
-	private List<PomoButton> buttons = new ArrayList<PomoButton>();
+	private List<PomoButton> buttons = new ArrayList<>();
 
-	public PomoPanel() {
+	PomoPanel() {
 		this.setPreferredSize(new Dimension(140, 100));
 		this.setLayout(null);
 	}
@@ -44,11 +44,10 @@ public class PomoPanel extends JPanel {
 	}
 
 	private void paintText(Graphics gr, String text, float size) {
-		Font f = gr.getFont();
+		Font originalFont = gr.getFont();
 		gr.setColor(Color.white);
-		Font bigFont = f.deriveFont(size);
+		Font bigFont = originalFont.deriveFont(size);
 		gr.setFont(bigFont);
-		Font originalFont = f;
 		paintText(text, gr);
 		gr.setFont(originalFont);
 	}
@@ -67,8 +66,8 @@ public class PomoPanel extends JPanel {
 	}
 
 	private void drawPomosDone(Graphics gr) {
-		gr.setColor(Color.white);
 		if (countdown != null) {
+			gr.setColor(Color.white);
 			for (int i = 0; i < countdown.getMaxPomosDone(); i++) {
 				int xOff = 2 + (i * 15);
 				gr.drawRect(xOff, 2, 12, 12);
@@ -89,7 +88,7 @@ public class PomoPanel extends JPanel {
 		}
 	}
 
-	public PomoButton buttonClicked(MouseEvent e) {
+	PomoButton buttonClicked(MouseEvent e) {
 		for (PomoButton button : buttons) {
 			if (button.isVisible(countdown) && button.containsPoint(e.getPoint())) {
 				return button;
@@ -98,11 +97,11 @@ public class PomoPanel extends JPanel {
 		return null;
 	}
 
-	public void update(Pomodoro countdown) {
+	void update(Pomodoro countdown) {
 		this.countdown = countdown;
 	}
 
-	public void addButton(PomoButton button) {
+	void addButton(PomoButton button) {
 		buttons.add(button);
 	}
 }

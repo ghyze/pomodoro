@@ -9,7 +9,7 @@ import java.util.List;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.type.PomodoroType;
 
-public class PomoButton
+class PomoButton
 {
 
    private int x;
@@ -22,50 +22,50 @@ public class PomoButton
    
    private Image image;
    
-   public PomoButton(int x, int y, int width, int height){
+   PomoButton(int x, int y, int width, int height){
       this.x = x;
       this.y = y;
       this.width = width;
       this.height = height;
-      visibleTypes = new ArrayList<PomodoroType>();
+      visibleTypes = new ArrayList<>();
    }
    
-   public boolean isVisible(Pomodoro countdown){
+   boolean isVisible(Pomodoro countdown){
       return visibleTypes.contains(countdown.getType());
    }
    
-   public boolean containsPoint(Point p){
+   boolean containsPoint(Point p){
       Rectangle r = new Rectangle(x,y,width,height);
       return r.contains(p);
    }
    
-   public void setAction(PomoButtonAction action){
+   void setAction(PomoButtonAction action){
       this.action = action;
    }
    
-   public void executeAction(){
+   void executeAction(){
       if (action != null){
          action.execute();
       }
    }
    
-   public Image getImage() {
+   Image getImage() {
       return image;
    }
    
-   public void setImage(Image image){
+   void setImage(Image image){
       this.image = image;
    }
    
-   public int getX(){
+   int getX(){
       return x;
    }
    
-   public int getY(){
+   int getY(){
       return y;
    }
    
-   public void addVisibleType(PomodoroType type){
+   void addVisibleType(PomodoroType type){
       visibleTypes.add(type);
    }
 }
