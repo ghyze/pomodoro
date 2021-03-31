@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
-import nl.ghyze.pomodoro.type.PomodoroType;
+import nl.ghyze.pomodoro.model.PomodoroType;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
@@ -32,13 +32,13 @@ public class PomodoroStateMachineTest
    public void testGetCurrent()
    {
       Pomodoro expected = new Pomodoro(0, PomodoroType.WAIT);
-      Assert.assertEquals(expected, pomodoroStateMachine.getCurrent());
+      Assert.assertEquals(expected, PomodoroStateMachine.getCurrent());
    }
 
    @Test
    public void testGetCurrentType()
    {
-      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, PomodoroStateMachine.getCurrentType());
    }
 
    @Test
@@ -49,7 +49,7 @@ public class PomodoroStateMachineTest
       pomodoroStateMachine.startPomo();
       EasyMock.verify(settings);
 
-      Pomodoro current = pomodoroStateMachine.getCurrent();
+      Pomodoro current = PomodoroStateMachine.getCurrent();
       Assert.assertEquals(current.getType(), PomodoroType.POMO);
 
       Assert.assertTrue(isDateCorrect(pomodoroStateMachine.getLastAction()));
@@ -105,27 +105,28 @@ public class PomodoroStateMachineTest
    private boolean isDateCorrect(Date date)
    {
       Date now = new Date();
-      long dateLong = date.getTime() + 100l;
+      long dateLong = date.getTime() + 100L;
       return now.getTime() <= dateLong;
    }
 
    @Test
    public void testGetNextFromPomoWithDiscard() throws Exception
    {
-      setupGetNextFromPomo();
+      Pomodoro pomodoro = new Pomodoro(1, PomodoroType.BREAK);
+      setCurrent(pomodoro);
+      systemTrayManager = EasyMock.createMock(AbstractSystemTrayManager.class);
+      pomodoroStateMachine.setSystemTrayManager(systemTrayManager);
 
-      systemTrayManager.message(EasyMock.eq("Well done! Short break"));
-      EasyMock.expectLastCall();
-
-      EasyMock.expect(settings.getShortBreakMinutes()).andReturn(1);
+      EasyMock.expect(settings.getPomosBeforeLongBreak()).andReturn(1);
+      Assert.assertTrue(isDateCorrect(pomodoroStateMachine.getLastAction()));
 
       EasyMock.replay(systemTrayManager, settings);
-      pomodoroStateMachine.handleAction(OptionDialogModel.DISCARD);
+      pomodoroStateMachine.handleAction(OptionDialogModel.Choice.DISCARD);
       EasyMock.verify(systemTrayManager, settings);
 
-      Pomodoro current = pomodoroStateMachine.getCurrent();
+      Pomodoro current = PomodoroStateMachine.getCurrent();
       Assert.assertEquals(0, current.getPomosDone());
-      Assert.assertEquals(PomodoroType.BREAK, current.getType());
+      Assert.assertEquals(PomodoroType.WAIT, current.getType());
       Assert.assertEquals(0, current.minutesLeft());
    }
 
@@ -140,10 +141,10 @@ public class PomodoroStateMachineTest
       EasyMock.expect(settings.getLongBreakMinutes()).andReturn(5);
 
       EasyMock.replay(systemTrayManager, settings);
-      pomodoroStateMachine.handleAction(OptionDialogModel.SAVE);
+      pomodoroStateMachine.handleAction(OptionDialogModel.Choice.SAVE);
       EasyMock.verify(systemTrayManager, settings);
 
-      Pomodoro current = pomodoroStateMachine.getCurrent();
+      Pomodoro current = PomodoroStateMachine.getCurrent();
       Assert.assertEquals(0, current.getPomosDone());
       Assert.assertEquals(PomodoroType.BREAK, current.getType());
       Assert.assertEquals(4, current.minutesLeft());
@@ -159,10 +160,10 @@ public class PomodoroStateMachineTest
       EasyMock.expect(settings.getPomosBeforeLongBreak()).andReturn(1);
 
       EasyMock.replay(settings);
-      pomodoroStateMachine.handleAction(OptionDialogModel.OK);
+      pomodoroStateMachine.handleAction(OptionDialogModel.Choice.OK);
       EasyMock.verify(settings);
 
-      Assert.assertEquals(PomodoroType.POMO, pomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.POMO, PomodoroStateMachine.getCurrentType());
    }
 
    @Test
@@ -171,9 +172,9 @@ public class PomodoroStateMachineTest
       Pomodoro breakPomo = new Pomodoro(5, PomodoroType.BREAK);
       setCurrent(breakPomo);
 
-      pomodoroStateMachine.handleAction(OptionDialogModel.CANCEL);
+      pomodoroStateMachine.handleAction(OptionDialogModel.Choice.CANCEL);
 
-      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, PomodoroStateMachine.getCurrentType());
    }
 
    @Test
@@ -182,9 +183,9 @@ public class PomodoroStateMachineTest
       Pomodoro waitPomo = new Pomodoro(0, PomodoroType.WAIT);
       setCurrent(waitPomo);
 
-      pomodoroStateMachine.handleAction(0);
+      pomodoroStateMachine.handleAction(OptionDialogModel.Choice.CANCEL);
 
-      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, PomodoroStateMachine.getCurrentType());
    }
 
    @Test
@@ -195,7 +196,7 @@ public class PomodoroStateMachineTest
 
       pomodoroStateMachine.stopCurrent();
 
-      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, PomodoroStateMachine.getCurrentType());
    }
 
    @Test
@@ -206,7 +207,7 @@ public class PomodoroStateMachineTest
       pomosDone.set(pomodoroStateMachine, 2);
 
       pomodoroStateMachine.reset();
-      Pomodoro wait = pomodoroStateMachine.getCurrent();
+      Pomodoro wait = PomodoroStateMachine.getCurrent();
       Assert.assertEquals(0, wait.getPomosDone());
       Assert.assertEquals(PomodoroType.WAIT, wait.getType());
    }

@@ -16,112 +16,112 @@ import java.util.Map;
 import java.util.Properties;
 
 public class TestToolkit extends Toolkit {
-    @Override
+//    @Override
     protected DesktopPeer createDesktopPeer(Desktop target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected ButtonPeer createButton(Button target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected TextFieldPeer createTextField(TextField target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected LabelPeer createLabel(Label target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected ListPeer createList(List target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected CheckboxPeer createCheckbox(Checkbox target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected ScrollbarPeer createScrollbar(Scrollbar target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected ScrollPanePeer createScrollPane(ScrollPane target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected TextAreaPeer createTextArea(TextArea target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected ChoicePeer createChoice(Choice target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected FramePeer createFrame(Frame target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected CanvasPeer createCanvas(Canvas target) {
         return null;
     }
 
-    @Override
+//    @Override
     protected PanelPeer createPanel(Panel target) {
         return null;
     }
 
-    @Override
+//    @Override
     protected WindowPeer createWindow(Window target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected DialogPeer createDialog(Dialog target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected MenuBarPeer createMenuBar(MenuBar target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected MenuPeer createMenu(Menu target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected PopupMenuPeer createPopupMenu(PopupMenu target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected MenuItemPeer createMenuItem(MenuItem target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected FileDialogPeer createFileDialog(FileDialog target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected CheckboxMenuItemPeer createCheckboxMenuItem(CheckboxMenuItem target) throws HeadlessException {
         return null;
     }
 
-    @Override
+//    @Override
     protected FontPeer getFontPeer(String name, int style) {
         return null;
     }
@@ -216,7 +216,7 @@ public class TestToolkit extends Toolkit {
         return null;
     }
 
-    @Override
+//    @Override
     public DragSourceContextPeer createDragSourceContextPeer(DragGestureEvent dge) throws InvalidDnDOperationException {
         return null;
     }

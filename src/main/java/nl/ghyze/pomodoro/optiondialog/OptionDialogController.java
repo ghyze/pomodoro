@@ -16,8 +16,8 @@ import nl.ghyze.pomodoro.DateTimeUtil;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OptionDialogController
 {
-   private static OptionDialogController instance = new OptionDialogController();
-   private long timeout = 5 * DateTimeUtil.MILLISECONDS_PER_MINUTE; // 5 minutes
+   private static final OptionDialogController instance = new OptionDialogController();
+   private static final long timeout = 5 * DateTimeUtil.MILLISECONDS_PER_MINUTE; // 5 minutes
    private long showingSince;
 
    private boolean showing = false;
@@ -68,6 +68,9 @@ public class OptionDialogController
                break;
             case 1:
                callback.cancel();
+               break;
+            case 2:
+               callback.continueAction();
                break;
             default:
                //

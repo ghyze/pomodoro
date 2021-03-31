@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
-import nl.ghyze.pomodoro.type.PomodoroType;
+import nl.ghyze.pomodoro.model.PomodoroType;
 
 class PomoButton
 {
 
-   private int x;
-   private int y;
-   private int width;
-   private int height;
-   private List<PomodoroType> visibleTypes;
+   private final int x;
+   private final int y;
+   private final int width;
+   private final int height;
+   private final List<PomodoroType> visibleTypes;
    
    private PomoButtonAction action;
    

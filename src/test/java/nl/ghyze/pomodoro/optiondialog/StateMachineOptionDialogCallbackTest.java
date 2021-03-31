@@ -19,10 +19,10 @@ public class StateMachineOptionDialogCallbackTest extends EasyMockSupport
    }
 
    @Test
-   public void testOk() throws Exception
+   public void testOk()
    {
       StateMachineOptionDialogCallback callback = new StateMachineOptionDialogCallback(stateMachineMock);
-      stateMachineMock.handleAction(0);
+      stateMachineMock.handleAction(OptionDialogModel.Choice.CANCEL);
       replayAll();
       callback.ok();
       verifyAll();

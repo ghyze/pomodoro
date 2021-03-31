@@ -6,12 +6,12 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
 import nl.ghyze.pomodoro.controller.PomoController;
-import nl.ghyze.pomodoro.type.PomodoroType;
+import nl.ghyze.pomodoro.model.PomodoroType;
 
 public class PomoButtonFactory {
 	
-	private static int controlButtonWidth = 18;
-	private static int controlButtonHeight = 18;
+	private static final int controlButtonWidth = 18;
+	private static final int controlButtonHeight = 18;
 
 	public static PomoButton createStopButton(final PomoController controller) {
 	

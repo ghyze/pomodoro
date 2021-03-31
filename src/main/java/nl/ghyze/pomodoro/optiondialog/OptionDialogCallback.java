@@ -8,4 +8,8 @@ public interface OptionDialogCallback
    void cancel();
 
    void timeout();
+
+   default void continueAction(){
+      // Does nothing by default, but could be overridden.
+   }
 }

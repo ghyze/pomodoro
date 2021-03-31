@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 
+import nl.ghyze.pomodoro.model.PomodoroType;
 import org.junit.Test;
 
 public class PomodoroTypeTest {

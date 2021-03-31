@@ -2,10 +2,11 @@ package nl.ghyze.pomodoro.optiondialog;
 
 import nl.ghyze.pomodoro.controller.PomodoroStateMachine;
 
+
 public class StateMachineOptionDialogCallback implements OptionDialogCallback
 {
 
-   private PomodoroStateMachine stateMachine;
+   private final PomodoroStateMachine stateMachine;
 
    public StateMachineOptionDialogCallback(PomodoroStateMachine stateMachine)
    {
@@ -15,19 +16,24 @@ public class StateMachineOptionDialogCallback implements OptionDialogCallback
    @Override
    public void ok()
    {
-      stateMachine.handleAction(0);
+      stateMachine.handleAction(OptionDialogModel.Choice.SAVE);
    }
 
    @Override
    public void cancel()
    {
-      stateMachine.handleAction(1);
+      stateMachine.handleAction(OptionDialogModel.Choice.DISCARD);
    }
 
    @Override
    public void timeout()
    {
       stateMachine.startWait();
+   }
+
+   @Override
+   public void continueAction() {
+      stateMachine.handleAction(OptionDialogModel.Choice.CONTINUE_ACTION);
    }
 
 }

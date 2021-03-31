@@ -2,7 +2,6 @@ package nl.ghyze.pomodoro.model;
 
 import lombok.Data;
 import nl.ghyze.pomodoro.DateTimeUtil;
-import nl.ghyze.pomodoro.type.PomodoroType;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

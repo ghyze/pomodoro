@@ -13,7 +13,7 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
-import nl.ghyze.pomodoro.type.PomodoroType;
+import nl.ghyze.pomodoro.model.PomodoroType;
 
 public class PomoPanel extends JPanel {
 
@@ -24,7 +24,7 @@ public class PomoPanel extends JPanel {
 
 	private Pomodoro countdown = null;
 
-	private List<PomoButton> buttons = new ArrayList<>();
+	private final List<PomoButton> buttons = new ArrayList<>();
 
 	PomoPanel() {
 		this.setPreferredSize(new Dimension(140, 100));

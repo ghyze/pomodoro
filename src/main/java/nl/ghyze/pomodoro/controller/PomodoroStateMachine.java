@@ -7,20 +7,20 @@ import java.util.List;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
-import nl.ghyze.pomodoro.type.PomodoroType;
+import nl.ghyze.pomodoro.model.PomodoroType;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
 public class PomodoroStateMachine
 {
 
    private static Pomodoro current;
-   private Settings settings;
+   private final Settings settings;
    private int pomosDone = 0;
    private AbstractSystemTrayManager systemTrayManager;
 
    private Date lastAction = new Date();
 
-   private List<PomodoroHook> pomodoroHooks = new ArrayList<>();
+   private final List<PomodoroHook> pomodoroHooks = new ArrayList<>();
 
    public PomodoroStateMachine(Settings settings)
    {
@@ -48,7 +48,7 @@ public class PomodoroStateMachine
       return (!getCurrentType().isWait() && current.isDone());
    }
 
-   public void handleAction(int choice)
+   public void handleAction(OptionDialogModel.Choice choice)
    {
       lastAction = new Date();
       if (getCurrentType().isPomo())
@@ -61,24 +61,31 @@ public class PomodoroStateMachine
       }
    }
 
-   private void handleActionForPomo(int choice)
+   private void handleActionForPomo(OptionDialogModel.Choice choice)
    {
-      if (choice == OptionDialogModel.SAVE)
+      if (choice == OptionDialogModel.Choice.SAVE)
       {
          pomosDone++;
          completeHooks();
+         current = createNextBreak();
       }
-      else
+      else if (choice == OptionDialogModel.Choice.CANCEL)
       {
          cancelHooks();
+         current = createNextBreak();
       }
-      current = createNextBreak();
+      else if (choice == OptionDialogModel.Choice.CONTINUE_ACTION){
+         pomosDone ++;
+         completeHooks();
+         startPomo();
+      }
+
       updateCurrent();
    }
 
-   private void handleActionForBreak(int choice)
+   private void handleActionForBreak(OptionDialogModel.Choice choice)
    {
-      if (choice == OptionDialogModel.OK)
+      if (choice ==  OptionDialogModel.Choice.OK)
       {
          startPomo();
       }

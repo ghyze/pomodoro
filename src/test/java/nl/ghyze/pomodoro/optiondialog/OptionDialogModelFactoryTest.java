@@ -1,6 +1,6 @@
 package nl.ghyze.pomodoro.optiondialog;
 
-import nl.ghyze.pomodoro.type.PomodoroType;
+import nl.ghyze.pomodoro.model.PomodoroType;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,18 +9,19 @@ public class OptionDialogModelFactoryTest
 {
 
    @Test
-   public void testGetOptionsForPomo() throws Exception
+   public void testGetOptionsForPomo()
    {
       OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroType.POMO);
 
       Object firstChoice = "Save";
       Object secondChoice = "Discard";
+      Object thirdChoice = "Continue";
 
-      assertOptionDialogModel(model, "Pomodoro finished", "Pomodoro finished. What would you like to do with this one?", new Object[] { firstChoice, secondChoice }, firstChoice);
+      assertOptionDialogModel(model, "Pomodoro finished", "Pomodoro finished. What would you like to do with this one?", new Object[] { firstChoice, secondChoice, thirdChoice }, firstChoice);
    }
 
    @Test
-   public void testGetOptionsForBreak() throws Exception
+   public void testGetOptionsForBreak()
    {
       OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroType.BREAK);
 
@@ -31,7 +32,7 @@ public class OptionDialogModelFactoryTest
    }
 
    @Test
-   public void testGetOptionsForWait() throws Exception
+   public void testGetOptionsForWait()
    {
       OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroType.WAIT);
 
@@ -51,7 +52,7 @@ public class OptionDialogModelFactoryTest
    }
 
    @Test
-   public void testCreateResetModel() throws Exception
+   public void testCreateResetModel()
    {
       OptionDialogModel model = OptionDialogModelFactory.createResetModel();
 

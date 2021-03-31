@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
-import nl.ghyze.pomodoro.type.PomodoroType;
+import nl.ghyze.pomodoro.model.PomodoroType;
 
 public class PomoButtonTest {
 
