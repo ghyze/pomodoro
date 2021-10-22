@@ -7,9 +7,9 @@ public enum PomodoroType {
 	BREAK(new TypeBreakHandler()), 
 	WAIT((new TypeWaitHandler()));
 
-	private AbstractPomodoroTypeHandler handler;
+	private final AbstractPomodoroTypeHandler handler;
 
-	private PomodoroType(AbstractPomodoroTypeHandler handler) {
+	PomodoroType(AbstractPomodoroTypeHandler handler) {
 		this.handler = handler;
 	}
 

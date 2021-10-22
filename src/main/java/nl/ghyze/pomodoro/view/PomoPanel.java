@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.JPanel;
 
@@ -80,21 +81,17 @@ public class PomoPanel extends JPanel {
 
 	private void drawButtons(Graphics gr) {
 		if (countdown != null) {
-			for (PomoButton button : buttons) {
-				if (button.isVisible(countdown)) {
-					gr.drawImage(button.getImage(), button.getX(), button.getY(), null);
-				}
-			}
+			buttons.stream()
+					.filter(button -> button.isVisible(countdown))
+					.forEach(button -> gr.drawImage(button.getImage(), button.getX(), button.getY(), null));
 		}
 	}
 
-	PomoButton buttonClicked(MouseEvent e) {
-		for (PomoButton button : buttons) {
-			if (button.isVisible(countdown) && button.containsPoint(e.getPoint())) {
-				return button;
-			}
-		}
-		return null;
+	Optional<PomoButton> buttonClicked(MouseEvent e) {
+		return buttons.stream()
+				.filter(button -> button.isVisible(countdown))
+				.filter(button -> button.containsPoint(e.getPoint()))
+				.findAny();
 	}
 
 	void update(Pomodoro countdown) {

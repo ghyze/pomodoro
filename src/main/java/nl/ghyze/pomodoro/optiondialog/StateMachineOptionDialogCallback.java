@@ -5,7 +5,7 @@ import nl.ghyze.pomodoro.controller.PomodoroStateMachine;
 public class StateMachineOptionDialogCallback implements OptionDialogCallback
 {
 
-   private PomodoroStateMachine stateMachine;
+   private final PomodoroStateMachine stateMachine;
 
    public StateMachineOptionDialogCallback(PomodoroStateMachine stateMachine)
    {

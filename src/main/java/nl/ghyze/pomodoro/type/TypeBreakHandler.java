@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class TypeBreakHandler extends AbstractPomodoroTypeHandler {
 
-	private Color backgroundColor = new Color(0, 192, 0);
+	private final Color backgroundColor = new Color(0, 192, 0);
 	
 	@Override
 	public Color getBackgroundColor() {

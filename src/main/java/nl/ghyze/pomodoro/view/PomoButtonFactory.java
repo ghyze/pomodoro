@@ -10,8 +10,8 @@ import nl.ghyze.pomodoro.type.PomodoroType;
 
 public class PomoButtonFactory {
 	
-	private static int controlButtonWidth = 18;
-	private static int controlButtonHeight = 18;
+	private static final int controlButtonWidth = 18;
+	private static final int controlButtonHeight = 18;
 
 	public static PomoButton createStopButton(final PomoController controller) {
 	
@@ -47,7 +47,7 @@ public class PomoButtonFactory {
 	
 		gr.fillPolygon(pol);
 	
-		PomoButton playButton = new PomoButton(22, 80, 18, 18);
+		PomoButton playButton = new PomoButton(22, 80, controlButtonWidth, controlButtonHeight);
 		playButton.addVisibleType(PomodoroType.WAIT);
 		playButton.setImage(image);
 		playButton.setAction(controller::startPomo);
@@ -67,7 +67,7 @@ public class PomoButtonFactory {
 		gr.drawLine(controlButtonWidth - (controlButtonWidth / 4), controlButtonHeight / 4, controlButtonWidth / 4,
 				controlButtonHeight - (controlButtonHeight / 4));
 	
-		PomoButton closeButton = new PomoButton(118, 2, 18, 18);
+		PomoButton closeButton = new PomoButton(118, 2, controlButtonWidth, controlButtonHeight);
 		closeButton.addVisibleType(PomodoroType.BREAK);
 		closeButton.addVisibleType(PomodoroType.POMO);
 		closeButton.addVisibleType(PomodoroType.WAIT);
@@ -86,7 +86,7 @@ public class PomoButtonFactory {
 		gr.drawLine(controlButtonWidth / 4, controlButtonHeight - (controlButtonHeight / 4),
 				controlButtonWidth - (controlButtonWidth / 4), controlButtonHeight - (controlButtonHeight / 4));
 	
-		PomoButton minimizeButton = new PomoButton(98, 2, 18, 18);
+		PomoButton minimizeButton = new PomoButton(98, 2, controlButtonWidth, controlButtonHeight);
 		minimizeButton.addVisibleType(PomodoroType.BREAK);
 		minimizeButton.addVisibleType(PomodoroType.POMO);
 		minimizeButton.addVisibleType(PomodoroType.WAIT);

@@ -90,10 +90,8 @@ public class TaskFrame extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e){
-			Task task = AddTaskDialog.createTask();
-			if (task != null) {
-				tasks.add(task);
-			}
+			AddTaskDialog.createTask()
+					.ifPresent(tasks::add);
 			initTasks();
 		}
 
@@ -102,9 +100,7 @@ public class TaskFrame extends JFrame {
 	private class TaskPanelMouseAdapter extends MouseAdapter {
 		public void mouseClicked(MouseEvent e){
 			if (e.getClickCount() >= 2){
-				for (Task task : tasks){
-					task.setActive(false);
-				}
+				tasks.forEach(task -> task.setActive(false));
 				TaskPanel source = (TaskPanel) e.getSource();
 				source.getTask().setActive(true);
 				taskHook.setCurrentTask(source.getTask());

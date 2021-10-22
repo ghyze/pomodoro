@@ -45,10 +45,8 @@ public class PomoFrame extends JFrame {
                 if (e.getButton() == 3) {
                     popup.show(e.getComponent(), e.getX(), e.getY());
                 } else if (e.getButton() == 1) {
-                    PomoButton button = panel.buttonClicked(e);
-                    if (button != null) {
-                        button.executeAction();
-                    }
+                    panel.buttonClicked(e)
+                            .ifPresent(PomoButton::executeAction);
                 }
             }
         });

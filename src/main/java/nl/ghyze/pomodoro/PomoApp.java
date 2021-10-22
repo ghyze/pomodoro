@@ -14,10 +14,6 @@ public class PomoApp
 {
 	
 	private PomoApp(){
-		
-	}
-	
-	private void init(){
 		PomoController controller = new PomoController();
 	      
 		Settings settings = new Settings();
@@ -59,9 +55,7 @@ public class PomoApp
 
 	public static void main(String[] args)
    {
-      PomoApp pomoApp = new PomoApp();
-      pomoApp.init();
-      
+	  new PomoApp();
    }
 
 }

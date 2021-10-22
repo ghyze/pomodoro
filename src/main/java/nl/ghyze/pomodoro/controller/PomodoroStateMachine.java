@@ -14,13 +14,13 @@ public class PomodoroStateMachine
 {
 
    private static Pomodoro current;
-   private Settings settings;
+   private final Settings settings;
    private int pomosDone = 0;
    private AbstractSystemTrayManager systemTrayManager;
 
    private Date lastAction = new Date();
 
-   private List<PomodoroHook> pomodoroHooks = new ArrayList<>();
+   private final List<PomodoroHook> pomodoroHooks = new ArrayList<>();
 
    public PomodoroStateMachine(Settings settings)
    {
@@ -170,25 +170,16 @@ public class PomodoroStateMachine
 
    private void completeHooks()
    {
-      for (PomodoroHook hook : pomodoroHooks)
-      {
-         hook.completed();
-      }
+      pomodoroHooks.forEach(PomodoroHook::completed);
    }
 
    private void cancelHooks()
    {
-      for (PomodoroHook hook : pomodoroHooks)
-      {
-         hook.canceled();
-      }
+      pomodoroHooks.forEach(PomodoroHook::canceled);
    }
    
    private void startHooks()
    {
-      for (PomodoroHook hook : pomodoroHooks)
-      {
-         hook.started();
-      }
+      pomodoroHooks.forEach(PomodoroHook::started);
    }
 }
