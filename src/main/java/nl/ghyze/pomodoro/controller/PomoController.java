@@ -54,9 +54,8 @@ public class PomoController implements ActionListener, SettingsChangeListener
 
    private void checkMinutesSinceLastAction()
    {
-      int minutesSinceLastAction = getMinutesSinceLastAction();
-
-      if (minutesSinceLastAction >= settings.getIdleTime())
+       if (getMinutesSinceLastAction() >= settings.getIdleTime() &&
+       PomodoroStateMachine.getCurrentType().isWait())
       {
          stateMachine.reset();
       }
@@ -105,15 +104,15 @@ public class PomoController implements ActionListener, SettingsChangeListener
       OptionDialogModel resetModel = OptionDialogModelFactory.createResetModel();
       OptionDialogController.showDialog(frame, resetModel, new ResetOptionDialogCallback(stateMachine));
    }
-   
+
    public void setSettings(Settings settings){
 	   this.settings = settings;
    }
-   
+
    public void setPomoFrame(PomoFrame frame){
 	   this.frame = frame;
    }
-   
+
    public void setStateMachine(PomodoroStateMachine stateMachine){
 	   this.stateMachine = stateMachine;
    }

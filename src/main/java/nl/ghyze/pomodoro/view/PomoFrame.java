@@ -60,48 +60,9 @@ public class PomoFrame extends JFrame {
     }
 
     public void position(Settings settings) {
-		int x = getXPosition(settings);
-		int y = getYPosition(settings);
-		this.setLocation(x, y);
+        FrameLocation frameLocation = new FrameLocation(settings, this.getSize());
+        this.setLocation(frameLocation.getLocation());
     }
-
-    private int getXPosition(Settings settings){
-		Settings.Position position = settings.getPosition();
-		Screen screen = multiScreenFactory.getSelectedScreen(settings);
-		Point mostBottomRightPoint = screen.getMostBottomRightPoint();
-		Point graphicsDeviceOffset = screen.getGraphicsDeviceOffset();
-
-		switch (position) {
-			case BOTTOM_RIGHT:
-				return graphicsDeviceOffset.x + mostBottomRightPoint.x - this.getWidth();
-			case BOTTOM_LEFT:
-			case TOP_LEFT:
-				return graphicsDeviceOffset.x;
-			case TOP_RIGHT:
-				return graphicsDeviceOffset.x + graphicsDeviceOffset.y + mostBottomRightPoint.x - this.getWidth();
-			default:
-		}
-		return 0;
-	}
-
-	private int getYPosition(Settings settings){
-		Settings.Position position = settings.getPosition();
-		Screen screen = multiScreenFactory.getSelectedScreen(settings);
-		Point mostBottomRightPoint = screen.getMostBottomRightPoint();
-		Point graphicsDeviceOffset = screen.getGraphicsDeviceOffset();
-
-		switch (position) {
-			case BOTTOM_RIGHT:
-			case BOTTOM_LEFT:
-				return graphicsDeviceOffset.y + mostBottomRightPoint.y - this.getHeight();
-			case TOP_LEFT:
-				return graphicsDeviceOffset.y;
-			case TOP_RIGHT:
-				return 0;
-			default:
-		}
-		return 0;
-	}
 
     public void addButton(PomoButton button) {
         panel.addButton(button);

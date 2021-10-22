@@ -10,7 +10,26 @@ public class Settings
 {
    public enum Position
    {
-      TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
+      TOP_LEFT(Vertical.TOP, Horizontal.LEFT),
+      TOP_RIGHT(Vertical.TOP, Horizontal.RIGHT),
+      BOTTOM_LEFT(Vertical.BOTTOM, Horizontal.LEFT),
+      BOTTOM_RIGHT(Vertical.BOTTOM, Horizontal.RIGHT);
+
+      public final Vertical vertical;
+      public final Horizontal horizontal;
+
+      Position(Vertical vertical, Horizontal horizontal){
+         this.vertical = vertical;
+         this.horizontal = horizontal;
+      }
+
+      public enum Vertical {
+         TOP, BOTTOM;
+      }
+
+      public enum Horizontal {
+         LEFT, RIGHT;
+      }
    }
 
    private static final String KEY_POSITION = "position";
