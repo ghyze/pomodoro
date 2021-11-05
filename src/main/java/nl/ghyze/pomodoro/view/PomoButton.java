@@ -6,8 +6,11 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.ghyze.pomodoro.controller.PomoAction;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.type.PomodoroType;
+
+import static java.util.Objects.nonNull;
 
 class PomoButton
 {
@@ -18,7 +21,7 @@ class PomoButton
    private final int height;
    private final List<PomodoroType> visibleTypes;
    
-   private PomoButtonAction action;
+   private PomoAction action;
    
    private Image image;
    
@@ -39,12 +42,12 @@ class PomoButton
       return r.contains(p);
    }
    
-   void setAction(PomoButtonAction action){
+   void setAction(PomoAction action){
       this.action = action;
    }
    
    void executeAction(){
-      if (action != null){
+      if (nonNull(action)){
          action.execute();
       }
    }

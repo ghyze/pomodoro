@@ -17,6 +17,8 @@ import nl.ghyze.pomodoro.optiondialog.StateMachineOptionDialogCallback;
 import nl.ghyze.pomodoro.view.PomoFrame;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
+import static nl.ghyze.pomodoro.Stopwatch.MILLISECONDS_PER_SECOND;
+
 @NoArgsConstructor
 public class PomoController implements ActionListener, SettingsChangeListener
 {
@@ -26,14 +28,18 @@ public class PomoController implements ActionListener, SettingsChangeListener
    private PomodoroStateMachine stateMachine;
    private AbstractSystemTrayManager systemTrayManager;
 
-   public void initializeSystemTrayManager(AbstractSystemTrayManager systemTrayManager)
-   {
-      this.systemTrayManager = systemTrayManager;
-      this.systemTrayManager.setPomoController(this);
-   }
 
-   public void initialize()
+   public void initialize(PomoFrame frame, Settings settings, AbstractSystemTrayManager systemTrayManager, PomodoroStateMachine stateMachine)
    {
+      this.frame = frame;
+      this.settings = settings;
+      this.systemTrayManager = systemTrayManager;
+      this.stateMachine = stateMachine;
+
+      this.frame.position(settings);
+      this.systemTrayManager.setPomoController(this);
+      settings.addListener(this);
+      OptionDialogController.init(frame);
       Timer timer = new Timer(20, this);
       timer.start();
    }
@@ -45,7 +51,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
       {
          OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroStateMachine.getCurrentType());
          StateMachineOptionDialogCallback callback = new StateMachineOptionDialogCallback(stateMachine);
-         OptionDialogController.showDialog(frame, model, callback);
+         OptionDialogController.showDialog(model, callback);
       }
       checkMinutesSinceLastAction();
       frame.update(PomodoroStateMachine.getCurrent());
@@ -54,7 +60,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
 
    private void checkMinutesSinceLastAction()
    {
-       if (getMinutesSinceLastAction() >= settings.getIdleTime() &&
+       if (stateMachine.getLastAction().isTimedOut(settings.getIdleTime()*MILLISECONDS_PER_SECOND) &&
        PomodoroStateMachine.getCurrentType().isWait())
       {
          stateMachine.reset();
@@ -63,7 +69,7 @@ public class PomoController implements ActionListener, SettingsChangeListener
 
    private int getMinutesSinceLastAction()
    {
-      return DateTimeUtil.minutesSince(stateMachine.getLastAction().getTime());
+      return stateMachine.getLastAction().timePassedMinutes();
    }
 
    public void stopProgram()
@@ -102,18 +108,6 @@ public class PomoController implements ActionListener, SettingsChangeListener
    public void reset()
    {
       OptionDialogModel resetModel = OptionDialogModelFactory.createResetModel();
-      OptionDialogController.showDialog(frame, resetModel, new ResetOptionDialogCallback(stateMachine));
-   }
-
-   public void setSettings(Settings settings){
-	   this.settings = settings;
-   }
-
-   public void setPomoFrame(PomoFrame frame){
-	   this.frame = frame;
-   }
-
-   public void setStateMachine(PomodoroStateMachine stateMachine){
-	   this.stateMachine = stateMachine;
+      OptionDialogController.showDialog(resetModel, new ResetOptionDialogCallback(stateMachine));
    }
 }

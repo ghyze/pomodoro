@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 
-import nl.ghyze.pomodoro.controller.PomoController;
+import nl.ghyze.pomodoro.controller.PomoAction;
 import nl.ghyze.pomodoro.type.PomodoroType;
 
 public class PomoButtonFactory {
@@ -13,7 +13,7 @@ public class PomoButtonFactory {
 	private static final int controlButtonWidth = 18;
 	private static final int controlButtonHeight = 18;
 
-	public static PomoButton createStopButton(final PomoController controller) {
+	public static PomoButton createStopButton(final PomoAction action) {
 	
 		BufferedImage image = new BufferedImage(controlButtonWidth, controlButtonHeight, BufferedImage.TYPE_INT_ARGB);
 	
@@ -27,12 +27,12 @@ public class PomoButtonFactory {
 		stopButton.addVisibleType(PomodoroType.BREAK);
 		stopButton.addVisibleType(PomodoroType.POMO);
 		stopButton.setImage(image);
-		stopButton.setAction(controller::stopCurrent);
+		stopButton.setAction(action);
 	
 		return stopButton;
 	}
 
-	public static PomoButton createPlayButton(final PomoController controller) {
+	public static PomoButton createPlayButton(final PomoAction action) {
 	
 		BufferedImage image = new BufferedImage(controlButtonWidth, controlButtonHeight, BufferedImage.TYPE_INT_ARGB);
 	
@@ -50,12 +50,12 @@ public class PomoButtonFactory {
 		PomoButton playButton = new PomoButton(22, 80, controlButtonWidth, controlButtonHeight);
 		playButton.addVisibleType(PomodoroType.WAIT);
 		playButton.setImage(image);
-		playButton.setAction(controller::startPomo);
+		playButton.setAction(action);
 	
 		return playButton;
 	}
 
-	public static PomoButton createCloseButton(final PomoController controller) {
+	public static PomoButton createCloseButton(final PomoAction action) {
 	
 		BufferedImage image = new BufferedImage(controlButtonWidth, controlButtonHeight, BufferedImage.TYPE_INT_ARGB);
 	
@@ -72,7 +72,7 @@ public class PomoButtonFactory {
 		closeButton.addVisibleType(PomodoroType.POMO);
 		closeButton.addVisibleType(PomodoroType.WAIT);
 		closeButton.setImage(image);
-		closeButton.setAction(controller::stopProgram);
+		closeButton.setAction(action);
 		return closeButton;
 	}
 

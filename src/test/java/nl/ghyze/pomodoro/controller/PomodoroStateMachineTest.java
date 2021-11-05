@@ -1,8 +1,8 @@
 package nl.ghyze.pomodoro.controller;
 
 import java.lang.reflect.Field;
-import java.util.Date;
 
+import nl.ghyze.pomodoro.Stopwatch;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -102,11 +102,10 @@ public class PomodoroStateMachineTest
       Assert.assertTrue(isDateCorrect(pomodoroStateMachine.getLastAction()));
    }
 
-   private boolean isDateCorrect(Date date)
+   // TODO: inline this method.
+   private boolean isDateCorrect(Stopwatch stopwatch)
    {
-      Date now = new Date();
-      long dateLong = date.getTime() + 100l;
-      return now.getTime() <= dateLong;
+      return stopwatch.timePassedMillis() <= 100l;
    }
 
    @Test
