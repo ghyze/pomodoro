@@ -1,7 +1,6 @@
 package nl.ghyze.pomodoro.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import nl.ghyze.pomodoro.Stopwatch;
@@ -155,8 +154,10 @@ public class PomodoroStateMachine
 
    public void reset()
    {
-      pomosDone = 0;
-      startWait();
+      if (pomosDone > 0) {
+         pomosDone = 0;
+         startWait();
+      }
    }
 
    Stopwatch getLastAction()
