@@ -3,24 +3,28 @@ package nl.ghyze.pomodoro.optiondialog;
 public class OptionDialogModel
 {
    public enum Choice {
-      SAVE,
-      DISCARD,
-      CONTINUE_ACTION,
+      SAVE("Save"),
+      DISCARD("Discard"),
+      CONTINUE_ACTION("Continue"),
 
-      OK,
-      CANCEL
+      OK("Ok"),
+      CANCEL("Cancel");
+
+      private String message;
+
+      Choice(String message){
+         this.message = message;
+      }
+
+      public String toString(){
+         return this.message;
+      }
    }
 
    private String title;
    private String message;
    private Object[] choices;
 
-   public static final int SAVE = 0;
-   public static final int DISCARD = 1;
-   public static final int CONTINUE_ACTION = 2;
-
-   public static final int OK = 0;
-   public static final int CANCEL = 1;
 
    public OptionDialogModel()
    {

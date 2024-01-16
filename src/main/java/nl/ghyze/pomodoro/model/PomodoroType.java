@@ -1,10 +1,12 @@
 package nl.ghyze.pomodoro.model;
 
+import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
+
 import java.awt.Color;
 
 public enum PomodoroType {
-	POMO(Color.RED, 30f, "Pomodoro finished", "Pomodoro finished. What would you like to do with this one?", new Object[] { "Save", "Discard", "Continue" }),
-	BREAK(new Color(0, 192, 0), 30f, "Break finished", "Ready to start next one?", new Object[] { "Ok", "Cancel" }),
+	POMO(Color.RED, 30f, "Pomodoro finished", "Pomodoro finished. What would you like to do with this one?", new Object[] {OptionDialogModel.Choice.SAVE, OptionDialogModel.Choice.DISCARD, OptionDialogModel.Choice.CONTINUE_ACTION }),
+	BREAK(new Color(0, 192, 0), 30f, "Break finished", "Ready to start next one?", new Object[] { OptionDialogModel.Choice.OK, OptionDialogModel.Choice.CANCEL }),
 	WAIT(Color.BLUE, 16f, "", "", new Object[0]);
 
 	private final Color backgroundColor;

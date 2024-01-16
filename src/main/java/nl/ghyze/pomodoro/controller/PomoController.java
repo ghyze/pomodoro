@@ -7,13 +7,16 @@ import javax.swing.Timer;
 
 import lombok.NoArgsConstructor;
 import nl.ghyze.pomodoro.DateTimeUtil;
+import nl.ghyze.pomodoro.model.PomodoroType;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.SettingsChangeListener;
+import nl.ghyze.pomodoro.optiondialog.BreakOptionDialogCallback;
+import nl.ghyze.pomodoro.optiondialog.OptionDialogCallback;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogController;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModelFactory;
 import nl.ghyze.pomodoro.optiondialog.ResetOptionDialogCallback;
-import nl.ghyze.pomodoro.optiondialog.StateMachineOptionDialogCallback;
+import nl.ghyze.pomodoro.optiondialog.PomoOptionDialogCallback;
 import nl.ghyze.pomodoro.view.PomoFrame;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
@@ -44,12 +47,19 @@ public class PomoController implements ActionListener, SettingsChangeListener
       if (stateMachine.shouldChangeState())
       {
          OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroStateMachine.getCurrentType());
-         StateMachineOptionDialogCallback callback = new StateMachineOptionDialogCallback(stateMachine);
-         OptionDialogController.showDialog(frame, model, callback);
+         OptionDialogController.showDialog(frame, model, getCallback());
       }
       checkMinutesSinceLastAction();
       frame.update(PomodoroStateMachine.getCurrent());
       systemTrayManager.update(PomodoroStateMachine.getCurrent());
+   }
+
+   private OptionDialogCallback getCallback(){
+      if (PomodoroType.POMO == PomodoroStateMachine.getCurrentType()) {
+         return new PomoOptionDialogCallback(stateMachine);
+      } else {
+         return new BreakOptionDialogCallback(stateMachine);
+      }
    }
 
    private void checkMinutesSinceLastAction()
