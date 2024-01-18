@@ -2,6 +2,7 @@ package nl.ghyze.pomodoro.tasks;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Optional;
 
 class AddTaskDialog extends JDialog {
 
@@ -14,18 +15,18 @@ class AddTaskDialog extends JDialog {
     private static final int ELEMENT_HEIGHT = 30;
     private static final int LABEL_WIDTH = 110;
 
-    private static AddTaskDialog dialog = new AddTaskDialog();
+    private static final AddTaskDialog dialog = new AddTaskDialog();
 
-    private SpringLayout layout = new SpringLayout();
+    private final SpringLayout layout = new SpringLayout();
 
-    private JLabel lbName = new JLabel("Name");
-    private JLabel lbEstimate = new JLabel("Estimated pomos");
+    private final JLabel lbName = new JLabel("Name");
+    private final JLabel lbEstimate = new JLabel("Estimated pomos");
 
-    private JTextField tfName = new JTextField();
-    private JSpinner spEstimate = new JSpinner(new SpinnerNumberModel(1,0,25,1));
+    private final JTextField tfName = new JTextField();
+    private final JSpinner spEstimate = new JSpinner(new SpinnerNumberModel(1,0,25,1));
 
-    private JButton btAdd = new JButton("Add");
-    private JButton btCancel = new JButton("Cancel");
+    private final JButton btAdd = new JButton("Add");
+    private final JButton btCancel = new JButton("Cancel");
 
     private Result result;
 
@@ -92,13 +93,13 @@ class AddTaskDialog extends JDialog {
         dialog.setVisible(true);
     }
 
-    static Task createTask(){
+    static Optional<Task> createTask(){
         showDialog();
         if (dialog.result == Result.OK) {
             String taskName = dialog.tfName.getText();
             Integer taskEstimated = (Integer) dialog.spEstimate.getValue();
-            return new Task(taskName, taskEstimated);
+            return Optional.of(new Task(taskName, taskEstimated));
         }
-        return null;
+        return Optional.empty();
     }
 }

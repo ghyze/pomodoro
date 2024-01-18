@@ -3,6 +3,7 @@ package nl.ghyze.pomodoro.view;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import nl.ghyze.pomodoro.controller.PomoAction;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.Assert;
@@ -47,7 +48,7 @@ public class PomoButtonTest {
 	button.executeAction();
 	
 	IMocksControl control = EasyMock.createControl();
-	PomoButtonAction action = control.createMock(PomoButtonAction.class);
+	PomoAction action = control.createMock(PomoAction.class);
 	action.execute();
 	EasyMock.expectLastCall();
 	button.setAction(action);

@@ -4,7 +4,7 @@ import nl.ghyze.pomodoro.controller.PomodoroStateMachine;
 
 public class ResetOptionDialogCallback implements OptionDialogCallback
 {
-   private PomodoroStateMachine stateMachine;
+   private final PomodoroStateMachine stateMachine;
 
    public ResetOptionDialogCallback(PomodoroStateMachine stateMachine)
    {
@@ -20,13 +20,11 @@ public class ResetOptionDialogCallback implements OptionDialogCallback
    @Override
    public void cancel()
    {
-      ;
    }
 
    @Override
    public void timeout()
    {
-      ;
    }
 
 }

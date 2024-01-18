@@ -13,7 +13,7 @@ import nl.ghyze.pomodoro.view.menu.MenuController;
 public class SystemTrayManagerImpl extends AbstractSystemTrayManager
 {
 
-   private MenuController menuController;
+   private final MenuController menuController;
 
    public SystemTrayManagerImpl()
    {

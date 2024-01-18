@@ -9,8 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import nl.ghyze.pomodoro.MultiScreenFactory;
-import nl.ghyze.pomodoro.controller.PomoController;
+import nl.ghyze.pomodoro.controller.PomoAction;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Settings;
 
@@ -19,12 +18,10 @@ public class PomoFrame extends JFrame {
      * <code>serialVersionUID</code> indicates/is used for.
      */
     private static final long serialVersionUID = 4110240101894844582L;
-    private JPopupMenu popup = new JPopupMenu();
-    private PomoPanel panel = new PomoPanel();
+    private final JPopupMenu popup = new JPopupMenu();
+    private final PomoPanel panel = new PomoPanel();
 
-    private MultiScreenFactory multiScreenFactory = new MultiScreenFactory();
-
-    public PomoFrame(final PomoController controller) {
+    public PomoFrame(final PomoAction action) {
         this.setAlwaysOnTop(true);
         this.setUndecorated(true);
         this.setType(Window.Type.UTILITY);
@@ -34,7 +31,7 @@ public class PomoFrame extends JFrame {
         this.setVisible(true);
         JMenuItem exit = new JMenuItem("Exit");
         popup.add(exit);
-        exit.addActionListener(actionEvent -> controller.stopProgram());
+        exit.addActionListener(actionEvent -> action.execute());
 
         JMenuItem hide = new JMenuItem("Hide");
         popup.add(hide);
@@ -45,10 +42,8 @@ public class PomoFrame extends JFrame {
                 if (e.getButton() == 3) {
                     popup.show(e.getComponent(), e.getX(), e.getY());
                 } else if (e.getButton() == 1) {
-                    PomoButton button = panel.buttonClicked(e);
-                    if (button != null) {
-                        button.executeAction();
-                    }
+                    panel.buttonClicked(e)
+                            .ifPresent(PomoButton::executeAction);
                 }
             }
         });
@@ -60,48 +55,9 @@ public class PomoFrame extends JFrame {
     }
 
     public void position(Settings settings) {
-		int x = getXPosition(settings);
-		int y = getYPosition(settings);
-		this.setLocation(x, y);
+        FrameLocation frameLocation = new FrameLocation(settings, this.getSize());
+        this.setLocation(frameLocation.getLocation());
     }
-
-    private int getXPosition(Settings settings){
-		Settings.Position position = settings.getPosition();
-		Screen screen = multiScreenFactory.getSelectedScreen(settings);
-		Point mostBottomRightPoint = screen.getMostBottomRightPoint();
-		Point graphicsDeviceOffset = screen.getGraphicsDeviceOffset();
-
-		switch (position) {
-			case BOTTOM_RIGHT:
-				return graphicsDeviceOffset.x + mostBottomRightPoint.x - this.getWidth();
-			case BOTTOM_LEFT:
-			case TOP_LEFT:
-				return graphicsDeviceOffset.x;
-			case TOP_RIGHT:
-				return graphicsDeviceOffset.x + graphicsDeviceOffset.y + mostBottomRightPoint.x - this.getWidth();
-			default:
-		}
-		return 0;
-	}
-
-	private int getYPosition(Settings settings){
-		Settings.Position position = settings.getPosition();
-		Screen screen = multiScreenFactory.getSelectedScreen(settings);
-		Point mostBottomRightPoint = screen.getMostBottomRightPoint();
-		Point graphicsDeviceOffset = screen.getGraphicsDeviceOffset();
-
-		switch (position) {
-			case BOTTOM_RIGHT:
-			case BOTTOM_LEFT:
-				return graphicsDeviceOffset.y + mostBottomRightPoint.y - this.getHeight();
-			case TOP_LEFT:
-				return graphicsDeviceOffset.y;
-			case TOP_RIGHT:
-				return 0;
-			default:
-		}
-		return 0;
-	}
 
     public void addButton(PomoButton button) {
         panel.addButton(button);

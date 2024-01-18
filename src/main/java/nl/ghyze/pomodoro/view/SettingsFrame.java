@@ -19,36 +19,36 @@ import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.Settings.Position;
 
 public class SettingsFrame extends JFrame {
-    private static int LABEL_WIDTH = 200;
+    private static final int LABEL_WIDTH = 200;
 
-    private Settings settings;
-    private MultiScreenFactory multiScreenFactory = new MultiScreenFactory();
+    private final Settings settings;
+    private final MultiScreenFactory multiScreenFactory = new MultiScreenFactory();
 
-    private SpringLayout layout = new SpringLayout();
+    private final SpringLayout layout = new SpringLayout();
 
-    private JLabel lbPosition = new JLabel("Position");
-    private JComboBox<Screen> jcbScreen = new JComboBox<>();
-    private ButtonGroup bgPosition = new ButtonGroup();
-    private JRadioButton rbTopLeft = new JRadioButton("Top left");
-    private JRadioButton rbTopRight = new JRadioButton("Top right");
-    private JRadioButton rbBottomLeft = new JRadioButton("Bottom left");
-    private JRadioButton rbBottomRight = new JRadioButton("Bottom right");
+    private final JLabel lbPosition = new JLabel("Position");
+    private final JComboBox<Screen> jcbScreen = new JComboBox<>();
+    private final ButtonGroup bgPosition = new ButtonGroup();
+    private final JRadioButton rbTopLeft = new JRadioButton("Top left");
+    private final JRadioButton rbTopRight = new JRadioButton("Top right");
+    private final JRadioButton rbBottomLeft = new JRadioButton("Bottom left");
+    private final JRadioButton rbBottomRight = new JRadioButton("Bottom right");
 
-    private JButton btOk = new JButton("OK");
-    private JButton btCancel = new JButton("Cancel");
+    private final JButton btOk = new JButton("OK");
+    private final JButton btCancel = new JButton("Cancel");
 
-    private JLabel lbPomoTime = new JLabel("Time of pomodoros");
-    private JLabel lbShortBreakTime = new JLabel("Time of short break");
-    private JLabel lbLongBreakTime = new JLabel("Time of long break");
-    private JLabel lbNrOfPomos = new JLabel("Pomodoros between long breaks");
+    private final JLabel lbPomoTime = new JLabel("Time of pomodoros");
+    private final JLabel lbShortBreakTime = new JLabel("Time of short break");
+    private final JLabel lbLongBreakTime = new JLabel("Time of long break");
+    private final JLabel lbNrOfPomos = new JLabel("Pomodoros between long breaks");
 
-    private JTextField tfPomoTime = new JTextField();
-    private JTextField tfShortBreakTime = new JTextField();
-    private JTextField tfLongBreakTime = new JTextField();
-    private JTextField tfNrOfPomos = new JTextField();
+    private final JTextField tfPomoTime = new JTextField();
+    private final JTextField tfShortBreakTime = new JTextField();
+    private final JTextField tfLongBreakTime = new JTextField();
+    private final JTextField tfNrOfPomos = new JTextField();
 
-    private JCheckBox cbAutoReset = new JCheckBox("Autoreset after idle time");
-    private JTextField tfIdleTime = new JTextField();
+    private final JCheckBox cbAutoReset = new JCheckBox("Autoreset after idle time");
+    private final JTextField tfIdleTime = new JTextField();
 
     public SettingsFrame(Settings settings) {
         this.settings = settings;
@@ -75,9 +75,8 @@ public class SettingsFrame extends JFrame {
     }
 
     private void initPosition() {
-        for (Screen screen : multiScreenFactory.getAvailableScreenList()) {
-            jcbScreen.addItem(screen);
-        }
+        multiScreenFactory.getAvailableScreenList()
+                .forEach(jcbScreen::addItem);
 
         bgPosition.add(rbTopLeft);
         bgPosition.add(rbTopRight);
@@ -229,14 +228,7 @@ public class SettingsFrame extends JFrame {
             settings.setScreenIndex(screen.getIndex());
         }
 
-        Position position = Position.BOTTOM_RIGHT;
-        if (rbTopLeft.isSelected()) {
-            position = Position.TOP_LEFT;
-        } else if (rbTopRight.isSelected()) {
-            position = Position.TOP_RIGHT;
-        } else if (rbBottomLeft.isSelected()) {
-            position = Position.BOTTOM_LEFT;
-        }
+        Position position = getPosition();
         settings.setPosition(position);
 
         int pomoMinutes = getNumber(tfPomoTime.getText());
@@ -268,6 +260,17 @@ public class SettingsFrame extends JFrame {
         }
 
         settings.save();
+    }
+
+    private Position getPosition() {
+        if (rbTopLeft.isSelected()) {
+            return Position.TOP_LEFT;
+        } else if (rbTopRight.isSelected()) {
+            return Position.TOP_RIGHT;
+        } else if (rbBottomLeft.isSelected()) {
+            return Position.BOTTOM_LEFT;
+        }
+        return Position.BOTTOM_RIGHT;
     }
 
     private int getNumber(String numberString) {

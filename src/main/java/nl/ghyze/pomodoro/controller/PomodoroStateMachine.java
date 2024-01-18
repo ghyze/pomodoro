@@ -1,9 +1,9 @@
 package nl.ghyze.pomodoro.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import nl.ghyze.pomodoro.Stopwatch;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
@@ -18,7 +18,7 @@ public class PomodoroStateMachine
    private int pomosDone = 0;
    private AbstractSystemTrayManager systemTrayManager;
 
-   private Date lastAction = new Date();
+   private Stopwatch lastAction = new Stopwatch();
 
    private final List<PomodoroHook> pomodoroHooks = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class PomodoroStateMachine
 
    public void handleAction(OptionDialogModel.Choice choice)
    {
-      lastAction = new Date();
+      lastAction = new Stopwatch();
       if (getCurrentType().isPomo())
       {
          handleActionForPomo(choice);
@@ -97,7 +97,7 @@ public class PomodoroStateMachine
 
    private Pomodoro createNextBreak()
    {
-      lastAction = new Date();
+      lastAction = new Stopwatch();
       if (pomosDone < settings.getPomosBeforeLongBreak())
       {
          return createShortBreak();
@@ -137,7 +137,7 @@ public class PomodoroStateMachine
 
    void startPomo()
    {
-      lastAction = new Date();
+      lastAction = new Stopwatch();
       current = new Pomodoro(settings.getPomoMinutes(), PomodoroType.POMO);
       updateCurrent();
       startHooks();
@@ -161,13 +161,15 @@ public class PomodoroStateMachine
 
    public void reset()
    {
-      pomosDone = 0;
-      startWait();
+      if (pomosDone > 0) {
+         pomosDone = 0;
+         startWait();
+      }
    }
 
-   Date getLastAction()
+   Stopwatch getLastAction()
    {
-      return new Date(lastAction.getTime());
+      return lastAction;
    }
 
    public void addPomodoroHook(PomodoroHook hook)
@@ -177,25 +179,16 @@ public class PomodoroStateMachine
 
    private void completeHooks()
    {
-      for (PomodoroHook hook : pomodoroHooks)
-      {
-         hook.completed();
-      }
+      pomodoroHooks.forEach(PomodoroHook::completed);
    }
 
    private void cancelHooks()
    {
-      for (PomodoroHook hook : pomodoroHooks)
-      {
-         hook.canceled();
-      }
+      pomodoroHooks.forEach(PomodoroHook::canceled);
    }
    
    private void startHooks()
    {
-      for (PomodoroHook hook : pomodoroHooks)
-      {
-         hook.started();
-      }
+      pomodoroHooks.forEach(PomodoroHook::started);
    }
 }

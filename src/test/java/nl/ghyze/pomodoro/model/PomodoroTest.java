@@ -14,8 +14,8 @@ public class PomodoroTest {
     }
 
     @Test
-    public void testIsDone() {
-        Pomodoro pomodoro = new Pomodoro(0, PomodoroType.POMO);
+    public void testIsDone() throws InterruptedException{
+        Pomodoro pomodoro = new Pomodoro(0, PomodoroType.POMO);Thread.sleep(15);
         assertTrue(pomodoro.isDone());
 
         Pomodoro notDone = new Pomodoro(1, PomodoroType.POMO);

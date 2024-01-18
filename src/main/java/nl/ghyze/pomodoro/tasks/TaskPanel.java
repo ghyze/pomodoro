@@ -15,15 +15,15 @@ public class TaskPanel extends JPanel implements Observer {
 	 */
 	private static final long serialVersionUID = 6925083513676349367L;
 
-	private Task task;
+	private final Task task;
 	
-	private JLabel lbName = new JLabel();
+	private final JLabel lbName = new JLabel();
 
-	private JLabel lbEstimated = new JLabel();
+	private final JLabel lbEstimated = new JLabel();
 
-	private JLabel lbActual = new JLabel();
+	private final JLabel lbActual = new JLabel();
 	
-	private LayoutManager layout = new BoxLayout(this, BoxLayout.LINE_AXIS);
+	private final LayoutManager layout = new BoxLayout(this, BoxLayout.LINE_AXIS);
 	
 	TaskPanel(Task task){
 		this.task = task;
