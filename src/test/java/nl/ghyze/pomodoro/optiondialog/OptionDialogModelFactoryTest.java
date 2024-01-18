@@ -13,9 +13,9 @@ public class OptionDialogModelFactoryTest
    {
       OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroType.POMO);
 
-      Object firstChoice = "Save";
-      Object secondChoice = "Discard";
-      Object thirdChoice = "Continue";
+      Object firstChoice = OptionDialogModel.Choice.SAVE;
+      Object secondChoice = OptionDialogModel.Choice.DISCARD;
+      Object thirdChoice = OptionDialogModel.Choice.CONTINUE_ACTION;
 
       assertOptionDialogModel(model, "Pomodoro finished", "Pomodoro finished. What would you like to do with this one?", new Object[] { firstChoice, secondChoice, thirdChoice }, firstChoice);
    }
@@ -25,8 +25,8 @@ public class OptionDialogModelFactoryTest
    {
       OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroType.BREAK);
 
-      Object firstChoice = "Ok";
-      Object secondChoice = "Cancel";
+      Object firstChoice = OptionDialogModel.Choice.OK;
+      Object secondChoice = OptionDialogModel.Choice.CANCEL;
 
       assertOptionDialogModel(model, "Break finished", "Ready to start next one?", new Object[] { firstChoice, secondChoice }, firstChoice);
    }

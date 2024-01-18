@@ -28,7 +28,7 @@ public class MultiScreenFactory {
     public Screen getSelectedScreen(Settings settings) {
         List<Screen> screenList = getAvailableScreenList();
         int screenIndex = settings.getScreenIndex();
-        int actualIndex = screenIndex <= screenList.size() ? screenIndex : 1;
+        int actualIndex = screenIndex < screenList.size() ? screenIndex : 0;
         return screenList.get(actualIndex);
     }
 

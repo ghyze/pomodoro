@@ -79,6 +79,7 @@ public class OptionDialogController
             callback.ok();
          } else if (i == NO_OPTION) {
             callback.cancel();
+         }
 //      if (callback != null)
 //      {
 //         switch (i)

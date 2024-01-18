@@ -103,11 +103,6 @@ public class TestToolkit extends Toolkit {
         return null;
     }
 
-//    @Override
-    public DragSourceContextPeer createDragSourceContextPeer(DragGestureEvent dge) throws InvalidDnDOperationException {
-        return null;
-    }
-
     @Override
     public boolean isModalityTypeSupported(Dialog.ModalityType modalityType) {
         return false;

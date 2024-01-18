@@ -15,13 +15,13 @@ public class StateMachineOptionDialogCallback implements OptionDialogCallback
    @Override
    public void ok()
    {
-      stateMachine.handleAction(0);
+      stateMachine.handleAction(OptionDialogModel.Choice.OK);
    }
 
    @Override
    public void cancel()
    {
-      stateMachine.handleAction(1);
+      stateMachine.handleAction(OptionDialogModel.Choice.CANCEL);
    }
 
    @Override
