@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import lombok.NoArgsConstructor;
-import nl.ghyze.pomodoro.model.PomodoroType;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.model.SettingsChangeListener;
 import nl.ghyze.pomodoro.optiondialog.BreakOptionDialogCallback;
@@ -56,7 +55,7 @@ public class PomoController implements ActionListener, SettingsChangeListener {
     }
 
     private OptionDialogCallback getCallback(){
-      if (PomodoroType.POMO == PomodoroStateMachine.getCurrentType()) {
+      if (PomodoroStateMachine.getCurrentType().isPomo()) {
          return new PomoOptionDialogCallback(stateMachine);
       } else {
          return new BreakOptionDialogCallback(stateMachine);
@@ -68,10 +67,6 @@ public class PomoController implements ActionListener, SettingsChangeListener {
                 PomodoroStateMachine.getCurrentType().isWait()) {
             stateMachine.reset();
         }
-    }
-
-    private int getMinutesSinceLastAction() {
-        return stateMachine.getLastAction().timePassedMinutes();
     }
 
     public void stopProgram() {
