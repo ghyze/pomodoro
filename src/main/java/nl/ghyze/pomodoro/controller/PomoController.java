@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import nl.ghyze.pomodoro.model.PomodoroType;
 import nl.ghyze.pomodoro.model.Settings;
@@ -25,6 +26,7 @@ import static nl.ghyze.pomodoro.Stopwatch.MILLISECONDS_PER_MINUTE;
 public class PomoController implements ActionListener, SettingsChangeListener {
     private PomoFrame frame;
 
+    @Getter
     private Settings settings;
     private PomodoroStateMachine stateMachine;
     private AbstractSystemTrayManager systemTrayManager;
@@ -81,10 +83,6 @@ public class PomoController implements ActionListener, SettingsChangeListener {
 
     public void showFrame() {
         frame.setVisible(true);
-    }
-
-    public Settings getSettings() {
-        return settings;
     }
 
     @Override

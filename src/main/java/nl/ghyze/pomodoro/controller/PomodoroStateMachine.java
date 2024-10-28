@@ -3,6 +3,7 @@ package nl.ghyze.pomodoro.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Setter;
 import nl.ghyze.pomodoro.Stopwatch;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.Settings;
@@ -16,6 +17,7 @@ public class PomodoroStateMachine
    private static Pomodoro current;
    private final Settings settings;
    private int pomosDone = 0;
+   @Setter
    private AbstractSystemTrayManager systemTrayManager;
 
    private Stopwatch lastAction = new Stopwatch();
@@ -26,11 +28,6 @@ public class PomodoroStateMachine
    {
       this.settings = settings;
       current = new Pomodoro(0, PomodoroType.WAIT);
-   }
-
-   public void setSystemTrayManager(AbstractSystemTrayManager systemTrayManager)
-   {
-      this.systemTrayManager = systemTrayManager;
    }
 
    static Pomodoro getCurrent()
@@ -50,6 +47,7 @@ public class PomodoroStateMachine
 
    public void handleAction(OptionDialogModel.Choice choice)
    {
+      System.out.println("OptionDialog choice: "+choice);
       lastAction = new Stopwatch();
       if (getCurrentType().isPomo())
       {
@@ -85,7 +83,7 @@ public class PomodoroStateMachine
 
    private void handleActionForBreak(OptionDialogModel.Choice choice)
    {
-      if (choice ==  OptionDialogModel.Choice.OK)
+      if (choice ==  OptionDialogModel.Choice.SAVE)
       {
          startPomo();
       }
