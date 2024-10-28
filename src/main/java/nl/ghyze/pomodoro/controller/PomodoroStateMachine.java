@@ -49,35 +49,30 @@ public class PomodoroStateMachine
    {
       System.out.println("OptionDialog choice: "+choice);
       lastAction = new Stopwatch();
-      if (getCurrentType().isPomo())
-      {
-         handleActionForPomo(choice);
-      }
-      else if (getCurrentType().isBreak())
-      {
-         handleActionForBreak(choice);
+      switch (getCurrentType()){
+         case POMO -> handleActionForPomo(choice);
+         case BREAK -> handleActionForBreak(choice);
       }
    }
 
    private void handleActionForPomo(OptionDialogModel.Choice choice)
    {
-      if (choice == OptionDialogModel.Choice.SAVE)
-      {
-         pomosDone++;
-         completeHooks();
-         current = createNextBreak();
+      switch (choice){
+         case SAVE -> {
+            pomosDone++;
+            completeHooks();
+            current = createNextBreak();
+         }
+         case CANCEL -> {
+            cancelHooks();
+            current = createNextBreak();
+         }
+         case CONTINUE_ACTION -> {
+            pomosDone++;
+            completeHooks();
+            startPomo();
+         }
       }
-      else if (choice == OptionDialogModel.Choice.CANCEL)
-      {
-         cancelHooks();
-         current = createNextBreak();
-      }
-      else if (choice == OptionDialogModel.Choice.CONTINUE_ACTION){
-         pomosDone ++;
-         completeHooks();
-         startPomo();
-      }
-
       updateCurrent();
    }
 
