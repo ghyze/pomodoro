@@ -78,7 +78,7 @@ public class PomodoroStateMachine
 
    private void handleActionForBreak(OptionDialogModel.Choice choice)
    {
-      if (choice ==  OptionDialogModel.Choice.SAVE)
+      if (choice ==  OptionDialogModel.Choice.OK)
       {
          startPomo();
       }
