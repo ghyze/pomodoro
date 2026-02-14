@@ -60,7 +60,7 @@ public class Settings
    @Builder.Default
    private ArrayList<SettingsChangeListener> listeners = new ArrayList<>();
 
-   public void setPosition(Position position)
+   public void setPosition(final Position position)
    {
       this.position = position;
       notifyListeners();
@@ -68,25 +68,25 @@ public class Settings
 
    private void notifyListeners()
    {
-      for (SettingsChangeListener listener : listeners)
+      for (final SettingsChangeListener listener : listeners)
       {
          listener.onChange(this);
       }
    }
 
-   public void addListener(SettingsChangeListener listener)
+   public void addListener(final SettingsChangeListener listener)
    {
       listeners.add(listener);
    }
 
-   void removeListener(SettingsChangeListener listener)
+   void removeListener(final SettingsChangeListener listener)
    {
       listeners.remove(listener);
    }
 
    public void save()
    {
-      Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+      final Preferences prefs = Preferences.userNodeForPackage(this.getClass());
 
       prefs.putInt(KEY_POMO_MINUTES, pomoMinutes);
       prefs.putInt(KEY_SHORT_BREAK_MINUTES, shortBreakMinutes);
@@ -102,7 +102,7 @@ public class Settings
 
    public void load()
    {
-      Preferences prefs = Preferences.userNodeForPackage(this.getClass());
+      final Preferences prefs = Preferences.userNodeForPackage(this.getClass());
 
       pomoMinutes = prefs.getInt(KEY_POMO_MINUTES, 25);
       shortBreakMinutes = prefs.getInt(KEY_SHORT_BREAK_MINUTES, 5);

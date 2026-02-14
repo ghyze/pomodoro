@@ -22,19 +22,19 @@ public class PomoApp
 	 * Constructor.
 	 */
 	private PomoApp(){
-		PomoController controller = new PomoController();
+		final PomoController controller = new PomoController();
 
-		PomoFrame frame = initPomoFrame(controller);
+		final PomoFrame frame = initPomoFrame(controller);
 
-		Settings settings = new Settings();
+		final Settings settings = new Settings();
 		settings.load();
 
-		TaskFrame taskFrame = new TaskFrame();
+		final TaskFrame taskFrame = new TaskFrame();
 
-		AbstractSystemTrayManager systemTrayManager = new SystemTrayManagerImpl();
+		final AbstractSystemTrayManager systemTrayManager = new SystemTrayManagerImpl();
 		systemTrayManager.setTaskFrame(taskFrame);
 
-		PomodoroStateMachine stateMachine = initStateMachine(settings, systemTrayManager, new StatisticsHook(), taskFrame.getTaskHook());
+		final PomodoroStateMachine stateMachine = initStateMachine(settings, systemTrayManager, new StatisticsHook(), taskFrame.getTaskHook());
 
 		controller.initialize(frame, settings, systemTrayManager, stateMachine);
 	}
@@ -44,8 +44,8 @@ public class PomoApp
 	 * @param controller the controller to use
 	 * @return the frame
 	 */
-	private PomoFrame initPomoFrame(PomoController controller) {
-		PomoFrame frame = new PomoFrame(controller::stopProgram);
+	private PomoFrame initPomoFrame(final PomoController controller) {
+		final PomoFrame frame = new PomoFrame(controller::stopProgram);
 		frame.addButton(PomoButtonFactory.createStopButton(controller::stopCurrent));
 		frame.addButton(PomoButtonFactory.createPlayButton(controller::startPomo));
 		frame.addButton(PomoButtonFactory.createCloseButton(controller::stopProgram));
@@ -60,10 +60,10 @@ public class PomoApp
 	 * @param hooks the hooks to use
 	 * @return the state machine
 	 */
-	private PomodoroStateMachine initStateMachine(Settings settings, AbstractSystemTrayManager systemTrayManager, PomodoroHook... hooks) {
-		PomodoroStateMachine stateMachine = new PomodoroStateMachine(settings);
+	private PomodoroStateMachine initStateMachine(final Settings settings, final AbstractSystemTrayManager systemTrayManager, final PomodoroHook... hooks) {
+		final PomodoroStateMachine stateMachine = new PomodoroStateMachine(settings);
 		stateMachine.setSystemTrayManager(systemTrayManager);
-		for (PomodoroHook hook : hooks){
+		for (final PomodoroHook hook : hooks){
 			stateMachine.addPomodoroHook(hook);
 		}
 		stateMachine.updateCurrent();
@@ -74,7 +74,7 @@ public class PomoApp
 	 * Entry point of the application.
 	 * @param args command line arguments, ignored
 	 */
-	public static void main(String[] args)
+	public static void main(final String[] args)
    {
 	  new PomoApp();
    }

@@ -7,7 +7,7 @@ public class PomoOptionDialogCallback implements OptionDialogCallback
 
    private final PomodoroStateMachine stateMachine;
 
-   public PomoOptionDialogCallback(PomodoroStateMachine stateMachine)
+   public PomoOptionDialogCallback(final PomodoroStateMachine stateMachine)
    {
       this.stateMachine = stateMachine;
    }

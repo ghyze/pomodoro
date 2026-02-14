@@ -17,7 +17,7 @@ public class Pomodoro {
     private int pomosDone = 0;
     private int maxDone = 0;
 
-    public Pomodoro(int minutes, PomodoroType type) {
+    public Pomodoro(final int minutes, final PomodoroType type) {
         this.minutes = minutes;
         this.type = type;
         startTime = System.currentTimeMillis();
@@ -25,12 +25,12 @@ public class Pomodoro {
     }
 
     public int minutesLeft() {
-        int minutesPassed = stopwatch.timePassedMinutes();
+        final int minutesPassed = stopwatch.timePassedMinutes();
         return Math.max(0, minutes - minutesPassed - 1);
     }
 
     int secondsOfMinuteLeft() {
-        int secondsPassed = (int) stopwatch.timePassedMillis() % Stopwatch.MILLISECONDS_PER_MINUTE;
+        final int secondsPassed = (int) stopwatch.timePassedMillis() % Stopwatch.MILLISECONDS_PER_MINUTE;
         return Math.max(0, 59 - (secondsPassed / Stopwatch.MILLISECONDS_PER_SECOND));
     }
 
@@ -42,7 +42,7 @@ public class Pomodoro {
         return Math.max(pomosDone, maxDone);
     }
 
-    public void setMaxPomosDone(int maxDone) {
+    public void setMaxPomosDone(final int maxDone) {
         this.maxDone = maxDone;
     }
 
@@ -50,9 +50,9 @@ public class Pomodoro {
         return System.currentTimeMillis() - startTime;
     }
 
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         if (other instanceof Pomodoro) {
-            Pomodoro otherPomo = (Pomodoro) other;
+            final Pomodoro otherPomo = (Pomodoro) other;
             if (otherPomo.getType() != type) {
                 return false;
             }
@@ -64,14 +64,14 @@ public class Pomodoro {
 
     @Override
     public int hashCode() {
-        HashCodeBuilder builder = new HashCodeBuilder(17, 31);
+        final HashCodeBuilder builder = new HashCodeBuilder(17, 31);
         builder.append(type);
         builder.append(minutes);
         return builder.hashCode();
     }
 
     private String formatTimeLeft() {
-        int secondsLeft = secondsOfMinuteLeft();
+        final int secondsLeft = secondsOfMinuteLeft();
         return minutesLeft() + ":" + (secondsLeft < 10 ? "0" : "") + secondsLeft;
     }
 

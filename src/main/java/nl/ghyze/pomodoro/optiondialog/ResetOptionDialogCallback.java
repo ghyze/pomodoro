@@ -6,7 +6,7 @@ public class ResetOptionDialogCallback implements OptionDialogCallback
 {
    private final PomodoroStateMachine stateMachine;
 
-   public ResetOptionDialogCallback(PomodoroStateMachine stateMachine)
+   public ResetOptionDialogCallback(final PomodoroStateMachine stateMachine)
    {
       this.stateMachine = stateMachine;
    }

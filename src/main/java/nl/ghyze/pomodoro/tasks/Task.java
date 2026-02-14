@@ -15,7 +15,7 @@ public class Task extends Observable{
 	
 	private boolean active = false;
 
-	Task(String name, int estimated){
+	Task(final String name, final int estimated){
 		this.name = name;
 		this.estimated = estimated;
 	}

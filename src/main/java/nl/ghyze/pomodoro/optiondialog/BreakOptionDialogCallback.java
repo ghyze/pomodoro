@@ -7,7 +7,7 @@ public class BreakOptionDialogCallback implements OptionDialogCallback
 
    private final PomodoroStateMachine stateMachine;
 
-   public BreakOptionDialogCallback(PomodoroStateMachine stateMachine)
+   public BreakOptionDialogCallback(final PomodoroStateMachine stateMachine)
    {
       this.stateMachine = stateMachine;
    }

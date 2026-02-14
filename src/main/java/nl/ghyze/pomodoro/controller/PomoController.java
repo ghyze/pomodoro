@@ -31,7 +31,7 @@ public class PomoController implements ActionListener, SettingsChangeListener {
     private AbstractSystemTrayManager systemTrayManager;
 
 
-    public void initialize(PomoFrame frame, Settings settings, AbstractSystemTrayManager systemTrayManager, PomodoroStateMachine stateMachine) {
+    public void initialize(final PomoFrame frame, final Settings settings, final AbstractSystemTrayManager systemTrayManager, final PomodoroStateMachine stateMachine) {
         this.frame = frame;
         this.settings = settings;
         this.systemTrayManager = systemTrayManager;
@@ -41,14 +41,14 @@ public class PomoController implements ActionListener, SettingsChangeListener {
         this.systemTrayManager.setPomoController(this);
         settings.addListener(this);
         OptionDialogController.init(frame);
-        Timer timer = new Timer(20, this);
+        final Timer timer = new Timer(20, this);
         timer.start();
     }
 
     @Override
-    public void actionPerformed(ActionEvent event) {
+    public void actionPerformed(final ActionEvent event) {
         if (stateMachine.shouldChangeState()) {
-            OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroStateMachine.getCurrentType());
+            final OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroStateMachine.getCurrentType());
             OptionDialogController.showDialog(model, getCallback());
         }
         checkMinutesSinceLastAction();
@@ -81,7 +81,7 @@ public class PomoController implements ActionListener, SettingsChangeListener {
     }
 
     @Override
-    public void onChange(Settings settings) {
+    public void onChange(final Settings settings) {
         this.settings = settings;
         frame.position(settings);
     }
@@ -95,7 +95,7 @@ public class PomoController implements ActionListener, SettingsChangeListener {
     }
 
     public void reset() {
-        OptionDialogModel resetModel = OptionDialogModelFactory.createResetModel();
+        final OptionDialogModel resetModel = OptionDialogModelFactory.createResetModel();
         OptionDialogController.showDialog(resetModel, new ResetOptionDialogCallback(stateMachine));
     }
 }

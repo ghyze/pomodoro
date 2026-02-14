@@ -24,7 +24,7 @@ public class PomodoroStateMachine
 
    private final List<PomodoroHook> pomodoroHooks = new ArrayList<>();
 
-   public PomodoroStateMachine(Settings settings)
+   public PomodoroStateMachine(final Settings settings)
    {
       this.settings = settings;
       current = new Pomodoro(0, PomodoroType.WAIT);
@@ -45,7 +45,7 @@ public class PomodoroStateMachine
       return (!getCurrentType().isWait() && current.isDone());
    }
 
-   public void handleAction(OptionDialogModel.Choice choice)
+   public void handleAction(final OptionDialogModel.Choice choice)
    {
       System.out.println("OptionDialog choice: "+choice);
       lastAction = new Stopwatch();
@@ -55,7 +55,7 @@ public class PomodoroStateMachine
       }
    }
 
-   private void handleActionForPomo(OptionDialogModel.Choice choice)
+   private void handleActionForPomo(final OptionDialogModel.Choice choice)
    {
       switch (choice){
          case SAVE -> {
@@ -76,7 +76,7 @@ public class PomodoroStateMachine
       updateCurrent();
    }
 
-   private void handleActionForBreak(OptionDialogModel.Choice choice)
+   private void handleActionForBreak(final OptionDialogModel.Choice choice)
    {
       if (choice ==  OptionDialogModel.Choice.OK)
       {
@@ -103,7 +103,7 @@ public class PomodoroStateMachine
 
    private Pomodoro createShortBreak()
    {
-      String message = "Well done! Short break";
+      final String message = "Well done! Short break";
       showMessage(message);
       return new Pomodoro(settings.getShortBreakMinutes(), PomodoroType.BREAK);
    }
@@ -111,7 +111,7 @@ public class PomodoroStateMachine
    private Pomodoro createLongBreak()
    {
       pomosDone = 0;
-      String message = "Well done! Long break";
+      final String message = "Well done! Long break";
       showMessage(message);
       return new Pomodoro(settings.getLongBreakMinutes(), PomodoroType.BREAK);
    }
@@ -134,11 +134,11 @@ public class PomodoroStateMachine
       current = new Pomodoro(settings.getPomoMinutes(), PomodoroType.POMO);
       updateCurrent();
       startHooks();
-      String message = "Starting Pomodoro number " + (pomosDone + 1);
+      final String message = "Starting Pomodoro number " + (pomosDone + 1);
       showMessage(message);
    }
 
-   private void showMessage(String message)
+   private void showMessage(final String message)
    {
       if (systemTrayManager != null)
       {
@@ -165,7 +165,7 @@ public class PomodoroStateMachine
       return lastAction;
    }
 
-   public void addPomodoroHook(PomodoroHook hook)
+   public void addPomodoroHook(final PomodoroHook hook)
    {
       pomodoroHooks.add(hook);
    }
