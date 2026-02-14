@@ -1,6 +1,6 @@
 package nl.ghyze.pomodoro;
 
-import java.util.Date;
+import java.time.Instant;
 
 public class Stopwatch {
 
@@ -10,11 +10,11 @@ public class Stopwatch {
     private final long start;
 
     public Stopwatch(){
-        start = new Date().getTime();
+        start = Instant.now().toEpochMilli();
     }
 
     public long timePassedMillis(){
-        return new Date().getTime() - start;
+        return Instant.now().toEpochMilli() - start;
     }
 
     public int timePassedMinutes(){
