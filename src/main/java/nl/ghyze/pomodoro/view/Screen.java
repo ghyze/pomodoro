@@ -1,29 +1,26 @@
 package nl.ghyze.pomodoro.view;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
 import java.awt.DisplayMode;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+@Builder
+@AllArgsConstructor
+@Getter
 public class Screen {
 
 	private int index;
 	private DisplayMode mode;
 	private Rectangle availableArea;
-	
-	public Screen(DisplayMode mode, int index, Rectangle availableArea){
-		this.mode = mode;
-		this.index = index;
-		this.availableArea = availableArea;
-	}
-	
+
 	public String toString(){
 		return "Screen: "+ (index+1)+" ("+mode.getWidth()+", "+mode.getHeight()+")";
 	}
-	
-	int getIndex(){
-		return index;
-	}
-	
+
 	public Point getGraphicsDeviceOffset() {
 		return new Point(availableArea.x, availableArea.y);
 	}

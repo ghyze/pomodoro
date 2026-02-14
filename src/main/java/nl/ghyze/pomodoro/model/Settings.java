@@ -1,11 +1,17 @@
 package nl.ghyze.pomodoro.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Settings
 {
    public enum Position
@@ -51,6 +57,7 @@ public class Settings
    private int idleTime;
    private boolean autoreset;
 
+   @Builder.Default
    private ArrayList<SettingsChangeListener> listeners = new ArrayList<>();
 
    public void setPosition(Position position)

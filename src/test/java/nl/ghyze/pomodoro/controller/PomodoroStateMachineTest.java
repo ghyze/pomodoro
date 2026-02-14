@@ -24,15 +24,16 @@ public class PomodoroStateMachineTest
    @Before
    public void setUp()
    {
-      // Use real Settings object instead of mock
-      settings = new Settings();
-      settings.setPomoMinutes(25);
-      settings.setShortBreakMinutes(5);
-      settings.setLongBreakMinutes(15);
-      settings.setPomosBeforeLongBreak(3);
-      settings.setIdleTime(60);
-      settings.setScreenIndex(0);
-      settings.setPosition(Settings.Position.BOTTOM_RIGHT);
+      // Use real Settings object with builder pattern
+      settings = Settings.builder()
+              .pomoMinutes(25)
+              .shortBreakMinutes(5)
+              .longBreakMinutes(15)
+              .pomosBeforeLongBreak(3)
+              .idleTime(60)
+              .screenIndex(0)
+              .position(Settings.Position.BOTTOM_RIGHT)
+              .build();
 
       pomodoroStateMachine = new PomodoroStateMachine(settings);
    }

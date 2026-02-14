@@ -20,12 +20,13 @@ public class PomoOptionDialogCallbackTest
    @Before
    public void before()
    {
-      // Use real objects instead of mocks
-      settings = new Settings();
-      settings.setPomoMinutes(25);
-      settings.setShortBreakMinutes(5);
-      settings.setLongBreakMinutes(15);
-      settings.setPomosBeforeLongBreak(3);
+      // Use real objects with builder pattern
+      settings = Settings.builder()
+              .pomoMinutes(25)
+              .shortBreakMinutes(5)
+              .longBreakMinutes(15)
+              .pomosBeforeLongBreak(3)
+              .build();
 
       stateMachine = new PomodoroStateMachine(settings);
    }

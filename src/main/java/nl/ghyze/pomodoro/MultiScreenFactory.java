@@ -19,7 +19,11 @@ public class MultiScreenFactory {
         for (int i = 0; i < graphicsDevices.length; i++) {
             GraphicsDevice device = graphicsDevices[i];
             DisplayMode mode = device.getDisplayMode();
-            Screen screen = new Screen(mode, i, getAvailableArea(i));
+            Screen screen = Screen.builder()
+                    .mode(mode)
+                    .index(i)
+                    .availableArea(getAvailableArea(i))
+                    .build();
             screenList.add(screen);
         }
         return screenList;

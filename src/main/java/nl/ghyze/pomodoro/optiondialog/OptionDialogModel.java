@@ -1,5 +1,10 @@
 package nl.ghyze.pomodoro.optiondialog;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
 public class OptionDialogModel
 {
    public enum Choice {
@@ -25,45 +30,9 @@ public class OptionDialogModel
    private String message;
    private Object[] choices;
 
-
-   public OptionDialogModel()
-   {
-
-   }
-
-   public void setTitle(String title)
-   {
-      this.title = title;
-   }
-
-   public String getTitle()
-   {
-      return title;
-   }
-
-   public void setMessage(String message)
-   {
-      this.message = message;
-   }
-
-   public String getMessage()
-   {
-      return message;
-   }
-
-   public void setChoices(Object[] choices)
-   {
-      this.choices = choices;
-   }
-
-   public Object[] getChoices()
-   {
-      return choices;
-   }
-
    public Object getDefaultChoice()
    {
-      if (choices.length > 0)
+      if (choices != null && choices.length > 0)
       {
          return choices[0];
       }
