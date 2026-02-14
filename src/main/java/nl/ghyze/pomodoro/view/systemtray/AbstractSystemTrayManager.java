@@ -18,6 +18,7 @@ import nl.ghyze.pomodoro.model.PomodoroType;
 
 public abstract class AbstractSystemTrayManager
 {
+   private static final int MAX_IMAGE_INDEX = 99;
 
    protected Image[] pomoImages;
    protected Image[] breakImages;
@@ -90,12 +91,17 @@ public abstract class AbstractSystemTrayManager
       }
       else if (countdown.getType() == PomodoroType.POMO)
       {
-         icon.setImage(pomoImages[countdown.minutesLeft()]);
+         icon.setImage(pomoImages[getSafeImageIndex(countdown.minutesLeft())]);
       }
       else if (countdown.getType() == PomodoroType.BREAK)
       {
-         icon.setImage(breakImages[countdown.minutesLeft()]);
+         icon.setImage(breakImages[getSafeImageIndex(countdown.minutesLeft())]);
       }
+   }
+
+   private int getSafeImageIndex(final int minutesLeft)
+   {
+      return Math.min(minutesLeft, MAX_IMAGE_INDEX);
    }
 
    public void message(String message)
