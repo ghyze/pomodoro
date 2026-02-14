@@ -48,16 +48,16 @@ public class PomoController implements ActionListener, SettingsChangeListener {
     @Override
     public void actionPerformed(final ActionEvent event) {
         if (stateMachine.shouldChangeState()) {
-            final OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(PomodoroStateMachine.getCurrentType());
+            final OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(stateMachine.getCurrentPomodoroType());
             OptionDialogController.showDialog(model, getCallback());
         }
         checkMinutesSinceLastAction();
-        frame.update(PomodoroStateMachine.getCurrent());
-        systemTrayManager.update(PomodoroStateMachine.getCurrent());
+        frame.update(stateMachine.getCurrentPomodoro());
+        systemTrayManager.update(stateMachine.getCurrentPomodoro());
     }
 
     private OptionDialogCallback getCallback(){
-      if (PomodoroStateMachine.getCurrentType().isPomo()) {
+      if (stateMachine.getCurrentPomodoroType().isPomo()) {
          return new PomoOptionDialogCallback(stateMachine);
       } else {
          return new BreakOptionDialogCallback(stateMachine);
@@ -66,7 +66,7 @@ public class PomoController implements ActionListener, SettingsChangeListener {
 
    private void checkMinutesSinceLastAction(){
         if (stateMachine.getLastAction().isTimedOut((long) settings.getIdleTime() * MILLISECONDS_PER_MINUTE) &&
-                PomodoroStateMachine.getCurrentType().isWait()) {
+                stateMachine.getCurrentPomodoroType().isWait()) {
             stateMachine.reset();
         }
     }
