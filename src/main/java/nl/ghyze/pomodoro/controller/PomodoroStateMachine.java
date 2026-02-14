@@ -40,6 +40,17 @@ public class PomodoroStateMachine
       return current.getType();
    }
 
+   // Instance methods (to replace static methods)
+   public Pomodoro getCurrentPomodoro()
+   {
+      return current;
+   }
+
+   public PomodoroType getCurrentPomodoroType()
+   {
+      return current.getType();
+   }
+
    boolean shouldChangeState()
    {
       return (!getCurrentType().isWait() && current.isDone());
