@@ -14,7 +14,7 @@ import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 public class PomodoroStateMachine
 {
 
-   private static Pomodoro current;
+   private Pomodoro current;
    private final Settings settings;
    private int pomosDone = 0;
    @Setter
