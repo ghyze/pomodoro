@@ -11,7 +11,7 @@ public class TaskTest {
     @Test
     public void testAddCompletedPomo(){
         Task task = new Task("Test", 1);
-        task.addObserver((o, arg) -> updated = true);
+        task.addPropertyChangeListener(evt -> updated = true);
 
         task.addCompletedPomo();
         Assert.assertTrue(updated);

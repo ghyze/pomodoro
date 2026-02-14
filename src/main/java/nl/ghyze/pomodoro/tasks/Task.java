@@ -3,16 +3,19 @@ package nl.ghyze.pomodoro.tasks;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.Observable;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Data
-public class Task extends Observable{
+public class Task {
+
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	private final String name;
 	private final int estimated;
 	private int actual;
-	
+
 	private boolean active = false;
 
 	Task(final String name, final int estimated){
@@ -20,14 +23,22 @@ public class Task extends Observable{
 		this.estimated = estimated;
 	}
 
-	private void changed(){
-		setChanged();
-		notifyObservers();
+	public void addPropertyChangeListener(final PropertyChangeListener listener) {
+		pcs.addPropertyChangeListener(listener);
 	}
-	
+
+	public void removePropertyChangeListener(final PropertyChangeListener listener) {
+		pcs.removePropertyChangeListener(listener);
+	}
+
+	private void changed(){
+		pcs.firePropertyChange("actual", null, actual);
+	}
+
 	void addCompletedPomo(){
+		final int oldActual = actual;
 		actual++;
-		changed();
+		pcs.firePropertyChange("actual", oldActual, actual);
 	}
 
 	public String toString(){

@@ -3,12 +3,12 @@ package nl.ghyze.pomodoro.tasks;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
-import java.util.Observable;
-import java.util.Observer;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
 
-public class TaskPanel extends JPanel implements Observer {
+public class TaskPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * <code>serialVersionUID</code> indicates/is used for.
@@ -27,7 +27,7 @@ public class TaskPanel extends JPanel implements Observer {
 	
 	TaskPanel(Task task){
 		this.task = task;
-		task.addObserver(this);
+		task.addPropertyChangeListener(this);
 		init();
 	}
 	
@@ -64,7 +64,9 @@ public class TaskPanel extends JPanel implements Observer {
 	}
 
     @Override
-    public void update(Observable o, Object arg) {
-        lbActual.setText(""+task.getActual());
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("actual".equals(evt.getPropertyName())) {
+            lbActual.setText(""+task.getActual());
+        }
     }
 }
