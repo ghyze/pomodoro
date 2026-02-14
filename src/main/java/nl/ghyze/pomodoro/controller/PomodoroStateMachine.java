@@ -165,6 +165,18 @@ public class PomodoroStateMachine
       return lastAction;
    }
 
+   // Package-private for testing
+   void setCurrent(final Pomodoro current)
+   {
+      this.current = current;
+   }
+
+   // Package-private for testing
+   void setPomosDone(final int pomosDone)
+   {
+      this.pomosDone = pomosDone;
+   }
+
    public void addPomodoroHook(final PomodoroHook hook)
    {
       pomodoroHooks.add(hook);

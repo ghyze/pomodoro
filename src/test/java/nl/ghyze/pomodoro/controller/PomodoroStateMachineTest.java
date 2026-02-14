@@ -1,7 +1,5 @@
 package nl.ghyze.pomodoro.controller;
 
-import java.lang.reflect.Field;
-
 import nl.ghyze.pomodoro.Stopwatch;
 import org.easymock.EasyMock;
 import org.junit.Assert;
@@ -65,55 +63,32 @@ public class PomodoroStateMachineTest
    }
 
    @Test
-   public void testShouldChangeState() throws Exception
+   public void testShouldChangeState()
    {
       // Initial state is WAIT, so should not change state
       Assert.assertFalse(pomodoroStateMachine.shouldChangeState());
 
       // Create a POMO that has just started (not done yet)
       Pomodoro notDonePomodoro = new Pomodoro(25, PomodoroType.POMO);
-      setCurrent(notDonePomodoro);
+      pomodoroStateMachine.setCurrent(notDonePomodoro);
       Assert.assertFalse(pomodoroStateMachine.shouldChangeState());
 
-      // Create a POMO that has finished (set start time in the past)
-      Pomodoro donePomodoro = new Pomodoro(1, PomodoroType.POMO);
-      setStartTimeInPast(donePomodoro, 2); // Started 2 minutes ago, duration is 1 minute
-      setCurrent(donePomodoro);
+      // Create a POMO that has finished (started 2 minutes ago, duration is 1 minute)
+      Pomodoro donePomodoro = createPomodoroStartedInPast(1, PomodoroType.POMO, 2);
+      pomodoroStateMachine.setCurrent(donePomodoro);
       Assert.assertTrue(pomodoroStateMachine.shouldChangeState());
    }
 
-   private void setStartTimeInPast(Pomodoro pomodoro, int minutesAgo) throws Exception
+   private Pomodoro createPomodoroStartedInPast(int minutes, PomodoroType type, int minutesAgo)
    {
-      // Set start time in the past
-      Field startTimeField = Pomodoro.class.getDeclaredField("startTime");
-      startTimeField.setAccessible(true);
       long pastTime = System.currentTimeMillis() - (minutesAgo * 60L * 1000L);
-      startTimeField.set(pomodoro, pastTime);
-
-      // Also need to set the stopwatch's start time since isDone() uses it
-      Field stopwatchField = Pomodoro.class.getDeclaredField("stopwatch");
-      stopwatchField.setAccessible(true);
-
-      // Create a stopwatch with start time in the past
-      Stopwatch stopwatch = new Stopwatch();
-      Field stopwatchStartField = Stopwatch.class.getDeclaredField("start");
-      stopwatchStartField.setAccessible(true);
-      stopwatchStartField.set(stopwatch, pastTime);
-
-      stopwatchField.set(pomodoro, stopwatch);
+      Stopwatch stopwatch = new Stopwatch(pastTime);
+      return new Pomodoro(minutes, type, pastTime, stopwatch);
    }
 
-   private void setCurrent(Pomodoro current) throws Exception
-   {
-      Field currentField = PomodoroStateMachine.class.getDeclaredField("current");
-      currentField.setAccessible(true);
-      currentField.set(pomodoroStateMachine, current);
-   }
-
-   private void setupGetNextFromPomo() throws Exception
-   {
+   private void setupGetNextFromPomo()   {
       Pomodoro pomodoro = new Pomodoro(1, PomodoroType.POMO);
-      setCurrent(pomodoro);
+      pomodoroStateMachine.setCurrent(pomodoro);
       systemTrayManager = EasyMock.createMock(AbstractSystemTrayManager.class);
       pomodoroStateMachine.setSystemTrayManager(systemTrayManager);
 
@@ -122,10 +97,9 @@ public class PomodoroStateMachineTest
    }
 
    @Test
-   public void testGetNextFromPomoWithDiscard() throws Exception
-   {
+   public void testGetNextFromPomoWithDiscard()   {
       Pomodoro pomodoro = new Pomodoro(1, PomodoroType.BREAK);
-      setCurrent(pomodoro);
+      pomodoroStateMachine.setCurrent(pomodoro);
       systemTrayManager = EasyMock.createMock(AbstractSystemTrayManager.class);
       pomodoroStateMachine.setSystemTrayManager(systemTrayManager);
 
@@ -142,8 +116,7 @@ public class PomodoroStateMachineTest
    }
 
    @Test
-   public void testGetNextFromPomoWithSave() throws Exception
-   {
+   public void testGetNextFromPomoWithSave()   {
       setupGetNextFromPomo();
 
       systemTrayManager.message(EasyMock.eq("Well done! Long break"));
@@ -162,10 +135,9 @@ public class PomodoroStateMachineTest
    }
 
    @Test
-   public void testHandleNextForBreakWithOk() throws Exception
-   {
+   public void testHandleNextForBreakWithOk()   {
       Pomodoro breakPomo = new Pomodoro(5, PomodoroType.BREAK);
-      setCurrent(breakPomo);
+      pomodoroStateMachine.setCurrent(breakPomo);
 
       settings.setPomoMinutes(1);
       settings.setPomosBeforeLongBreak(1);
@@ -176,10 +148,9 @@ public class PomodoroStateMachineTest
    }
 
    @Test
-   public void testHandleNextForBreakWithCancel() throws Exception
-   {
+   public void testHandleNextForBreakWithCancel()   {
       Pomodoro breakPomo = new Pomodoro(5, PomodoroType.BREAK);
-      setCurrent(breakPomo);
+      pomodoroStateMachine.setCurrent(breakPomo);
 
       pomodoroStateMachine.handleAction(OptionDialogModel.Choice.CANCEL);
 
@@ -187,10 +158,9 @@ public class PomodoroStateMachineTest
    }
 
    @Test
-   public void testHandleActionForWait() throws Exception
-   {
+   public void testHandleActionForWait()   {
       Pomodoro waitPomo = new Pomodoro(0, PomodoroType.WAIT);
-      setCurrent(waitPomo);
+      pomodoroStateMachine.setCurrent(waitPomo);
 
       pomodoroStateMachine.handleAction(OptionDialogModel.Choice.CANCEL);
 
@@ -198,10 +168,9 @@ public class PomodoroStateMachineTest
    }
 
    @Test
-   public void testStopCurrent() throws Exception
-   {
+   public void testStopCurrent()   {
       Pomodoro pomo = new Pomodoro(1, PomodoroType.POMO);
-      setCurrent(pomo);
+      pomodoroStateMachine.setCurrent(pomo);
 
       pomodoroStateMachine.stopCurrent();
 
@@ -209,11 +178,9 @@ public class PomodoroStateMachineTest
    }
 
    @Test
-   public void testReset() throws Exception
+   public void testReset()
    {
-      Field pomosDone = PomodoroStateMachine.class.getDeclaredField("pomosDone");
-      pomosDone.setAccessible(true);
-      pomosDone.set(pomodoroStateMachine, 2);
+      pomodoroStateMachine.setPomosDone(2);
 
       pomodoroStateMachine.reset();
       Pomodoro wait = pomodoroStateMachine.getCurrentPomodoro();

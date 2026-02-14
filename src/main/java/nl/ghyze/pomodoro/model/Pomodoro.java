@@ -24,6 +24,14 @@ public class Pomodoro {
         stopwatch = new Stopwatch();
     }
 
+    // Public constructor for testing with custom timing
+    public Pomodoro(final int minutes, final PomodoroType type, final long startTime, final Stopwatch stopwatch) {
+        this.minutes = minutes;
+        this.type = type;
+        this.startTime = startTime;
+        this.stopwatch = stopwatch;
+    }
+
     public int minutesLeft() {
         final int minutesPassed = stopwatch.timePassedMinutes();
         return Math.max(0, minutes - minutesPassed - 1);

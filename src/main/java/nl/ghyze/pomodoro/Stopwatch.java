@@ -13,6 +13,11 @@ public class Stopwatch {
         start = Instant.now().toEpochMilli();
     }
 
+    // Public constructor for testing
+    public Stopwatch(final long startTimeMillis){
+        start = startTimeMillis;
+    }
+
     public long timePassedMillis(){
         return Instant.now().toEpochMilli() - start;
     }
