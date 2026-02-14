@@ -42,13 +42,13 @@ public class PomodoroStateMachineTest
    public void testGetCurrent()
    {
       Pomodoro expected = new Pomodoro(0, PomodoroType.WAIT);
-      Assert.assertEquals(expected, PomodoroStateMachine.getCurrent());
+      Assert.assertEquals(expected, pomodoroStateMachine.getCurrentPomodoro());
    }
 
    @Test
    public void testGetCurrentType()
    {
-      Assert.assertEquals(PomodoroType.WAIT, PomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentPomodoroType());
    }
 
    @Test
@@ -60,7 +60,7 @@ public class PomodoroStateMachineTest
 
       pomodoroStateMachine.startPomo();
 
-      Pomodoro current = PomodoroStateMachine.getCurrent();
+      Pomodoro current = pomodoroStateMachine.getCurrentPomodoro();
       Assert.assertEquals(PomodoroType.POMO, current.getType());
    }
 
@@ -135,7 +135,7 @@ public class PomodoroStateMachineTest
       pomodoroStateMachine.handleAction(OptionDialogModel.Choice.DISCARD);
       EasyMock.verify(systemTrayManager);
 
-      Pomodoro current = PomodoroStateMachine.getCurrent();
+      Pomodoro current = pomodoroStateMachine.getCurrentPomodoro();
       Assert.assertEquals(0, current.getPomosDone());
       Assert.assertEquals(PomodoroType.WAIT, current.getType());
       Assert.assertEquals(0, current.minutesLeft());
@@ -155,7 +155,7 @@ public class PomodoroStateMachineTest
       pomodoroStateMachine.handleAction(OptionDialogModel.Choice.SAVE);
       EasyMock.verify(systemTrayManager);
 
-      Pomodoro current = PomodoroStateMachine.getCurrent();
+      Pomodoro current = pomodoroStateMachine.getCurrentPomodoro();
       Assert.assertEquals(0, current.getPomosDone());
       Assert.assertEquals(PomodoroType.BREAK, current.getType());
       Assert.assertEquals(4, current.minutesLeft());
@@ -172,7 +172,7 @@ public class PomodoroStateMachineTest
 
       pomodoroStateMachine.handleAction(OptionDialogModel.Choice.OK);
 
-      Assert.assertEquals(PomodoroType.POMO, PomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.POMO, pomodoroStateMachine.getCurrentPomodoroType());
    }
 
    @Test
@@ -183,7 +183,7 @@ public class PomodoroStateMachineTest
 
       pomodoroStateMachine.handleAction(OptionDialogModel.Choice.CANCEL);
 
-      Assert.assertEquals(PomodoroType.WAIT, PomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentPomodoroType());
    }
 
    @Test
@@ -194,7 +194,7 @@ public class PomodoroStateMachineTest
 
       pomodoroStateMachine.handleAction(OptionDialogModel.Choice.CANCEL);
 
-      Assert.assertEquals(PomodoroType.WAIT, PomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentPomodoroType());
    }
 
    @Test
@@ -205,7 +205,7 @@ public class PomodoroStateMachineTest
 
       pomodoroStateMachine.stopCurrent();
 
-      Assert.assertEquals(PomodoroType.WAIT, PomodoroStateMachine.getCurrentType());
+      Assert.assertEquals(PomodoroType.WAIT, pomodoroStateMachine.getCurrentPomodoroType());
    }
 
    @Test
@@ -216,7 +216,7 @@ public class PomodoroStateMachineTest
       pomosDone.set(pomodoroStateMachine, 2);
 
       pomodoroStateMachine.reset();
-      Pomodoro wait = PomodoroStateMachine.getCurrent();
+      Pomodoro wait = pomodoroStateMachine.getCurrentPomodoro();
       Assert.assertEquals(0, wait.getPomosDone());
       Assert.assertEquals(PomodoroType.WAIT, wait.getType());
    }

@@ -30,17 +30,6 @@ public class PomodoroStateMachine
       current = new Pomodoro(0, PomodoroType.WAIT);
    }
 
-   static Pomodoro getCurrent()
-   {
-      return current;
-   }
-
-   static PomodoroType getCurrentType()
-   {
-      return current.getType();
-   }
-
-   // Instance methods (to replace static methods)
    public Pomodoro getCurrentPomodoro()
    {
       return current;
@@ -53,14 +42,14 @@ public class PomodoroStateMachine
 
    boolean shouldChangeState()
    {
-      return (!getCurrentType().isWait() && current.isDone());
+      return (!getCurrentPomodoroType().isWait() && current.isDone());
    }
 
    public void handleAction(final OptionDialogModel.Choice choice)
    {
       System.out.println("OptionDialog choice: "+choice);
       lastAction = new Stopwatch();
-      switch (getCurrentType()){
+      switch (getCurrentPomodoroType()){
          case POMO -> handleActionForPomo(choice);
          case BREAK -> handleActionForBreak(choice);
       }
