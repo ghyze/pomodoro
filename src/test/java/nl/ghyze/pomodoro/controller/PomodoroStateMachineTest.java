@@ -61,7 +61,7 @@ public class PomodoroStateMachineTest
       pomodoroStateMachine.startPomo();
 
       Pomodoro current = PomodoroStateMachine.getCurrent();
-      Assert.assertEquals(current.getType(), PomodoroType.POMO);
+      Assert.assertEquals(PomodoroType.POMO, current.getType());
    }
 
    @Test
@@ -87,7 +87,7 @@ public class PomodoroStateMachineTest
       // Set start time in the past
       Field startTimeField = Pomodoro.class.getDeclaredField("startTime");
       startTimeField.setAccessible(true);
-      long pastTime = System.currentTimeMillis() - (minutesAgo * 60 * 1000);
+      long pastTime = System.currentTimeMillis() - (minutesAgo * 60L * 1000L);
       startTimeField.set(pomodoro, pastTime);
 
       // Also need to set the stopwatch's start time since isDone() uses it

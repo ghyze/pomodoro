@@ -15,7 +15,7 @@ public class MultiScreenFactory {
     public List<Screen> getAvailableScreenList() {
         GraphicsDevice[] graphicsDevices = getAvailableGraphicsDevices();
 
-        List<Screen> screenList = new ArrayList<Screen>();
+        List<Screen> screenList = new ArrayList<>();
         for (int i = 0; i < graphicsDevices.length; i++) {
             GraphicsDevice device = graphicsDevices[i];
             DisplayMode mode = device.getDisplayMode();
@@ -57,8 +57,7 @@ public class MultiScreenFactory {
         }
 
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice[] graphicsDevices = env.getScreenDevices();
-        return graphicsDevices;
+        return env.getScreenDevices();
     }
 
     protected void setAvailableGraphicsDevices(GraphicsDevice[] availableGraphicsDevices) {

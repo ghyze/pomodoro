@@ -15,18 +15,17 @@ public class PomoOptionDialogCallbackTest
 {
 
    private PomodoroStateMachine stateMachine;
-   private Settings settings;
 
-   @Before
+    @Before
    public void before()
    {
       // Use real objects with builder pattern
-      settings = Settings.builder()
-              .pomoMinutes(25)
-              .shortBreakMinutes(5)
-              .longBreakMinutes(15)
-              .pomosBeforeLongBreak(3)
-              .build();
+       Settings settings = Settings.builder()
+               .pomoMinutes(25)
+               .shortBreakMinutes(5)
+               .longBreakMinutes(15)
+               .pomosBeforeLongBreak(3)
+               .build();
 
       stateMachine = new PomodoroStateMachine(settings);
    }

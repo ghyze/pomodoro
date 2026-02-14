@@ -30,11 +30,11 @@ public class Settings
       }
 
       public enum Vertical {
-         TOP, BOTTOM;
+         TOP, BOTTOM
       }
 
       public enum Horizontal {
-         LEFT, RIGHT;
+         LEFT, RIGHT
       }
    }
 
