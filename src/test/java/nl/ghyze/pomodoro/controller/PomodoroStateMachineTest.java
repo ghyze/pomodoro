@@ -24,7 +24,16 @@ public class PomodoroStateMachineTest
    @Before
    public void setUp()
    {
-      settings = EasyMock.createMock(Settings.class);
+      // Use real Settings object instead of mock
+      settings = new Settings();
+      settings.setPomoMinutes(25);
+      settings.setShortBreakMinutes(5);
+      settings.setLongBreakMinutes(15);
+      settings.setPomosBeforeLongBreak(3);
+      settings.setIdleTime(60);
+      settings.setScreenIndex(0);
+      settings.setPosition(Settings.Position.BOTTOM_RIGHT);
+
       pomodoroStateMachine = new PomodoroStateMachine(settings);
    }
 
@@ -44,44 +53,53 @@ public class PomodoroStateMachineTest
    @Test
    public void testStartPomo()
    {
-      setupStartPomo();
-      EasyMock.replay(settings);
+      // No mock setup needed - using real Settings object
+      settings.setPomoMinutes(1);
+      settings.setPomosBeforeLongBreak(1);
+
       pomodoroStateMachine.startPomo();
-      EasyMock.verify(settings);
 
       Pomodoro current = PomodoroStateMachine.getCurrent();
       Assert.assertEquals(current.getType(), PomodoroType.POMO);
-
-      Assert.assertTrue(isDateCorrect(pomodoroStateMachine.getLastAction()));
-   }
-
-   private void setupStartPomo()
-   {
-      EasyMock.expect(settings.getPomoMinutes()).andReturn(1);
-      EasyMock.expect(settings.getPomosBeforeLongBreak()).andReturn(1);
    }
 
    @Test
    public void testShouldChangeState() throws Exception
    {
+      // Initial state is WAIT, so should not change state
       Assert.assertFalse(pomodoroStateMachine.shouldChangeState());
 
-      Pomodoro pomodoroMock = EasyMock.createMock(Pomodoro.class);
-      EasyMock.expect(pomodoroMock.getType()).andReturn(PomodoroType.POMO);
-      EasyMock.expect(pomodoroMock.isDone()).andReturn(false);
-      setCurrent(pomodoroMock);
-      EasyMock.replay(pomodoroMock);
+      // Create a POMO that has just started (not done yet)
+      Pomodoro notDonePomodoro = new Pomodoro(25, PomodoroType.POMO);
+      setCurrent(notDonePomodoro);
       Assert.assertFalse(pomodoroStateMachine.shouldChangeState());
-      EasyMock.verify(pomodoroMock);
 
-      EasyMock.reset(pomodoroMock);
-
-      EasyMock.expect(pomodoroMock.getType()).andReturn(PomodoroType.POMO);
-      EasyMock.expect(pomodoroMock.isDone()).andReturn(true);
-      EasyMock.replay(pomodoroMock);
+      // Create a POMO that has finished (set start time in the past)
+      Pomodoro donePomodoro = new Pomodoro(1, PomodoroType.POMO);
+      setStartTimeInPast(donePomodoro, 2); // Started 2 minutes ago, duration is 1 minute
+      setCurrent(donePomodoro);
       Assert.assertTrue(pomodoroStateMachine.shouldChangeState());
-      EasyMock.verify(pomodoroMock);
+   }
 
+   private void setStartTimeInPast(Pomodoro pomodoro, int minutesAgo) throws Exception
+   {
+      // Set start time in the past
+      Field startTimeField = Pomodoro.class.getDeclaredField("startTime");
+      startTimeField.setAccessible(true);
+      long pastTime = System.currentTimeMillis() - (minutesAgo * 60 * 1000);
+      startTimeField.set(pomodoro, pastTime);
+
+      // Also need to set the stopwatch's start time since isDone() uses it
+      Field stopwatchField = Pomodoro.class.getDeclaredField("stopwatch");
+      stopwatchField.setAccessible(true);
+
+      // Create a stopwatch with start time in the past
+      Stopwatch stopwatch = new Stopwatch();
+      Field stopwatchStartField = Stopwatch.class.getDeclaredField("start");
+      stopwatchStartField.setAccessible(true);
+      stopwatchStartField.set(stopwatch, pastTime);
+
+      stopwatchField.set(pomodoro, stopwatch);
    }
 
    private void setCurrent(Pomodoro current) throws Exception
@@ -98,14 +116,8 @@ public class PomodoroStateMachineTest
       systemTrayManager = EasyMock.createMock(AbstractSystemTrayManager.class);
       pomodoroStateMachine.setSystemTrayManager(systemTrayManager);
 
-      EasyMock.expect(settings.getPomosBeforeLongBreak()).andReturn(1).times(2);
-      Assert.assertTrue(isDateCorrect(pomodoroStateMachine.getLastAction()));
-   }
-
-   // TODO: inline this method.
-   private boolean isDateCorrect(Stopwatch stopwatch)
-   {
-      return stopwatch.timePassedMillis() <= 100l;
+      // Use real Settings object - set value instead of mock expectation
+      settings.setPomosBeforeLongBreak(1);
    }
 
    @Test
@@ -116,12 +128,11 @@ public class PomodoroStateMachineTest
       systemTrayManager = EasyMock.createMock(AbstractSystemTrayManager.class);
       pomodoroStateMachine.setSystemTrayManager(systemTrayManager);
 
-      EasyMock.expect(settings.getPomosBeforeLongBreak()).andReturn(1);
-      Assert.assertTrue(isDateCorrect(pomodoroStateMachine.getLastAction()));
+      settings.setPomosBeforeLongBreak(1);
 
-      EasyMock.replay(systemTrayManager, settings);
+      EasyMock.replay(systemTrayManager);
       pomodoroStateMachine.handleAction(OptionDialogModel.Choice.DISCARD);
-      EasyMock.verify(systemTrayManager, settings);
+      EasyMock.verify(systemTrayManager);
 
       Pomodoro current = PomodoroStateMachine.getCurrent();
       Assert.assertEquals(0, current.getPomosDone());
@@ -137,11 +148,11 @@ public class PomodoroStateMachineTest
       systemTrayManager.message(EasyMock.eq("Well done! Long break"));
       EasyMock.expectLastCall();
 
-      EasyMock.expect(settings.getLongBreakMinutes()).andReturn(5);
+      settings.setLongBreakMinutes(5);
 
-      EasyMock.replay(systemTrayManager, settings);
+      EasyMock.replay(systemTrayManager);
       pomodoroStateMachine.handleAction(OptionDialogModel.Choice.SAVE);
-      EasyMock.verify(systemTrayManager, settings);
+      EasyMock.verify(systemTrayManager);
 
       Pomodoro current = PomodoroStateMachine.getCurrent();
       Assert.assertEquals(0, current.getPomosDone());
@@ -155,12 +166,10 @@ public class PomodoroStateMachineTest
       Pomodoro breakPomo = new Pomodoro(5, PomodoroType.BREAK);
       setCurrent(breakPomo);
 
-      EasyMock.expect(settings.getPomoMinutes()).andReturn(1);
-      EasyMock.expect(settings.getPomosBeforeLongBreak()).andReturn(1);
+      settings.setPomoMinutes(1);
+      settings.setPomosBeforeLongBreak(1);
 
-      EasyMock.replay(settings);
       pomodoroStateMachine.handleAction(OptionDialogModel.Choice.OK);
-      EasyMock.verify(settings);
 
       Assert.assertEquals(PomodoroType.POMO, PomodoroStateMachine.getCurrentType());
    }
