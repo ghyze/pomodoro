@@ -5,7 +5,7 @@ import java.awt.PopupMenu;
 
 import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.tasks.TaskFrame;
-import nl.ghyze.pomodoro.view.SettingsFrame;
+import nl.ghyze.pomodoro.view.settings.SettingsFrame;
 
 public class MenuController {
 
