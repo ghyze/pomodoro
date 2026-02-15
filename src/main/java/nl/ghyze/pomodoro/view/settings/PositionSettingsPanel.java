@@ -102,7 +102,7 @@ public class PositionSettingsPanel extends JPanel {
      */
     public int getSelectedScreenIndex() {
         Screen screen = (Screen) jcbScreen.getSelectedItem();
-        return screen != null ? screen.getIndex() : -1;
+        return screen != null ? screen.index() : -1;
     }
 
     /**

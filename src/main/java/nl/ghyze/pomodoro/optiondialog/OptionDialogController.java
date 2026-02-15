@@ -60,7 +60,7 @@ public class OptionDialogController
                }
             }.start();
 
-         int result = JOptionPane.showOptionDialog(frame, label, model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(), model.getDefaultChoice());
+         int result = JOptionPane.showOptionDialog(frame, label, model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(), model.getDefaultChoice().orElse(null));
          showing = false;
          handleResult(callback, result);
       }

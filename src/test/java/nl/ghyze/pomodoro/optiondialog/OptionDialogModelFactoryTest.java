@@ -48,7 +48,7 @@ public class OptionDialogModelFactoryTest
       {
          Assert.assertEquals(choices[i], model.getChoices()[i]);
       }
-      Assert.assertEquals(defaultChoice, model.getDefaultChoice());
+      Assert.assertEquals(defaultChoice, model.getDefaultChoice().orElse(null));
    }
 
    @Test

@@ -27,22 +27,16 @@ public class FrameLocation {
     }
 
     private int getXPosition(){
-        switch (position.horizontal){
-            case LEFT:
-                return graphicsDeviceOffset.x;
-            case RIGHT:
-                return mostBottomRightPoint.x - (int) frameSize.getWidth();
-        }
-        return 0;
+        return switch (position.horizontal) {
+            case LEFT -> graphicsDeviceOffset.x;
+            case RIGHT -> mostBottomRightPoint.x - (int) frameSize.getWidth();
+        };
     }
 
     private int getYPosition(){
-        switch (position.vertical){
-            case TOP:
-                return graphicsDeviceOffset.y;
-            case BOTTOM:
-                return mostBottomRightPoint.y - (int) frameSize.getHeight();
-        }
-        return 0;
+        return switch (position.vertical) {
+            case TOP -> graphicsDeviceOffset.y;
+            case BOTTOM -> mostBottomRightPoint.y - (int) frameSize.getHeight();
+        };
     }
 }

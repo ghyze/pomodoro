@@ -3,6 +3,8 @@ package nl.ghyze.pomodoro.optiondialog;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Optional;
+
 @Data
 @Builder
 public class OptionDialogModel
@@ -30,12 +32,12 @@ public class OptionDialogModel
    private String message;
    private Object[] choices;
 
-   public Object getDefaultChoice()
+   public Optional<Object> getDefaultChoice()
    {
       if (choices != null && choices.length > 0)
       {
-         return choices[0];
+         return Optional.of(choices[0]);
       }
-      return null;
+      return Optional.empty();
    }
 }

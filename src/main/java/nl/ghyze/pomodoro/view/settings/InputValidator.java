@@ -73,21 +73,25 @@ public class InputValidator {
         if (text == null || text.trim().isEmpty()) {
             message = fieldName + " cannot be empty.";
         } else if (!text.matches("\\d+")) {
-            message = fieldName + " must contain only digits.\n" +
-                    "Invalid input: \"" + text + "\"";
+            message = """
+                    %s must contain only digits.
+                    Invalid input: "%s\"""".formatted(fieldName, text);
         } else {
             try {
                 int value = Integer.parseInt(text);
                 if (value < MIN_VALUE) {
-                    message = fieldName + " must be at least " + MIN_VALUE + ".\n" +
-                            "You entered: " + value;
+                    message = """
+                            %s must be at least %d.
+                            You entered: %d""".formatted(fieldName, MIN_VALUE, value);
                 } else {
-                    message = fieldName + " must be less than " + (MAX_VALUE + 1) + ".\n" +
-                            "You entered: " + value;
+                    message = """
+                            %s must be less than %d.
+                            You entered: %d""".formatted(fieldName, MAX_VALUE + 1, value);
                 }
             } catch (NumberFormatException e) {
-                message = fieldName + " contains an invalid number.\n" +
-                        "Input: \"" + text + "\"";
+                message = """
+                        %s contains an invalid number.
+                        Input: "%s\"""".formatted(fieldName, text);
             }
         }
 
