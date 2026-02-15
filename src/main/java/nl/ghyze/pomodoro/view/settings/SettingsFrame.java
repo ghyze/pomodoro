@@ -1,5 +1,6 @@
 package nl.ghyze.pomodoro.view.settings;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -56,23 +57,35 @@ public class SettingsFrame extends JFrame {
     }
 
     private void initPanels() {
-        // Position panel at top
-        layout.putConstraint(SpringLayout.WEST, positionPanel, 0, SpringLayout.WEST, getContentPane());
-        layout.putConstraint(SpringLayout.EAST, positionPanel, 0, SpringLayout.EAST, getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, positionPanel, 0, SpringLayout.NORTH, getContentPane());
-        add(positionPanel);
+        addPanelAtTop(positionPanel);
+        addPanelBelow(durationPanel, positionPanel.getBottomComponent(), 5);
+        addPanelBelow(idlePanel, durationPanel.getBottomComponent(), 5);
+    }
 
-        // Duration panel below position panel
-        layout.putConstraint(SpringLayout.WEST, durationPanel, 0, SpringLayout.WEST, getContentPane());
-        layout.putConstraint(SpringLayout.EAST, durationPanel, 0, SpringLayout.EAST, getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, durationPanel, 5, SpringLayout.SOUTH, positionPanel.getBottomComponent());
-        add(durationPanel);
+    /**
+     * Adds a panel at the top of the content pane, stretched horizontally.
+     *
+     * @param panel the panel to add
+     */
+    private void addPanelAtTop(Component panel) {
+        layout.putConstraint(SpringLayout.WEST, panel, 0, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.EAST, panel, 0, SpringLayout.EAST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, panel, 0, SpringLayout.NORTH, getContentPane());
+        add(panel);
+    }
 
-        // Idle panel below duration panel
-        layout.putConstraint(SpringLayout.WEST, idlePanel, 0, SpringLayout.WEST, getContentPane());
-        layout.putConstraint(SpringLayout.EAST, idlePanel, 0, SpringLayout.EAST, getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, idlePanel, 5, SpringLayout.SOUTH, durationPanel.getBottomComponent());
-        add(idlePanel);
+    /**
+     * Adds a panel below another component, stretched horizontally.
+     *
+     * @param panel the panel to add
+     * @param anchorComponent the component to position below
+     * @param gap the vertical gap in pixels
+     */
+    private void addPanelBelow(Component panel, Component anchorComponent, int gap) {
+        layout.putConstraint(SpringLayout.WEST, panel, 0, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.EAST, panel, 0, SpringLayout.EAST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, panel, gap, SpringLayout.SOUTH, anchorComponent);
+        add(panel);
     }
 
     private void initButtons() {
