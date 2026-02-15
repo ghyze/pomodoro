@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(exclude = "pcs")
 @Data
 public class Task {
 

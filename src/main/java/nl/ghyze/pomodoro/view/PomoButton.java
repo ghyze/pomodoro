@@ -6,6 +6,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
 import nl.ghyze.pomodoro.controller.PomoAction;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.PomodoroType;
@@ -14,15 +16,18 @@ import static java.util.Objects.nonNull;
 
 class PomoButton
 {
-
+   @Getter
    private final int x;
+   @Getter
    private final int y;
    private final int width;
    private final int height;
    private final List<PomodoroType> visibleTypes;
-   
+
+   @Setter
    private PomoAction action;
-   
+
+   @Getter @Setter
    private Image image;
    
    PomoButton(int x, int y, int width, int height){
@@ -41,33 +46,13 @@ class PomoButton
       Rectangle r = new Rectangle(x,y,width,height);
       return r.contains(p);
    }
-   
-   void setAction(PomoAction action){
-      this.action = action;
-   }
-   
+
    void executeAction(){
       if (nonNull(action)){
          action.execute();
       }
    }
-   
-   Image getImage() {
-      return image;
-   }
-   
-   void setImage(Image image){
-      this.image = image;
-   }
-   
-   int getX(){
-      return x;
-   }
-   
-   int getY(){
-      return y;
-   }
-   
+
    void addVisibleType(PomodoroType type){
       visibleTypes.add(type);
    }

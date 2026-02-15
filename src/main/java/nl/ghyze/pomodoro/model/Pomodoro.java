@@ -1,17 +1,19 @@
 package nl.ghyze.pomodoro.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import nl.ghyze.pomodoro.Stopwatch;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 public class Pomodoro {
 
+    @EqualsAndHashCode.Include
     private int minutes;
     private long startTime;
     private Stopwatch stopwatch;
 
+    @EqualsAndHashCode.Include
     private PomodoroType type;
 
     private int pomosDone = 0;
@@ -56,26 +58,6 @@ public class Pomodoro {
 
     long getMillisSinceStart() {
         return System.currentTimeMillis() - startTime;
-    }
-
-    public boolean equals(final Object other) {
-        if (other instanceof Pomodoro) {
-            final Pomodoro otherPomo = (Pomodoro) other;
-            if (otherPomo.getType() != type) {
-                return false;
-            }
-
-            return otherPomo.minutes == minutes;
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        final HashCodeBuilder builder = new HashCodeBuilder(17, 31);
-        builder.append(type);
-        builder.append(minutes);
-        return builder.hashCode();
     }
 
     private String formatTimeLeft() {

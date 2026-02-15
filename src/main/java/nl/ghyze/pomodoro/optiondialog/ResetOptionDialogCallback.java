@@ -1,15 +1,12 @@
 package nl.ghyze.pomodoro.optiondialog;
 
+import lombok.RequiredArgsConstructor;
 import nl.ghyze.pomodoro.controller.PomodoroStateMachine;
 
+@RequiredArgsConstructor
 public class ResetOptionDialogCallback implements OptionDialogCallback
 {
    private final PomodoroStateMachine stateMachine;
-
-   public ResetOptionDialogCallback(final PomodoroStateMachine stateMachine)
-   {
-      this.stateMachine = stateMachine;
-   }
 
    @Override
    public void ok()
