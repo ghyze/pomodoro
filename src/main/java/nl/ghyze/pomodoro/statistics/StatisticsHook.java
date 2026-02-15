@@ -1,11 +1,13 @@
 package nl.ghyze.pomodoro.statistics;
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 import nl.ghyze.pomodoro.DateTimeUtil;
 import nl.ghyze.pomodoro.controller.PomodoroHook;
 
 public class StatisticsHook implements PomodoroHook{
+	private static final Logger logger = Logger.getLogger(StatisticsHook.class.getName());
 
 	private int numberCompleted = 0;
 	private int numberCancelled = 0;
@@ -28,7 +30,7 @@ public class StatisticsHook implements PomodoroHook{
 	}
 	
 	private void printStats(){
-		System.out.println(DateTimeUtil.format(new Date())+" Completed: "+numberCompleted+", Cancelled: "+numberCancelled);
+		logger.info(DateTimeUtil.format(new Date())+" Completed: "+numberCompleted+", Cancelled: "+numberCancelled);
 	}
 
 }

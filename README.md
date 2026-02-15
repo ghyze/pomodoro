@@ -28,6 +28,7 @@ This application provides a compact, always-on-top timer widget that helps you m
 - **Automatic tracking**: Completed pomodoros are automatically counted toward your active task
 - **Progress monitoring**: See estimated vs. actual pomodoros for each task
 - **Active task display**: Current task shown prominently at the top
+- **Persistent storage**: Tasks are automatically saved and restored across application restarts
 
 ### Customization
 - Configure pomodoro duration (default: 25 minutes)
@@ -99,7 +100,9 @@ A dialog will appear with options:
   - **controller/** - Business logic and state management
   - **view/** - GUI components and rendering
     - **view/settings/** - Settings dialog panels with input validation
+  - **statemachine/** - State machine components (state management, hooks, messages, break calculation)
   - **tasks/** - Task management functionality
+  - **persistence/** - Data persistence layer (JSON and properties file storage)
   - **optiondialog/** - Interactive dialog system
   - **statistics/** - Usage tracking
 
@@ -108,7 +111,9 @@ A dialog will appear with options:
 - **Language**: Java 17
 - **Build Tool**: Maven
 - **GUI**: Java Swing
-- **Persistence**: Java Preferences API (system registry on Windows)
+- **Persistence**: JSON files and properties files in `~/.pomodoro/` directory
+  - **Tasks**: `~/.pomodoro/tasks.json` (JSON format using GSON)
+  - **Settings**: `~/.pomodoro/settings.properties` (properties format)
 - **Testing**: JUnit, EasyMock
 - **Code Generation**: Lombok (reduces boilerplate)
 

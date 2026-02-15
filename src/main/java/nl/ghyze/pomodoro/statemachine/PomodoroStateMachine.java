@@ -8,11 +8,14 @@ import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
+import java.util.logging.Logger;
+
 /**
  * Manages pomodoro state transitions.
  * Coordinates between HookManager, MessageService, and BreakCalculator.
  */
 public class PomodoroStateMachine {
+    private static final Logger logger = Logger.getLogger(PomodoroStateMachine.class.getName());
     private Pomodoro current;
     private final Settings settings;
     private int pomosDone = 0;
@@ -63,7 +66,7 @@ public class PomodoroStateMachine {
     }
 
     public void handleAction(final OptionDialogModel.Choice choice) {
-        System.out.println("OptionDialog choice: " + choice);
+        logger.fine("OptionDialog choice: " + choice);
         lastAction = new Stopwatch();
         switch (getCurrentPomodoroType()) {
             case POMO -> handleActionForPomo(choice);
