@@ -5,11 +5,15 @@ import nl.ghyze.pomodoro.controller.PomodoroHook;
 public class TaskHook implements PomodoroHook {
 
 	private Task currentTask;
-	
+	private TaskFrame taskFrame;
+
 	@Override
 	public void completed() {
 	    if (currentTask != null) {
             currentTask.addCompletedPomo();
+            if (taskFrame != null) {
+                taskFrame.saveTasks();
+            }
         }
 	}
 
@@ -26,5 +30,9 @@ public class TaskHook implements PomodoroHook {
 	void setCurrentTask(Task task){
 		assert task != null: "task should not be null";
 		currentTask = task;
+	}
+
+	public void setTaskFrame(TaskFrame taskFrame) {
+		this.taskFrame = taskFrame;
 	}
 }

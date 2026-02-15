@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.prefs.Preferences;
 
 @Data
 @Builder
@@ -82,37 +81,5 @@ public class Settings
    void removeListener(final SettingsChangeListener listener)
    {
       listeners.remove(listener);
-   }
-
-   public void save()
-   {
-      final Preferences prefs = Preferences.userNodeForPackage(this.getClass());
-
-      prefs.putInt(KEY_POMO_MINUTES, pomoMinutes);
-      prefs.putInt(KEY_SHORT_BREAK_MINUTES, shortBreakMinutes);
-      prefs.putInt(KEY_LONG_BREAK_MINUTES, longBreakMinutes);
-      prefs.putInt(KEY_POMOS_BEFORE_LONG_BREAK, pomosBeforeLongBreak);
-
-      prefs.putInt(KEY_SCREEN_INDEX, screenIndex);
-      prefs.putInt(KEY_POSITION, position.ordinal());
-
-      prefs.putBoolean(KEY_AUTORESET, autoreset);
-      prefs.putInt(KEY_IDLE_TIME, idleTime);
-   }
-
-   public void load()
-   {
-      final Preferences prefs = Preferences.userNodeForPackage(this.getClass());
-
-      pomoMinutes = prefs.getInt(KEY_POMO_MINUTES, 25);
-      shortBreakMinutes = prefs.getInt(KEY_SHORT_BREAK_MINUTES, 5);
-      longBreakMinutes = prefs.getInt(KEY_LONG_BREAK_MINUTES, 15);
-      pomosBeforeLongBreak = prefs.getInt(KEY_POMOS_BEFORE_LONG_BREAK, 3);
-
-      screenIndex = prefs.getInt(KEY_SCREEN_INDEX, 0);
-      position = Position.values()[prefs.getInt(KEY_POSITION, 3)];
-
-      autoreset = prefs.getBoolean(KEY_AUTORESET, false);
-      idleTime = prefs.getInt(KEY_IDLE_TIME, 60);
    }
 }

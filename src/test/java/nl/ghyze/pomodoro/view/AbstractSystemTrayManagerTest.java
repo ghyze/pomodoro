@@ -153,7 +153,13 @@ public class AbstractSystemTrayManagerTest
 	@Override
 	public void setTaskFrame(TaskFrame taskFrame) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void setSettingsRepository(nl.ghyze.pomodoro.persistence.SettingsRepository settingsRepository) {
+		// TODO Auto-generated method stub
+
 	}
    }
 }

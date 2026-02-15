@@ -25,6 +25,7 @@
         <easymock.version>5.6.0</easymock.version>
         <commons-lang3.version>3.18.0</commons-lang3.version>
         <lombok.version>1.18.42</lombok.version>
+        <gson.version>2.10.1</gson.version>
     </properties>
 
     <build>
@@ -100,6 +101,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

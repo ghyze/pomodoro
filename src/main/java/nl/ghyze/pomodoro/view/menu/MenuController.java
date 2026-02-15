@@ -4,6 +4,7 @@ import java.awt.MenuItem;
 import java.awt.PopupMenu;
 
 import nl.ghyze.pomodoro.controller.PomoController;
+import nl.ghyze.pomodoro.persistence.SettingsRepository;
 import nl.ghyze.pomodoro.tasks.TaskFrame;
 import nl.ghyze.pomodoro.view.settings.SettingsFrame;
 
@@ -11,6 +12,7 @@ public class MenuController {
 
     private PomoController controller;
     private TaskFrame taskFrame;
+    private SettingsRepository settingsRepository;
 
     public MenuController() {
     }
@@ -21,6 +23,10 @@ public class MenuController {
 
     public void setTaskFrame(TaskFrame taskFrame) {
         this.taskFrame = taskFrame;
+    }
+
+    public void setSettingsRepository(SettingsRepository settingsRepository) {
+        this.settingsRepository = settingsRepository;
     }
 
     public PopupMenu createPopupMenu() {
@@ -56,8 +62,8 @@ public class MenuController {
     private MenuItem createSettingsMenuItem() {
         MenuItem settings = new MenuItem("Settings");
         settings.addActionListener(actionEvent -> {
-            if (controller != null) {
-                SettingsFrame settingsFrame = new SettingsFrame(controller.getSettings());
+            if (controller != null && settingsRepository != null) {
+                SettingsFrame settingsFrame = new SettingsFrame(controller.getSettings(), settingsRepository);
                 settingsFrame.setVisible(true);
             }
         });

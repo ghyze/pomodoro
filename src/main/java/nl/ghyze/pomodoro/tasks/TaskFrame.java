@@ -3,7 +3,6 @@ package nl.ghyze.pomodoro.tasks;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -14,19 +13,26 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
+import nl.ghyze.pomodoro.persistence.TaskRepository;
+
 public class TaskFrame extends JFrame {
 
 	private SpringLayout layout = new SpringLayout();
 
 	private TaskHook taskHook = new TaskHook();
-	
-	private List<Task> tasks = new ArrayList<>();
-	
+
+	private TaskRepository taskRepository;
+	private List<Task> tasks;
+
 	private JPanel tasksPanel = new JPanel();
-	
+
 	private TaskPanel activePanel = null;
 
-	public TaskFrame() {
+	public TaskFrame(TaskRepository taskRepository) {
+		this.taskRepository = taskRepository;
+		this.tasks = taskRepository.loadAll();
+		this.taskHook.setTaskFrame(this);
+
 		this.setSize(800, 600);
 		this.getContentPane().setLayout(layout);
 		
@@ -83,6 +89,14 @@ public class TaskFrame extends JFrame {
 		return taskHook;
 	}
 
+	public void saveTasks() {
+		try {
+			taskRepository.saveAll(tasks);
+		} catch (Exception e) {
+			System.err.println("Failed to save tasks: " + e.getMessage());
+		}
+	}
+
 	private class AddAction extends AbstractAction {
 
 		AddAction(){
@@ -93,6 +107,7 @@ public class TaskFrame extends JFrame {
 			AddTaskDialog.createTask()
 					.ifPresent(tasks::add);
 			initTasks();
+			saveTasks();
 		}
 
 	}
@@ -105,6 +120,7 @@ public class TaskFrame extends JFrame {
 				source.getTask().setActive(true);
 				taskHook.setCurrentTask(source.getTask());
 				initTasks();
+				saveTasks();
 			}
 		}
 	}

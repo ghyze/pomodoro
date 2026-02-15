@@ -4,6 +4,8 @@ import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.controller.PomodoroHook;
 import nl.ghyze.pomodoro.statemachine.PomodoroStateMachine;
 import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.pomodoro.persistence.SettingsRepository;
+import nl.ghyze.pomodoro.persistence.TaskRepository;
 import nl.ghyze.pomodoro.statistics.StatisticsHook;
 import nl.ghyze.pomodoro.tasks.TaskFrame;
 import nl.ghyze.pomodoro.view.PomoButtonFactory;
@@ -26,13 +28,15 @@ public class PomoApp
 
 		final PomoFrame frame = initPomoFrame(controller);
 
-		final Settings settings = new Settings();
-		settings.load();
+		final SettingsRepository settingsRepository = new SettingsRepository();
+		final Settings settings = settingsRepository.load();
 
-		final TaskFrame taskFrame = new TaskFrame();
+		final TaskRepository taskRepository = new TaskRepository();
+		final TaskFrame taskFrame = new TaskFrame(taskRepository);
 
 		final AbstractSystemTrayManager systemTrayManager = new SystemTrayManagerImpl();
 		systemTrayManager.setTaskFrame(taskFrame);
+		systemTrayManager.setSettingsRepository(settingsRepository);
 
 		final PomodoroStateMachine stateMachine = initStateMachine(settings, systemTrayManager, new StatisticsHook(), taskFrame.getTaskHook());
 

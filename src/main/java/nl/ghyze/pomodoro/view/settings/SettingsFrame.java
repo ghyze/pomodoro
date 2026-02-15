@@ -9,12 +9,14 @@ import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 
 import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.pomodoro.persistence.SettingsRepository;
 
 /**
  * Main settings dialog frame that coordinates all settings panels.
  */
 public class SettingsFrame extends JFrame {
     private final Settings settings;
+    private final SettingsRepository settingsRepository;
 
     private final SpringLayout layout = new SpringLayout();
 
@@ -25,8 +27,9 @@ public class SettingsFrame extends JFrame {
     private final JButton btOk = new JButton("OK");
     private final JButton btCancel = new JButton("Cancel");
 
-    public SettingsFrame(final Settings settings) {
+    public SettingsFrame(final Settings settings, final SettingsRepository settingsRepository) {
         this.settings = settings;
+        this.settingsRepository = settingsRepository;
 
         // Create panels
         this.positionPanel = new PositionSettingsPanel(settings);
@@ -146,6 +149,6 @@ public class SettingsFrame extends JFrame {
             settings.setIdleTime(idleTime);
         }
 
-        settings.save();
+        settingsRepository.save(settings);
     }
 }

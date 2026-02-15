@@ -1,6 +1,5 @@
 package nl.ghyze.pomodoro.model;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,24 +7,12 @@ import org.junit.Test;
 public class SettingsTest
 {
 
-   // originalSettings are used to save the currently stored settings, so they can be put back when the test is done.
-   Settings originalSettings;
-
    Settings testSettings;
 
    @Before
    public void setup()
    {
-      originalSettings = new Settings();
-      originalSettings.load();
-
       testSettings = new Settings();
-   }
-
-   @After
-   public void tearDown()
-   {
-      originalSettings.save();
    }
 
    @Test
@@ -112,26 +99,4 @@ public class SettingsTest
       }
    }
 
-   @Test
-   public void testPersistence()
-   {
-      testSettings.setPomoMinutes(1);
-      testSettings.setShortBreakMinutes(2);
-      testSettings.setLongBreakMinutes(3);
-      testSettings.setPomosBeforeLongBreak(4);
-      testSettings.setPosition(Settings.Position.TOP_LEFT);
-      testSettings.setAutoreset(true);
-      testSettings.setIdleTime(5);
-      testSettings.save();
-
-      Settings loadedSettings = new Settings();
-      loadedSettings.load();
-      Assert.assertEquals(1, loadedSettings.getPomoMinutes());
-      Assert.assertEquals(2, loadedSettings.getShortBreakMinutes());
-      Assert.assertEquals(3, loadedSettings.getLongBreakMinutes());
-      Assert.assertEquals(4, loadedSettings.getPomosBeforeLongBreak());
-      Assert.assertTrue(loadedSettings.isAutoreset());
-      Assert.assertEquals(5, loadedSettings.getIdleTime());
-      Assert.assertEquals(Settings.Position.TOP_LEFT, loadedSettings.getPosition());
-   }
 }
