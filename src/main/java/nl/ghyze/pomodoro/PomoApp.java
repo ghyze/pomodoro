@@ -2,6 +2,7 @@ package nl.ghyze.pomodoro;
 
 import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.controller.PomodoroHook;
+import nl.ghyze.pomodoro.optiondialog.OptionDialogController;
 import nl.ghyze.pomodoro.statemachine.PomodoroStateMachine;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.persistence.SettingsRepository;
@@ -40,7 +41,9 @@ public class PomoApp
 
 		final PomodoroStateMachine stateMachine = initStateMachine(settings, systemTrayManager, new StatisticsHook(), taskFrame.getTaskHook());
 
-		controller.initialize(frame, settings, systemTrayManager, stateMachine);
+		final OptionDialogController dialogController = new OptionDialogController(frame);
+
+		controller.initialize(frame, settings, systemTrayManager, stateMachine, dialogController);
 	}
 
 	/**

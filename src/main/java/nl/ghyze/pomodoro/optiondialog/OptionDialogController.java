@@ -8,8 +8,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import nl.ghyze.pomodoro.Stopwatch;
 
 import static java.util.Objects.nonNull;
@@ -18,40 +16,38 @@ import static javax.swing.JOptionPane.CLOSED_OPTION;
 import static javax.swing.JOptionPane.NO_OPTION;
 import static javax.swing.JOptionPane.YES_OPTION;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OptionDialogController
 {
    private static final int DIALOG_TIMEOUT_MINUTES = 5;
 
-   private static OptionDialogController instance;
-   private final long timeout = DIALOG_TIMEOUT_MINUTES * Stopwatch.MILLISECONDS_PER_MINUTE;
+   private final JFrame frame;
+   private final long timeoutMillis;
    private Stopwatch stopwatch;
-
    private boolean showing = false;
 
-   private JFrame frame;
-
-   public static void init(JFrame frame){
-      if (nonNull(instance)){
-         throw new IllegalStateException("OptionDialogController already initialized");
-      }
-      instance = new OptionDialogController();
-      instance.frame = frame;
+   public OptionDialogController(JFrame frame) {
+      this(frame, DIALOG_TIMEOUT_MINUTES * Stopwatch.MILLISECONDS_PER_MINUTE);
    }
 
-   public static void showDialog(OptionDialogModel model, OptionDialogCallback callback)
+   // Package-private constructor for testing with custom timeout
+   OptionDialogController(JFrame frame, long timeoutMillis) {
+      this.frame = frame;
+      this.timeoutMillis = timeoutMillis;
+   }
+
+   public void showDialog(OptionDialogModel model, OptionDialogCallback callback)
    {
       if (!isShowing())
       {
-         instance.showing = true;
-         instance.stopwatch = new Stopwatch();
+         showing = true;
+         stopwatch = new Stopwatch();
          final JLabel label = new JLabel(model.getMessage());
          int timerDelay = Stopwatch.MILLISECONDS_PER_SECOND;
          new Timer(timerDelay, e -> {
-            if (instance.stopwatch.isTimedOut(instance.timeout))
+            if (stopwatch.isTimedOut(timeoutMillis))
             {
                ((Timer) e.getSource()).stop();
-               if (instance.showing)
+               if (showing)
                {
                   Window win = SwingUtilities.getWindowAncestor(label);
                   win.setVisible(false);
@@ -64,13 +60,13 @@ public class OptionDialogController
                }
             }.start();
 
-         int result = JOptionPane.showOptionDialog(instance.frame, label, model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(), model.getDefaultChoice());
-         instance.showing = false;
+         int result = JOptionPane.showOptionDialog(frame, label, model.getTitle(), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, model.getChoices(), model.getDefaultChoice());
+         showing = false;
          handleResult(callback, result);
       }
    }
 
-   private static void handleResult(OptionDialogCallback callback, int result)
+   private void handleResult(OptionDialogCallback callback, int result)
    {
       if (nonNull(callback)) {
          switch (result) {
@@ -82,9 +78,9 @@ public class OptionDialogController
       }
    }
 
-   private static boolean isShowing()
+   public boolean isShowing()
    {
-      return instance.showing;
+      return showing;
    }
 
 }

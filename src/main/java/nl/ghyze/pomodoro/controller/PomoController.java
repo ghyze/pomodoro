@@ -30,18 +30,19 @@ public class PomoController implements ActionListener, SettingsChangeListener {
     private Settings settings;
     private PomodoroStateMachine stateMachine;
     private AbstractSystemTrayManager systemTrayManager;
+    private OptionDialogController dialogController;
 
 
-    public void initialize(final PomoFrame frame, final Settings settings, final AbstractSystemTrayManager systemTrayManager, final PomodoroStateMachine stateMachine) {
+    public void initialize(final PomoFrame frame, final Settings settings, final AbstractSystemTrayManager systemTrayManager, final PomodoroStateMachine stateMachine, final OptionDialogController dialogController) {
         this.frame = frame;
         this.settings = settings;
         this.systemTrayManager = systemTrayManager;
         this.stateMachine = stateMachine;
+        this.dialogController = dialogController;
 
         this.frame.position(settings);
         this.systemTrayManager.setPomoController(this);
         settings.addListener(this);
-        OptionDialogController.init(frame);
         final Timer timer = new Timer(20, this);
         timer.start();
     }
@@ -50,7 +51,7 @@ public class PomoController implements ActionListener, SettingsChangeListener {
     public void actionPerformed(final ActionEvent event) {
         if (stateMachine.shouldChangeState()) {
             final OptionDialogModel model = OptionDialogModelFactory.createChangeStateModel(stateMachine.getCurrentPomodoroType());
-            OptionDialogController.showDialog(model, getCallback());
+            dialogController.showDialog(model, getCallback());
         }
         checkMinutesSinceLastAction();
         frame.update(stateMachine.getCurrentPomodoro());
@@ -97,6 +98,6 @@ public class PomoController implements ActionListener, SettingsChangeListener {
 
     public void reset() {
         final OptionDialogModel resetModel = OptionDialogModelFactory.createResetModel();
-        OptionDialogController.showDialog(resetModel, new ResetOptionDialogCallback(stateMachine));
+        dialogController.showDialog(resetModel, new ResetOptionDialogCallback(stateMachine));
     }
 }
