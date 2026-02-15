@@ -1,14 +1,12 @@
 package nl.ghyze.pomodoro.persistence;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.*;
 import nl.ghyze.pomodoro.tasks.Task;
 
 import javax.swing.*;
 import java.beans.PropertyChangeSupport;
-import java.io.IOException;
-import java.lang.reflect.Type;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -22,13 +20,13 @@ public class TaskRepository {
     private final Gson gson;
 
     public TaskRepository() {
-        // Configure Gson to exclude PropertyChangeSupport fields
+        // Configure Gson with custom Task deserializer to handle PropertyChangeSupport
         this.gson = new GsonBuilder()
                 .setPrettyPrinting()
-                .setExclusionStrategies(new com.google.gson.ExclusionStrategy() {
+                .setExclusionStrategies(new ExclusionStrategy() {
                     @Override
-                    public boolean shouldSkipField(com.google.gson.FieldAttributes field) {
-                        // Exclude PropertyChangeSupport fields
+                    public boolean shouldSkipField(FieldAttributes field) {
+                        // Exclude PropertyChangeSupport fields from serialization
                         return field.getDeclaredType() == PropertyChangeSupport.class;
                     }
 
@@ -37,7 +35,28 @@ public class TaskRepository {
                         return false;
                     }
                 })
+                .registerTypeAdapter(Task.class, new TaskInstanceCreator())
                 .create();
+    }
+
+    /**
+     * Custom instance creator for Task that properly initializes via constructor.
+     * This ensures the PropertyChangeSupport field is initialized even though
+     * it's excluded from JSON serialization.
+     */
+    private static class TaskInstanceCreator implements InstanceCreator<Task> {
+        @Override
+        public Task createInstance(java.lang.reflect.Type type) {
+            try {
+                // Create a Task with default values using reflection
+                // The pcs field will be initialized by the constructor
+                Constructor<Task> constructor = Task.class.getDeclaredConstructor(String.class, int.class);
+                constructor.setAccessible(true);
+                return constructor.newInstance("", 0);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create Task instance", e);
+            }
+        }
     }
 
     /**
