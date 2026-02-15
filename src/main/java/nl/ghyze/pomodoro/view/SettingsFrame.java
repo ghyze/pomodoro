@@ -1,8 +1,11 @@
 package nl.ghyze.pomodoro.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -10,9 +13,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import nl.ghyze.pomodoro.MultiScreenFactory;
 import nl.ghyze.pomodoro.model.Settings;
@@ -20,6 +26,13 @@ import nl.ghyze.pomodoro.model.Settings.Position;
 
 public class SettingsFrame extends JFrame {
     private static final int LABEL_WIDTH = 200;
+    private static final int MAX_VALUE = 999;
+    private static final int MIN_VALUE = 1;
+
+    private static final Color VALID_BACKGROUND = Color.WHITE;
+    private static final Color VALID_FOREGROUND = Color.BLACK;
+    private static final Color INVALID_BACKGROUND = new Color(255, 200, 200); // Light pink
+    private static final Color INVALID_FOREGROUND = Color.RED;
 
     private final Settings settings;
     private final MultiScreenFactory multiScreenFactory = new MultiScreenFactory();
@@ -145,8 +158,10 @@ public class SettingsFrame extends JFrame {
         btCancel.addActionListener(actionEvent -> setVisible(false));
 
         btOk.addActionListener(actionEvent -> {
-            updateSettings();
-            setVisible(false);
+            if (validateAllFields()) {
+                updateSettings();
+                setVisible(false);
+            }
         });
     }
 
@@ -181,6 +196,7 @@ public class SettingsFrame extends JFrame {
         layout.putConstraint(SpringLayout.SOUTH, tfPomoTime, 25, SpringLayout.SOUTH, rbBottomRight);
         this.add(tfPomoTime);
         tfPomoTime.setText("" + settings.getPomoMinutes());
+        attachValidationListeners(tfPomoTime, "Pomodoro time");
 
         layout.putConstraint(SpringLayout.WEST, tfShortBreakTime, 5, SpringLayout.EAST, lbPosition);
         layout.putConstraint(SpringLayout.EAST, tfShortBreakTime, -5, SpringLayout.EAST, getContentPane());
@@ -188,6 +204,7 @@ public class SettingsFrame extends JFrame {
         layout.putConstraint(SpringLayout.SOUTH, tfShortBreakTime, 25, SpringLayout.SOUTH, lbPomoTime);
         this.add(tfShortBreakTime);
         tfShortBreakTime.setText("" + settings.getShortBreakMinutes());
+        attachValidationListeners(tfShortBreakTime, "Short break time");
 
         layout.putConstraint(SpringLayout.WEST, tfLongBreakTime, 5, SpringLayout.EAST, lbPosition);
         layout.putConstraint(SpringLayout.EAST, tfLongBreakTime, -5, SpringLayout.EAST, getContentPane());
@@ -195,6 +212,7 @@ public class SettingsFrame extends JFrame {
         layout.putConstraint(SpringLayout.SOUTH, tfLongBreakTime, 25, SpringLayout.SOUTH, lbShortBreakTime);
         this.add(tfLongBreakTime);
         tfLongBreakTime.setText("" + settings.getLongBreakMinutes());
+        attachValidationListeners(tfLongBreakTime, "Long break time");
 
         layout.putConstraint(SpringLayout.WEST, tfNrOfPomos, 5, SpringLayout.EAST, lbPosition);
         layout.putConstraint(SpringLayout.EAST, tfNrOfPomos, -5, SpringLayout.EAST, getContentPane());
@@ -202,6 +220,7 @@ public class SettingsFrame extends JFrame {
         layout.putConstraint(SpringLayout.SOUTH, tfNrOfPomos, 25, SpringLayout.SOUTH, lbLongBreakTime);
         this.add(tfNrOfPomos);
         tfNrOfPomos.setText("" + settings.getPomosBeforeLongBreak());
+        attachValidationListeners(tfNrOfPomos, "Pomodoros before long break");
     }
 
     private void initIdleTime() {
@@ -220,6 +239,7 @@ public class SettingsFrame extends JFrame {
         this.add(tfIdleTime);
         tfIdleTime.setText("" + settings.getIdleTime());
         tfIdleTime.setEnabled(cbAutoReset.isSelected());
+        attachValidationListeners(tfIdleTime, "Idle time");
     }
 
     private void updateSettings() {
@@ -279,6 +299,165 @@ public class SettingsFrame extends JFrame {
         } catch (NumberFormatException ignored) {
         }
         return -1;
+    }
+
+    /**
+     * Validates if the text field contains a valid integer within range.
+     * @param text The text to validate
+     * @return true if valid, false otherwise
+     */
+    private boolean isValidNumber(final String text) {
+        if (text == null || text.trim().isEmpty()) {
+            return false;
+        }
+
+        // Check if contains only digits
+        if (!text.matches("\\d+")) {
+            return false;
+        }
+
+        try {
+            int value = Integer.parseInt(text);
+            return value >= MIN_VALUE && value <= MAX_VALUE;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Updates the visual appearance of a text field based on its validity.
+     * @param textField The field to update
+     * @param isValid Whether the current value is valid
+     */
+    private void updateFieldAppearance(final JTextField textField, final boolean isValid) {
+        if (isValid) {
+            textField.setBackground(VALID_BACKGROUND);
+            textField.setForeground(VALID_FOREGROUND);
+        } else {
+            textField.setBackground(INVALID_BACKGROUND);
+            textField.setForeground(INVALID_FOREGROUND);
+        }
+    }
+
+    /**
+     * Shows an error dialog with a specific message for the field.
+     * @param fieldName The name of the field with the error
+     * @param text The invalid text that was entered
+     */
+    private void showValidationError(final String fieldName, final String text) {
+        String message;
+
+        if (text == null || text.trim().isEmpty()) {
+            message = fieldName + " cannot be empty.";
+        } else if (!text.matches("\\d+")) {
+            message = fieldName + " must contain only digits.\n" +
+                    "Invalid input: \"" + text + "\"";
+        } else {
+            try {
+                int value = Integer.parseInt(text);
+                if (value < MIN_VALUE) {
+                    message = fieldName + " must be at least " + MIN_VALUE + ".\n" +
+                            "You entered: " + value;
+                } else {
+                    message = fieldName + " must be less than " + (MAX_VALUE + 1) + ".\n" +
+                            "You entered: " + value;
+                }
+            } catch (NumberFormatException e) {
+                message = fieldName + " contains an invalid number.\n" +
+                        "Input: \"" + text + "\"";
+            }
+        }
+
+        JOptionPane.showMessageDialog(
+                this,
+                message,
+                "Invalid Input",
+                JOptionPane.WARNING_MESSAGE
+        );
+    }
+
+    /**
+     * Validates all text fields before applying settings.
+     * Shows an error dialog if any field is invalid.
+     * @return true if all fields are valid, false otherwise
+     */
+    private boolean validateAllFields() {
+        final JTextField[] fields = {tfPomoTime, tfShortBreakTime, tfLongBreakTime, tfNrOfPomos, tfIdleTime};
+        final String[] fieldNames = {
+                "Pomodoro time",
+                "Short break time",
+                "Long break time",
+                "Pomodoros before long break",
+                "Idle time"
+        };
+
+        for (int i = 0; i < fields.length; i++) {
+            final JTextField field = fields[i];
+            final String text = field.getText();
+
+            // Skip validation for disabled fields
+            if (!field.isEnabled()) {
+                continue;
+            }
+
+            if (!isValidNumber(text)) {
+                showValidationError(fieldNames[i], text);
+                field.requestFocus();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Attaches validation listeners to a text field for real-time feedback
+     * and validation on commit (Enter or focus lost).
+     * @param textField The field to attach listeners to
+     * @param fieldName The human-readable name of the field for error messages
+     */
+    private void attachValidationListeners(final JTextField textField, final String fieldName) {
+        // Real-time validation as user types
+        textField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(final DocumentEvent e) {
+                validateField();
+            }
+
+            @Override
+            public void removeUpdate(final DocumentEvent e) {
+                validateField();
+            }
+
+            @Override
+            public void changedUpdate(final DocumentEvent e) {
+                validateField();
+            }
+
+            private void validateField() {
+                final boolean isValid = isValidNumber(textField.getText());
+                updateFieldAppearance(textField, isValid);
+            }
+        });
+
+        // Validation on focus lost
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(final FocusEvent e) {
+                final String text = textField.getText();
+                if (!isValidNumber(text)) {
+                    showValidationError(fieldName, text);
+                }
+            }
+        });
+
+        // Validation on Enter key
+        textField.addActionListener(e -> {
+            final String text = textField.getText();
+            if (!isValidNumber(text)) {
+                showValidationError(fieldName, text);
+            }
+        });
     }
 
     public static void main(String[] args) {
