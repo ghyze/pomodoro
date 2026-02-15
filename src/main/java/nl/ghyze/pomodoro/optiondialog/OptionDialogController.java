@@ -21,8 +21,10 @@ import static javax.swing.JOptionPane.YES_OPTION;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OptionDialogController
 {
+   private static final int DIALOG_TIMEOUT_MINUTES = 5;
+
    private static OptionDialogController instance;
-   private final long timeout = 5 * Stopwatch.MILLISECONDS_PER_MINUTE; // 5 minutes
+   private final long timeout = DIALOG_TIMEOUT_MINUTES * Stopwatch.MILLISECONDS_PER_MINUTE;
    private Stopwatch stopwatch;
 
    private boolean showing = false;

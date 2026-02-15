@@ -20,6 +20,7 @@ import nl.ghyze.pomodoro.model.PomodoroType;
 public abstract class AbstractSystemTrayManager
 {
    private static final int MAX_IMAGE_INDEX = 99;
+   private static final int IMAGE_ARRAY_SIZE = 100;
 
    protected Image[] pomoImages;
    protected Image[] breakImages;
@@ -41,8 +42,8 @@ public abstract class AbstractSystemTrayManager
 
    private void createBreakMinutesImages()
    {
-      breakImages = new Image[100];
-      for (int i = 0; i < 100; i++)
+      breakImages = new Image[IMAGE_ARRAY_SIZE];
+      for (int i = 0; i < IMAGE_ARRAY_SIZE; i++)
       {
          breakImages[i] = createImage(new Color(0, 192, 0), "" + i);
       }
@@ -50,8 +51,8 @@ public abstract class AbstractSystemTrayManager
 
    private void createPomoMinutesImages()
    {
-      pomoImages = new Image[100];
-      for (int i = 0; i < 100; i++)
+      pomoImages = new Image[IMAGE_ARRAY_SIZE];
+      for (int i = 0; i < IMAGE_ARRAY_SIZE; i++)
       {
          pomoImages[i] = createImage(Color.red, "" + i);
       }

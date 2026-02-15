@@ -23,12 +23,25 @@ public class PomoPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 7646898602993436935L;
 
+	// Window dimensions
+	private static final int WINDOW_WIDTH = 140;
+	private static final int WINDOW_HEIGHT = 100;
+
+	// Pomodoro indicator drawing constants
+	private static final int INDICATOR_LEFT_MARGIN = 2;
+	private static final int INDICATOR_TOP_MARGIN = 2;
+	private static final int INDICATOR_SPACING = 15;
+	private static final int INDICATOR_SIZE = 12;
+	private static final int FILLED_INDICATOR_MARGIN = 3;
+	private static final int FILLED_INDICATOR_TOP = 5;
+	private static final int FILLED_INDICATOR_SIZE = 7;
+
 	private Pomodoro countdown = null;
 
 	private final List<PomoButton> buttons = new ArrayList<>();
 
 	PomoPanel() {
-		this.setPreferredSize(new Dimension(140, 100));
+		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 		this.setLayout(null);
 	}
 
@@ -70,10 +83,11 @@ public class PomoPanel extends JPanel {
 		if (countdown != null) {
 			gr.setColor(Color.white);
 			for (int i = 0; i < countdown.getMaxPomosDone(); i++) {
-				int xOff = 2 + (i * 15);
-				gr.drawRect(xOff, 2, 12, 12);
+				int xOff = INDICATOR_LEFT_MARGIN + (i * INDICATOR_SPACING);
+				gr.drawRect(xOff, INDICATOR_TOP_MARGIN, INDICATOR_SIZE, INDICATOR_SIZE);
 				if (i < countdown.getPomosDone()) {
-					gr.fillRect(xOff + 3, 5, 7, 7);
+					gr.fillRect(xOff + FILLED_INDICATOR_MARGIN, FILLED_INDICATOR_TOP,
+							FILLED_INDICATOR_SIZE, FILLED_INDICATOR_SIZE);
 				}
 			}
 		}
