@@ -89,7 +89,8 @@ A dialog will appear with options:
 1. Right-click on the timer window
 2. Select "Settings"
 3. Adjust timings, positioning, and behavior as needed
-4. Click "Save" to apply changes
+4. All numeric fields provide real-time validation feedback (invalid values shown in red/pink)
+5. Click "OK" to apply changes
 
 ## Project Structure
 
@@ -97,6 +98,7 @@ A dialog will appear with options:
   - **model/** - Data models (Pomodoro, Settings, Task)
   - **controller/** - Business logic and state management
   - **view/** - GUI components and rendering
+    - **view/settings/** - Settings dialog panels with input validation
   - **tasks/** - Task management functionality
   - **optiondialog/** - Interactive dialog system
   - **statistics/** - Usage tracking
@@ -104,11 +106,11 @@ A dialog will appear with options:
 ## Technology Stack
 
 - **Language**: Java 17
-- **Framework**: Spring Boot 3.1.1 (minimal usage)
 - **Build Tool**: Maven
 - **GUI**: Java Swing
-- **Persistence**: Java Preferences API
+- **Persistence**: Java Preferences API (system registry on Windows)
 - **Testing**: JUnit, EasyMock
+- **Code Generation**: Lombok (reduces boilerplate)
 
 ## License
 

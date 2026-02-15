@@ -16,6 +16,7 @@ import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModelFactory;
 import nl.ghyze.pomodoro.optiondialog.ResetOptionDialogCallback;
 import nl.ghyze.pomodoro.optiondialog.PomoOptionDialogCallback;
+import nl.ghyze.pomodoro.statemachine.PomodoroStateMachine;
 import nl.ghyze.pomodoro.view.PomoFrame;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 

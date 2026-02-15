@@ -1,7 +1,7 @@
 package nl.ghyze.pomodoro.optiondialog;
 
 import lombok.RequiredArgsConstructor;
-import nl.ghyze.pomodoro.controller.PomodoroStateMachine;
+import nl.ghyze.pomodoro.statemachine.PomodoroStateMachine;
 
 @RequiredArgsConstructor
 public class BreakOptionDialogCallback implements OptionDialogCallback

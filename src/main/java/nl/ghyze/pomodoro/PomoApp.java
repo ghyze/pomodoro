@@ -2,7 +2,7 @@ package nl.ghyze.pomodoro;
 
 import nl.ghyze.pomodoro.controller.PomoController;
 import nl.ghyze.pomodoro.controller.PomodoroHook;
-import nl.ghyze.pomodoro.controller.PomodoroStateMachine;
+import nl.ghyze.pomodoro.statemachine.PomodoroStateMachine;
 import nl.ghyze.pomodoro.model.Settings;
 import nl.ghyze.pomodoro.statistics.StatisticsHook;
 import nl.ghyze.pomodoro.tasks.TaskFrame;

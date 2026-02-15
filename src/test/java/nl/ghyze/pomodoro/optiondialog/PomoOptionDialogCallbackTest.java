@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import nl.ghyze.pomodoro.controller.PomodoroStateMachine;
+import nl.ghyze.pomodoro.statemachine.PomodoroStateMachine;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.PomodoroType;
 import nl.ghyze.pomodoro.model.Settings;
