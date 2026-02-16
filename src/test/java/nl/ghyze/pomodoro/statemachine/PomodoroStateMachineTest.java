@@ -9,7 +9,7 @@ import org.junit.Test;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.model.PomodoroType;
-import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.settings.Settings;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
 public class PomodoroStateMachineTest

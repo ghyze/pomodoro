@@ -37,7 +37,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>nl.ghyze.pomodoro.PomoApp</mainClass>
+                            <mainClass>nl.ghyze.PomoApp</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

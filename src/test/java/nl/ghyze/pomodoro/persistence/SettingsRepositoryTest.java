@@ -1,6 +1,7 @@
 package nl.ghyze.pomodoro.persistence;
 
-import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.settings.Settings;
+import nl.ghyze.settings.SettingsRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

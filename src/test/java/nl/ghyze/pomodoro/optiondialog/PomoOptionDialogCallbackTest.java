@@ -7,7 +7,7 @@ import org.junit.Test;
 import nl.ghyze.pomodoro.statemachine.PomodoroStateMachine;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.PomodoroType;
-import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.settings.Settings;
 
 import java.lang.reflect.Field;
 

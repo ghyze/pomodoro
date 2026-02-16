@@ -1,4 +1,4 @@
-package nl.ghyze.pomodoro.view.settings;
+package nl.ghyze.settings;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -8,9 +8,6 @@ import java.awt.Rectangle;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SpringLayout;
-
-import nl.ghyze.pomodoro.model.Settings;
-import nl.ghyze.pomodoro.persistence.SettingsRepository;
 
 /**
  * Main settings dialog frame that coordinates all settings panels.
@@ -58,8 +55,8 @@ public class SettingsFrame extends JFrame {
 
     private void initPanels() {
         addPanelAtTop(positionPanel);
-        addPanelBelow(durationPanel, positionPanel.getBottomComponent(), 5);
-        addPanelBelow(idlePanel, durationPanel.getBottomComponent(), 5);
+        addPanelBelow(durationPanel, 125);
+        addPanelBelow(idlePanel, 225);
     }
 
     /**
@@ -67,25 +64,25 @@ public class SettingsFrame extends JFrame {
      *
      * @param panel the panel to add
      */
-    private void addPanelAtTop(Component panel) {
+    private void addPanelAtTop(final Component panel) {
         layout.putConstraint(SpringLayout.WEST, panel, 0, SpringLayout.WEST, getContentPane());
         layout.putConstraint(SpringLayout.EAST, panel, 0, SpringLayout.EAST, getContentPane());
         layout.putConstraint(SpringLayout.NORTH, panel, 0, SpringLayout.NORTH, getContentPane());
-        add(panel);
+        layout.putConstraint(SpringLayout.SOUTH, panel, 150, SpringLayout.NORTH, getContentPane());
+        getContentPane().add(panel);
     }
 
     /**
      * Adds a panel below another component, stretched horizontally.
      *
      * @param panel the panel to add
-     * @param anchorComponent the component to position below
      * @param gap the vertical gap in pixels
      */
-    private void addPanelBelow(Component panel, Component anchorComponent, int gap) {
+    private void addPanelBelow(final Component panel, final int gap) {
         layout.putConstraint(SpringLayout.WEST, panel, 0, SpringLayout.WEST, getContentPane());
         layout.putConstraint(SpringLayout.EAST, panel, 0, SpringLayout.EAST, getContentPane());
-        layout.putConstraint(SpringLayout.NORTH, panel, gap, SpringLayout.SOUTH, anchorComponent);
-        add(panel);
+        layout.putConstraint(SpringLayout.NORTH, panel, gap, SpringLayout.NORTH, getContentPane());
+        getContentPane().add(panel);
     }
 
     private void initButtons() {
@@ -163,5 +160,10 @@ public class SettingsFrame extends JFrame {
         }
 
         settingsRepository.save(settings);
+    }
+
+    public static void main(String[] args) {
+        SettingsFrame frame = new SettingsFrame(new Settings(), new SettingsRepository());
+        frame.setVisible(true);
     }
 }

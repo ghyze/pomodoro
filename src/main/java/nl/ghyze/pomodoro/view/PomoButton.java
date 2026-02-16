@@ -14,7 +14,7 @@ import nl.ghyze.pomodoro.model.PomodoroType;
 
 import static java.util.Objects.nonNull;
 
-class PomoButton
+public class PomoButton
 {
    @Getter
    private final int x;
@@ -38,8 +38,8 @@ class PomoButton
       visibleTypes = new ArrayList<>();
    }
    
-   boolean isVisible(Pomodoro countdown){
-      return visibleTypes.contains(countdown.getType());
+   boolean isVisible(Pomodoro pomo){
+      return visibleTypes.contains(pomo.getType());
    }
    
    boolean containsPoint(Point p){

@@ -1,4 +1,4 @@
-package nl.ghyze.pomodoro.tasks;
+package nl.ghyze.tasks;
 
 import javax.swing.*;
 import java.awt.*;

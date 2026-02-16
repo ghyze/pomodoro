@@ -8,12 +8,13 @@ import java.awt.Image;
 import java.awt.PopupMenu;
 import java.awt.event.ActionListener;
 
+import nl.ghyze.settings.SettingsRepository;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
 import nl.ghyze.pomodoro.controller.PomoController;
-import nl.ghyze.pomodoro.tasks.TaskFrame;
+import nl.ghyze.tasks.TaskFrame;
 import nl.ghyze.pomodoro.view.menu.MenuController;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 
@@ -157,7 +158,7 @@ public class AbstractSystemTrayManagerTest
 	}
 
 	@Override
-	public void setSettingsRepository(nl.ghyze.pomodoro.persistence.SettingsRepository settingsRepository) {
+	public void setSettingsRepository(SettingsRepository settingsRepository) {
 		// TODO Auto-generated method stub
 
 	}

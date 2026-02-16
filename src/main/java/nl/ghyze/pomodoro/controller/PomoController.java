@@ -7,8 +7,8 @@ import javax.swing.Timer;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import nl.ghyze.pomodoro.model.Settings;
-import nl.ghyze.pomodoro.model.SettingsChangeListener;
+import nl.ghyze.settings.Settings;
+import nl.ghyze.settings.SettingsChangeListener;
 import nl.ghyze.pomodoro.optiondialog.BreakOptionDialogCallback;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogCallback;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogController;

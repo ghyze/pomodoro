@@ -1,4 +1,4 @@
-package nl.ghyze.pomodoro.view.settings;
+package nl.ghyze.settings;
 
 import java.awt.Color;
 import java.awt.Component;

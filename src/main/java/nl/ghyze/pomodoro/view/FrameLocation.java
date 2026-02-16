@@ -1,7 +1,7 @@
 package nl.ghyze.pomodoro.view;
 
 import nl.ghyze.pomodoro.MultiScreenFactory;
-import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.settings.Settings;
 
 import java.awt.*;
 

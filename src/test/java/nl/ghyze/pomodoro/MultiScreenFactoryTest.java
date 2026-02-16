@@ -11,7 +11,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.ColorModel;
 import java.util.List;
 
-import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.settings.Settings;
 import nl.ghyze.pomodoro.view.Screen;
 
 import org.easymock.EasyMock;

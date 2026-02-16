@@ -1,11 +1,9 @@
-package nl.ghyze.pomodoro.view.settings;
+package nl.ghyze.settings;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-
-import nl.ghyze.pomodoro.model.Settings;
 
 /**
  * Panel for configuring duration settings (pomodoro time, break times, etc.).
@@ -27,6 +25,7 @@ public class DurationSettingsPanel extends JPanel {
 
     public DurationSettingsPanel(final Settings settings) {
         setLayout(layout);
+        setPreferredSize(new java.awt.Dimension(400, 100)); // Ensure panel is visible
         initComponents(settings);
     }
 

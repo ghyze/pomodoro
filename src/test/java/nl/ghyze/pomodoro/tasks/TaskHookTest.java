@@ -1,5 +1,8 @@
 package nl.ghyze.pomodoro.tasks;
 
+import nl.ghyze.tasks.Task;
+import nl.ghyze.tasks.TaskFrame;
+import nl.ghyze.tasks.TaskHook;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;

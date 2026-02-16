@@ -1,4 +1,4 @@
-package nl.ghyze.pomodoro.view.settings;
+package nl.ghyze.settings;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
@@ -8,8 +8,7 @@ import javax.swing.JRadioButton;
 import javax.swing.SpringLayout;
 
 import nl.ghyze.pomodoro.MultiScreenFactory;
-import nl.ghyze.pomodoro.model.Settings;
-import nl.ghyze.pomodoro.model.Settings.Position;
+import nl.ghyze.settings.Settings.Position;
 import nl.ghyze.pomodoro.view.Screen;
 
 /**
@@ -31,6 +30,7 @@ public class PositionSettingsPanel extends JPanel {
 
     public PositionSettingsPanel(final Settings settings) {
         setLayout(layout);
+        setPreferredSize(new java.awt.Dimension(400, 150)); // Ensure panel is visible
         initComponents(settings);
     }
 
