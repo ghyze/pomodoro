@@ -27,13 +27,14 @@ public class PomoApp
 	private PomoApp(){
 		final PomoController controller = new PomoController();
 
-		final PomoFrame frame = initPomoFrame(controller);
 
-		final SettingsRepository settingsRepository = new SettingsRepository();
-		final Settings settings = settingsRepository.load();
+        final SettingsRepository settingsRepository = new SettingsRepository();
+        final Settings settings = settingsRepository.load();
 
-		final TaskRepository taskRepository = new TaskRepository();
-		final TaskFrame taskFrame = new TaskFrame(taskRepository);
+        final TaskRepository taskRepository = new TaskRepository();
+        final TaskFrame taskFrame = new TaskFrame(taskRepository);
+
+        final PomoFrame frame = initPomoFrame(controller, taskFrame);
 
 		final AbstractSystemTrayManager systemTrayManager = new SystemTrayManagerImpl();
 		systemTrayManager.setTaskFrame(taskFrame);
@@ -51,12 +52,13 @@ public class PomoApp
 	 * @param controller the controller to use
 	 * @return the frame
 	 */
-	private PomoFrame initPomoFrame(final PomoController controller) {
+	private PomoFrame initPomoFrame(final PomoController controller, final TaskFrame taskFrame) {
 		final PomoFrame frame = new PomoFrame(controller::stopProgram);
 		frame.addButton(PomoButtonFactory.createStopButton(controller::stopCurrent));
 		frame.addButton(PomoButtonFactory.createPlayButton(controller::startPomo));
 		frame.addButton(PomoButtonFactory.createCloseButton(controller::stopProgram));
 		frame.addButton(PomoButtonFactory.createMinimizeButton(frame));
+        frame.addButton(PomoButtonFactory.createTasksButton(() -> taskFrame.setVisible(true)));
 		return frame;
 	}
 

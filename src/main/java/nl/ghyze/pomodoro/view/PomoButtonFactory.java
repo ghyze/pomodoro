@@ -96,4 +96,27 @@ public class PomoButtonFactory {
 		return minimizeButton;
 	}
 
+    public static PomoButton createTasksButton(final PomoAction action) {
+        BufferedImage image = new BufferedImage(controlButtonWidth, controlButtonHeight, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics gr = image.getGraphics();
+        gr.setColor(Color.white);
+        gr.drawRect(0, 0, controlButtonWidth - 1, controlButtonHeight - 1);
+
+        final var lineHeight = controlButtonHeight / 4;
+        for (int i = 1; i <= 3; i++) {
+            gr.drawLine(3, lineHeight * i, 3, lineHeight * i);
+            gr.drawLine(6, lineHeight * i, controlButtonWidth - 3, lineHeight* i);
+        }
+
+        PomoButton tasksButton = new PomoButton(118, 80, controlButtonWidth, controlButtonHeight);
+        tasksButton.addVisibleType(PomodoroType.BREAK);
+        tasksButton.addVisibleType(PomodoroType.POMO);
+        tasksButton.addVisibleType(PomodoroType.WAIT);
+        tasksButton.setImage(image);
+        tasksButton.setAction(action);
+
+        return tasksButton;
+    }
+
 }
