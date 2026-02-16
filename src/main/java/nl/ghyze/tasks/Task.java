@@ -18,7 +18,7 @@ public class Task {
 
 	private boolean active = false;
 
-	Task(final String name, final int estimated){
+	public Task(final String name, final int estimated){
 		this.name = name;
 		this.estimated = estimated;
 	}
@@ -35,7 +35,7 @@ public class Task {
 		pcs.firePropertyChange("actual", null, actual);
 	}
 
-	void addCompletedPomo(){
+	public void addCompletedPomo(){
 		final int oldActual = actual;
 		actual++;
 		pcs.firePropertyChange("actual", oldActual, actual);
