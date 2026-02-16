@@ -1,6 +1,5 @@
 package nl.ghyze.pomodoro.view;
 
-import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,7 +10,7 @@ import javax.swing.JPopupMenu;
 
 import nl.ghyze.pomodoro.controller.PomoAction;
 import nl.ghyze.pomodoro.model.Pomodoro;
-import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.settings.Settings;
 
 public class PomoFrame extends JFrame {
     /**

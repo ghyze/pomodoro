@@ -1,5 +1,6 @@
 package nl.ghyze.pomodoro.tasks;
 
+import nl.ghyze.tasks.Task;
 import org.junit.Assert;
 import org.junit.Test;
 

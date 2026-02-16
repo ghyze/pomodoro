@@ -1,5 +1,7 @@
 package nl.ghyze.pomodoro.model;
 
+import nl.ghyze.settings.Settings;
+import nl.ghyze.settings.SettingsChangeListener;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,7 @@
 package nl.ghyze.pomodoro.persistence;
 
-import nl.ghyze.pomodoro.tasks.Task;
+import nl.ghyze.tasks.Task;
+import nl.ghyze.tasks.TaskRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

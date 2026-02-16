@@ -1,6 +1,6 @@
-package nl.ghyze.pomodoro.persistence;
+package nl.ghyze.settings;
 
-import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.pomodoro.persistence.PersistenceManager;
 
 import javax.swing.*;
 import java.io.IOException;

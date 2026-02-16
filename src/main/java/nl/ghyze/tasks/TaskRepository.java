@@ -1,12 +1,11 @@
-package nl.ghyze.pomodoro.persistence;
+package nl.ghyze.tasks;
 
 import com.google.gson.*;
-import nl.ghyze.pomodoro.tasks.Task;
+import nl.ghyze.pomodoro.persistence.PersistenceManager;
 
 import javax.swing.*;
 import java.beans.PropertyChangeSupport;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;

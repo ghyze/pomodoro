@@ -2,7 +2,7 @@ package nl.ghyze.pomodoro.statemachine;
 
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.PomodoroType;
-import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.settings.Settings;
 
 /**
  * Calculates which type of break should be given based on completed pomodoros.

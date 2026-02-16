@@ -1,11 +1,9 @@
-package nl.ghyze.pomodoro.view.settings;
+package nl.ghyze.settings;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-
-import nl.ghyze.pomodoro.model.Settings;
 
 /**
  * Panel for configuring idle time and auto-reset settings.
@@ -20,6 +18,7 @@ public class IdleSettingsPanel extends JPanel {
 
     public IdleSettingsPanel(final Settings settings) {
         setLayout(layout);
+        setPreferredSize(new java.awt.Dimension(400, 60)); // Ensure panel is visible
         initComponents(settings);
     }
 

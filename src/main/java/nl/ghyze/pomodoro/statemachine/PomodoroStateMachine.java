@@ -4,7 +4,7 @@ import nl.ghyze.pomodoro.Stopwatch;
 import nl.ghyze.pomodoro.controller.PomodoroHook;
 import nl.ghyze.pomodoro.model.Pomodoro;
 import nl.ghyze.pomodoro.model.PomodoroType;
-import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.settings.Settings;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogModel;
 import nl.ghyze.pomodoro.view.systemtray.AbstractSystemTrayManager;
 

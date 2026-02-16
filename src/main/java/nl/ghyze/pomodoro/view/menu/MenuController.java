@@ -4,9 +4,9 @@ import java.awt.MenuItem;
 import java.awt.PopupMenu;
 
 import nl.ghyze.pomodoro.controller.PomoController;
-import nl.ghyze.pomodoro.persistence.SettingsRepository;
-import nl.ghyze.pomodoro.tasks.TaskFrame;
-import nl.ghyze.pomodoro.view.settings.SettingsFrame;
+import nl.ghyze.settings.SettingsRepository;
+import nl.ghyze.tasks.TaskFrame;
+import nl.ghyze.settings.SettingsFrame;
 
 public class MenuController {
 

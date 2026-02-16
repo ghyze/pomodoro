@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.ghyze.pomodoro.model.Settings;
+import nl.ghyze.settings.Settings;
 import nl.ghyze.pomodoro.view.Screen;
 
 public class MultiScreenFactory {
