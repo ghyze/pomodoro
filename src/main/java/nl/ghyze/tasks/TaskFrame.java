@@ -78,9 +78,17 @@ public class TaskFrame extends JFrame {
 		}
 		this.revalidate();
 	}
-	
+
 	private TaskPanel createTaskPanel(Task task) {
-		return new TaskPanel(task);
+		return new TaskPanel(task, t -> {
+			tasks.remove(t);
+			initTasks();
+			tasksPanel.revalidate();
+			tasksPanel.repaint();
+			this.revalidate();
+			this.repaint();
+			saveTasks();
+		}, this::saveTasks);
 	}
 	
 	public TaskHook getTaskHook() {

@@ -1,9 +1,9 @@
 # TaskList
-- current status (pending, in progress, done)
-- Modify task
-- improved add task dialog
+- current status (pending, in progress, done) - DONE
+- Modify task - DONE
+- improved TaskDialog
 - Add task list button to main window - DONE
-- Remove done tasks
+- Remove done tasks - DONE
 
 # Statemachine
 - force continue pomodoro (in case of meetings), count towards second pomodoro. 
