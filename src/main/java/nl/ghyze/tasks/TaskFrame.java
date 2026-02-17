@@ -1,5 +1,7 @@
 package nl.ghyze.tasks;
 
+import nl.ghyze.statistics.TaskStatisticsHook;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -18,6 +20,7 @@ public class TaskFrame extends JFrame {
 	private SpringLayout layout = new SpringLayout();
 
 	private TaskHook taskHook = new TaskHook();
+	private TaskStatisticsHook statisticsHook;
 
 	private TaskRepository taskRepository;
 	private List<Task> tasks;
@@ -81,6 +84,10 @@ public class TaskFrame extends JFrame {
 
 	private TaskPanel createTaskPanel(Task task) {
 		return new TaskPanel(task, t -> {
+			// Log removal before removing
+			if (statisticsHook != null) {
+				statisticsHook.logRemoved(t);
+			}
 			tasks.remove(t);
 			initTasks();
 			tasksPanel.revalidate();
@@ -88,11 +95,17 @@ public class TaskFrame extends JFrame {
 			this.revalidate();
 			this.repaint();
 			saveTasks();
-		}, this::saveTasks);
+		}, this::saveTasks, statisticsHook);
 	}
 	
 	public TaskHook getTaskHook() {
 		return taskHook;
+	}
+
+	public void setStatisticsHook(TaskStatisticsHook statisticsHook) {
+		this.statisticsHook = statisticsHook;
+		// Register hook with all existing tasks
+		tasks.forEach(statisticsHook::registerTask);
 	}
 
 	public void saveTasks() {
@@ -111,7 +124,13 @@ public class TaskFrame extends JFrame {
 
 		public void actionPerformed(ActionEvent e){
 			TaskDialog.createTask()
-					.ifPresent(tasks::add);
+					.ifPresent(task -> {
+						tasks.add(task);
+						if (statisticsHook != null) {
+							statisticsHook.registerTask(task);
+							statisticsHook.logCreated(task);
+						}
+					});
 			initTasks();
 			saveTasks();
 		}
@@ -121,10 +140,23 @@ public class TaskFrame extends JFrame {
 	private class TaskPanelMouseAdapter extends MouseAdapter {
 		public void mouseClicked(MouseEvent e){
 			if (e.getClickCount() >= 2){
+				// Log deactivation for the previously active task
+				if (statisticsHook != null) {
+					tasks.stream()
+							.filter(Task::isActive)
+							.forEach(statisticsHook::logDeactivated);
+				}
+
 				tasks.forEach(task -> task.setActive(false));
 				TaskPanel source = (TaskPanel) e.getSource();
 				source.getTask().setActive(true);
 				taskHook.setCurrentTask(source.getTask());
+
+				// Log activation for the newly active task
+				if (statisticsHook != null) {
+					statisticsHook.logActivated(source.getTask());
+				}
+
 				initTasks();
 				saveTasks();
 			}

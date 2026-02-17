@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Repository for loading and saving Task lists using JSON format.
@@ -49,9 +50,9 @@ public class TaskRepository {
             try {
                 // Create a Task with default values using reflection
                 // The pcs field will be initialized by the constructor
-                Constructor<Task> constructor = Task.class.getDeclaredConstructor(String.class, int.class);
+                Constructor<Task> constructor = Task.class.getDeclaredConstructor(UUID.class, String.class, int.class, TaskState.class);
                 constructor.setAccessible(true);
-                return constructor.newInstance("", 0);
+                return constructor.newInstance(UUID.randomUUID(), "", 0, TaskState.PENDING);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to create Task instance", e);
             }
@@ -61,6 +62,7 @@ public class TaskRepository {
     /**
      * Loads all tasks from ~/.pomodoro/tasks.json.
      * If the file doesn't exist or is empty, returns an empty list.
+     * Performs automatic UUID migration for tasks without IDs.
      *
      * @return list of tasks (never null)
      */
@@ -82,7 +84,32 @@ public class TaskRepository {
                 return new ArrayList<>();
             }
 
-            return wrapper.tasks;
+            List<Task> tasks = wrapper.tasks;
+
+            // MIGRATION: Check if any tasks are missing UUIDs and generate them
+            // This code can be removed after sufficient time (e.g., 1 year after release)
+            boolean needsMigration = tasks.stream().anyMatch(task -> task.getId() == null);
+            if (needsMigration) {
+                System.out.println("Migrating tasks to add UUIDs...");
+                List<Task> migratedTasks = new ArrayList<>();
+                for (Task task : tasks) {
+                    if (task.getId() == null) {
+                        // Create new task with generated UUID
+                        Task migratedTask = new Task(UUID.randomUUID(), task.getName(),
+                                task.getEstimated(), task.getState());
+                        migratedTask.setActual(task.getActual());
+                        migratedTask.setActive(task.isActive());
+                        migratedTasks.add(migratedTask);
+                    } else {
+                        migratedTasks.add(task);
+                    }
+                }
+                // Save migrated tasks
+                saveAll(migratedTasks);
+                return migratedTasks;
+            }
+
+            return tasks;
         } catch (Exception e) {
             System.err.println("Failed to load tasks: " + e.getMessage());
             return new ArrayList<>();

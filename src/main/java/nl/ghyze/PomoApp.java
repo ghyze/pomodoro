@@ -8,6 +8,8 @@ import nl.ghyze.settings.Settings;
 import nl.ghyze.settings.SettingsRepository;
 import nl.ghyze.tasks.TaskRepository;
 import nl.ghyze.statistics.StatisticsHook;
+import nl.ghyze.statistics.StatisticsRepository;
+import nl.ghyze.statistics.TaskStatisticsHook;
 import nl.ghyze.tasks.TaskFrame;
 import nl.ghyze.pomodoro.view.PomoButtonFactory;
 import nl.ghyze.pomodoro.view.PomoFrame;
@@ -40,7 +42,24 @@ public class PomoApp
 		systemTrayManager.setTaskFrame(taskFrame);
 		systemTrayManager.setSettingsRepository(settingsRepository);
 
-		final PomodoroStateMachine stateMachine = initStateMachine(settings, systemTrayManager, new StatisticsHook(), taskFrame.getTaskHook());
+		// Create statistics repository for event logging
+		final StatisticsRepository statisticsRepository = new StatisticsRepository();
+
+		// Create state machine first so we can inject it into StatisticsHook
+		final PomodoroStateMachine stateMachine = new PomodoroStateMachine(settings);
+		stateMachine.setSystemTrayManager(systemTrayManager);
+
+		// Create hooks with statistics repository
+		final StatisticsHook statisticsHook = new StatisticsHook(statisticsRepository, stateMachine);
+		final TaskStatisticsHook taskStatisticsHook = new TaskStatisticsHook(statisticsRepository);
+
+		// Register task statistics hook with task frame
+		taskFrame.setStatisticsHook(taskStatisticsHook);
+
+		// Register hooks with state machine
+		stateMachine.addPomodoroHook(statisticsHook);
+		stateMachine.addPomodoroHook(taskFrame.getTaskHook());
+		stateMachine.updateCurrent();
 
 		final OptionDialogController dialogController = new OptionDialogController(frame);
 
@@ -62,22 +81,6 @@ public class PomoApp
 		return frame;
 	}
 
-	/**
-	 * Initializes the state machine.
-	 * @param settings the settings to use
-	 * @param systemTrayManager the system tray manager to use
-	 * @param hooks the hooks to use
-	 * @return the state machine
-	 */
-	private PomodoroStateMachine initStateMachine(final Settings settings, final AbstractSystemTrayManager systemTrayManager, final PomodoroHook... hooks) {
-		final PomodoroStateMachine stateMachine = new PomodoroStateMachine(settings);
-		stateMachine.setSystemTrayManager(systemTrayManager);
-		for (final PomodoroHook hook : hooks){
-			stateMachine.addPomodoroHook(hook);
-		}
-		stateMachine.updateCurrent();
-		return stateMachine;
-	}
 
 	/**
 	 * Entry point of the application.

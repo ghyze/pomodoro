@@ -1,5 +1,7 @@
 package nl.ghyze.tasks;
 
+import nl.ghyze.statistics.TaskStatisticsHook;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -19,25 +21,27 @@ public class TaskPanel extends JPanel implements PropertyChangeListener {
 	private static final long serialVersionUID = 6925083513676349367L;
 
 	private final Task task;
-	
+
 	private final JLabel lbName = new JLabel();
 
 	private final JLabel lbEstimated = new JLabel();
 
 	private final JLabel lbActual = new JLabel();
-	
+
 	private final JComboBox<TaskState> cbState = new JComboBox<>(TaskState.values());
 	private final JButton btnEdit = new JButton("...");
 	private final JButton btnRemove = new JButton("X");
 	private final Consumer<Task> removeTaskCallback;
 	private final Runnable saveCallback;
+	private final TaskStatisticsHook statisticsHook;
 
 	private final LayoutManager layout = new BoxLayout(this, BoxLayout.LINE_AXIS);
-	
-	TaskPanel(final Task task, final Consumer<Task> removeTaskCallback, final Runnable saveCallback){
+
+	TaskPanel(final Task task, final Consumer<Task> removeTaskCallback, final Runnable saveCallback, final TaskStatisticsHook statisticsHook){
 		this.task = task;
 		this.removeTaskCallback = removeTaskCallback;
 		this.saveCallback = saveCallback;
+		this.statisticsHook = statisticsHook;
 		task.addPropertyChangeListener(this);
 		init();
 	}
@@ -95,6 +99,9 @@ public class TaskPanel extends JPanel implements PropertyChangeListener {
 				lbName.setText(task.getName());
 				lbEstimated.setText(""+task.getEstimated());
 				cbState.setSelectedItem(task.getState());
+				if (statisticsHook != null) {
+					statisticsHook.logEdited(task);
+				}
 				saveCallback.run();
 			}
 		});

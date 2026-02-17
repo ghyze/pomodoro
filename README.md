@@ -32,6 +32,17 @@ This application provides a compact, always-on-top timer widget that helps you m
 - **Progress monitoring**: See estimated vs. actual pomodoros for each task
 - **Active task display**: Current task shown prominently at the top
 - **Persistent storage**: Tasks are automatically saved and restored across application restarts
+- **Unique task identity**: Each task has a persistent UUID that survives name changes
+
+### Statistics & Activity Logging
+- **Automatic event logging**: All pomodoro and task events are logged to CSV files
+- **Daily log rotation**: Separate log files created for each day
+- **Pomodoro events**: Tracks started, completed, canceled, and break_ended events
+- **Task events**: Tracks created, activated, deactivated, state_changed, pomo_incremented, edited, and removed events
+- **External analysis**: CSV format enables analysis by external tools
+- **Log location**: `~/.pomodoro/logs/` directory
+  - `pomodoro_events_YYYY-MM-DD.csv` - Pomodoro state changes
+  - `task_events_YYYY-MM-DD.csv` - Task lifecycle events
 
 ### Customization
 - Configure pomodoro duration (default: 25 minutes)
@@ -120,9 +131,12 @@ The codebase follows a **domain-driven package structure** for modularity:
 - **Language**: Java 17
 - **Build Tool**: Maven
 - **GUI**: Java Swing
-- **Persistence**: JSON files and properties files in `~/.pomodoro/` directory
+- **Persistence**: Files stored in `~/.pomodoro/` directory
   - **Tasks**: `~/.pomodoro/tasks.json` (JSON format using GSON)
   - **Settings**: `~/.pomodoro/settings.properties` (properties format)
+  - **Statistics**: `~/.pomodoro/logs/` (daily-rotated CSV files)
+    - `pomodoro_events_YYYY-MM-DD.csv` - Pomodoro state transitions
+    - `task_events_YYYY-MM-DD.csv` - Task lifecycle events
 - **Testing**: JUnit, EasyMock
 - **Code Generation**: Lombok (reduces boilerplate)
 

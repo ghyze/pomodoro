@@ -2,15 +2,20 @@ package nl.ghyze.tasks;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.UUID;
 
 @EqualsAndHashCode(exclude = "pcs")
 @Data
 public class Task {
 
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
+	@Getter
+	private final UUID id;
 
 	private String name;
 	private int estimated;
@@ -21,11 +26,21 @@ public class Task {
 	private TaskState state = TaskState.PENDING;
 
 	public Task(final String name, final int estimated){
+		this.id = UUID.randomUUID();
 		this.name = name;
 		this.estimated = estimated;
 	}
 
 	public Task(final String name, final int estimated, final TaskState state){
+		this.id = UUID.randomUUID();
+		this.name = name;
+		this.estimated = estimated;
+		this.state = state;
+	}
+
+	// Constructor with explicit UUID for deserialization/migration
+	public Task(final UUID id, final String name, final int estimated, final TaskState state){
+		this.id = id;
 		this.name = name;
 		this.estimated = estimated;
 		this.state = state;
