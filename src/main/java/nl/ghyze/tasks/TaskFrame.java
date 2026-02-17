@@ -110,7 +110,7 @@ public class TaskFrame extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e){
-			AddTaskDialog.createTask()
+			TaskDialog.createTask()
 					.ifPresent(tasks::add);
 			initTasks();
 			saveTasks();

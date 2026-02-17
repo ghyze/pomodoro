@@ -25,6 +25,9 @@ This application provides a compact, always-on-top timer widget that helps you m
 
 ### Task Management
 - **Task tracking window**: Create and manage tasks with estimated pomodoros
+- **Task lifecycle states**: Track tasks through PENDING → IN_PROGRESS → DONE states
+- **Edit tasks**: Modify task name, estimated pomodoros, or state via edit button
+- **Remove tasks**: Delete individual tasks with remove button
 - **Automatic tracking**: Completed pomodoros are automatically counted toward your active task
 - **Progress monitoring**: See estimated vs. actual pomodoros for each task
 - **Active task display**: Current task shown prominently at the top
@@ -80,11 +83,14 @@ A dialog will appear with options:
 - **CONTINUE**: Skip the break and start another pomodoro immediately
 
 ### Managing Tasks
-1. Access the task window via the right-click menu
+1. Access the task window via the right-click menu or task button on main window
 2. Click "Add Task" to create a new task
-3. Enter task name and estimated number of pomodoros
+3. Enter task name, estimated number of pomodoros, and optional state
 4. Double-click a task to make it active
 5. Completed pomodoros automatically increment the active task counter
+6. Edit tasks using the "..." button (change name, estimate, or state)
+7. Change task state via dropdown (Pending, In Progress, Done)
+8. Remove tasks using the "X" button
 
 ### Customizing Settings
 1. Right-click on the timer window
