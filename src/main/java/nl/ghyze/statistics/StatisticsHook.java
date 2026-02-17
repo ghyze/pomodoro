@@ -1,6 +1,6 @@
 package nl.ghyze.statistics;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.logging.Logger;
 
 import nl.ghyze.pomodoro.DateTimeUtil;
@@ -30,7 +30,7 @@ public class StatisticsHook implements PomodoroHook{
 	}
 	
 	private void printStats(){
-		logger.info(DateTimeUtil.format(new Date())+" Completed: "+numberCompleted+", Cancelled: "+numberCancelled);
+		logger.info(DateTimeUtil.format(Instant.now())+" Completed: "+numberCompleted+", Cancelled: "+numberCancelled);
 	}
 
 }

@@ -1,14 +1,15 @@
 package nl.ghyze.pomodoro;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
-public class DateTimeUtil
-{
+public class DateTimeUtil {
+    private static final DateTimeFormatter FORMATTER =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+                         .withZone(ZoneId.systemDefault());
 
-   public static String format(Date date){
-      DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-      return formatter.format(date);
-   }
+    public static String format(Instant instant) {
+        return FORMATTER.format(instant);
+    }
 }

@@ -95,16 +95,19 @@ A dialog will appear with options:
 
 ## Project Structure
 
-- **src/main/java/nl/ghyze/pomodoro/** - Main source code
-  - **model/** - Data models (Pomodoro, Settings, Task)
-  - **controller/** - Business logic and state management
-  - **view/** - GUI components and rendering
-    - **view/settings/** - Settings dialog panels with input validation
-  - **statemachine/** - State machine components (state management, hooks, messages, break calculation)
-  - **tasks/** - Task management functionality
-  - **persistence/** - Data persistence layer (JSON and properties file storage)
-  - **optiondialog/** - Interactive dialog system
-  - **statistics/** - Usage tracking
+The codebase follows a **domain-driven package structure** for modularity:
+
+- **src/main/java/nl/ghyze/** - Root package
+  - **pomodoro/** - Core timer application
+    - **model/** - Core timer data model (Pomodoro, PomodoroType)
+    - **controller/** - Timer control loop and event handling
+    - **view/** - Main window GUI components
+    - **statemachine/** - State machine (state management, hooks, messages, break calculation)
+    - **optiondialog/** - Interactive completion dialog system
+    - **persistence/** - Shared persistence utilities
+  - **settings/** - Settings subsystem (model, UI, persistence)
+  - **tasks/** - Task management subsystem (model, UI, persistence)
+  - **statistics/** - Statistics and event tracking
 
 ## Technology Stack
 
