@@ -80,6 +80,7 @@ public class TaskFrame extends JFrame {
 			}
 		}
 		this.revalidate();
+		this.repaint();
 	}
 
 	private TaskPanel createTaskPanel(Task task) {
