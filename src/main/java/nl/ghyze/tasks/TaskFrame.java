@@ -139,21 +139,36 @@ public class TaskFrame extends JFrame {
 	private class TaskPanelMouseAdapter extends MouseAdapter {
 		public void mouseClicked(final MouseEvent e){
 			if (e.getClickCount() >= 2){
-				// Log deactivation for the previously active task
-				if (statisticsHook != null) {
-					tasks.stream()
-							.filter(Task::isActive)
-							.forEach(statisticsHook::logDeactivated);
-				}
-
-				tasks.forEach(task -> task.setActive(false));
 				final TaskPanel source = (TaskPanel) e.getSource();
-				source.getTask().setActive(true);
-				taskHook.setCurrentTask(source.getTask());
+				final Task newActiveTask = source.getTask();
+
+				// Deactivate currently active task(s) and transition state
+				tasks.stream()
+						.filter(Task::isActive)
+						.forEach(task -> {
+							// Log deactivation
+							if (statisticsHook != null) {
+								statisticsHook.logDeactivated(task);
+							}
+							// Auto-transition: IN_PROGRESS → PENDING on deactivation (unless DONE)
+							if (task.getState() == TaskState.IN_PROGRESS) {
+								task.setState(TaskState.PENDING);
+							}
+							task.setActive(false);
+						});
+
+				// Activate the new task
+				newActiveTask.setActive(true);
+				taskHook.setCurrentTask(newActiveTask);
+
+				// Auto-transition: PENDING → IN_PROGRESS on activation
+				if (newActiveTask.getState() == TaskState.PENDING) {
+					newActiveTask.setState(TaskState.IN_PROGRESS);
+				}
 
 				// Log activation for the newly active task
 				if (statisticsHook != null) {
-					statisticsHook.logActivated(source.getTask());
+					statisticsHook.logActivated(newActiveTask);
 				}
 
 				initTasks();
