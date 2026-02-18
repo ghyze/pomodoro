@@ -135,9 +135,9 @@ class TaskDialog extends JDialog {
     static Optional<Task> createTask(){
         showDialog();
         if (dialog.result == Result.OK) {
-            String taskName = dialog.tfName.getText();
-            Integer taskEstimated = (Integer) dialog.spEstimate.getValue();
-            TaskState taskState = (TaskState) dialog.cbState.getSelectedItem();
+            final String taskName = dialog.tfName.getText();
+            final Integer taskEstimated = (Integer) dialog.spEstimate.getValue();
+            final TaskState taskState = (TaskState) dialog.cbState.getSelectedItem();
             return Optional.of(new Task(taskName, taskEstimated, taskState));
         }
         return Optional.empty();

@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.function.Consumer;
@@ -83,9 +84,7 @@ public class TaskPanel extends JPanel implements PropertyChangeListener {
 				return label;
 			}
 		});
-		cbState.addActionListener(e -> {
-			task.setState((TaskState) cbState.getSelectedItem());
-		});
+		cbState.addActionListener(this::actionPerformed);
         cbState.setMinimumSize(new Dimension(100, 25));
         cbState.setPreferredSize(new Dimension(100, 25));
         cbState.setMaximumSize(new Dimension(100, 25));
@@ -117,17 +116,21 @@ public class TaskPanel extends JPanel implements PropertyChangeListener {
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
 	
-	Task getTask(){
+	final Task getTask(){
 		return task;
 	}
 
     @Override
     public void propertyChange(final PropertyChangeEvent evt) {
         if ("actual".equals(evt.getPropertyName())) {
-            lbActual.setText(""+task.getActual());
+            lbActual.setText("" + task.getActual());
         }
         if ("state".equals(evt.getPropertyName())) {
             cbState.setSelectedItem(task.getState());
         }
     }
+
+	private void actionPerformed(ActionEvent e) {
+		task.setState((TaskState) cbState.getSelectedItem());
+	}
 }
