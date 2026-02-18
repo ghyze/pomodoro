@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
@@ -93,17 +94,28 @@ public class TaskFrame extends JFrame {
 
 	private TaskPanel createTaskPanel(final Task task) {
 		return new TaskPanel(task, t -> {
-			// Log removal before removing
-			if (statisticsHook != null) {
-				statisticsHook.logRemoved(t);
+			// Show confirmation dialog
+			final int result = JOptionPane.showConfirmDialog(
+					this,
+					"Are you sure you want to remove task '" + t.getName() + "'?",
+					"Confirm Removal",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+
+			// Only remove if user confirmed
+			if (result == JOptionPane.YES_OPTION) {
+				// Log removal before removing
+				if (statisticsHook != null) {
+					statisticsHook.logRemoved(t);
+				}
+				tasks.remove(t);
+				initTasks();
+				tasksPanel.revalidate();
+				tasksPanel.repaint();
+				this.revalidate();
+				this.repaint();
+				saveTasks();
 			}
-			tasks.remove(t);
-			initTasks();
-			tasksPanel.revalidate();
-			tasksPanel.repaint();
-			this.revalidate();
-			this.repaint();
-			saveTasks();
 		}, this::saveTasks, statisticsHook);
 	}
 
