@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 
 public class TaskFrame extends JFrame {
@@ -31,7 +32,9 @@ public class TaskFrame extends JFrame {
 	private final TaskRepository taskRepository;
 	private final List<Task> tasks;
 
-	private final JPanel tasksPanel = new JPanel();
+	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
+	private final JPanel todoTasksPanel = new JPanel();
+	private final JPanel doneTasksPanel = new JPanel();
 
 	private TaskPanel activePanel = null;
 
@@ -46,15 +49,23 @@ public class TaskFrame extends JFrame {
 		this.setSize(800, 600);
 		this.getContentPane().setLayout(layout);
 
-		tasksPanel.setLayout(new BoxLayout(tasksPanel, BoxLayout.PAGE_AXIS	));
+		// Initialize task panels with BoxLayout
+		todoTasksPanel.setLayout(new BoxLayout(todoTasksPanel, BoxLayout.PAGE_AXIS));
+		doneTasksPanel.setLayout(new BoxLayout(doneTasksPanel, BoxLayout.PAGE_AXIS));
+
+		// Add tabs to tabbed pane with scroll panes
+		tabbedPane.addTab("Todo", new JScrollPane(todoTasksPanel));
+		tabbedPane.addTab("Done", new JScrollPane(doneTasksPanel));
+		tabbedPane.setSelectedIndex(0); // Default to Todo tab
+
 		initTasks();
 
-		JScrollPane scrollPane = new JScrollPane(tasksPanel);
-		layout.putConstraint(SpringLayout.WEST, scrollPane, 5, SpringLayout.WEST, getContentPane());
-		layout.putConstraint(SpringLayout.EAST, scrollPane, -5, SpringLayout.EAST, getContentPane());
-		layout.putConstraint(SpringLayout.NORTH, scrollPane, 35, SpringLayout.NORTH, getContentPane());
-		layout.putConstraint(SpringLayout.SOUTH, scrollPane, -35, SpringLayout.SOUTH, getContentPane());
-		this.add(scrollPane);
+		// Add tabbed pane to frame (replaces single scrollPane)
+		layout.putConstraint(SpringLayout.WEST, tabbedPane, 5, SpringLayout.WEST, getContentPane());
+		layout.putConstraint(SpringLayout.EAST, tabbedPane, -5, SpringLayout.EAST, getContentPane());
+		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 35, SpringLayout.NORTH, getContentPane());
+		layout.putConstraint(SpringLayout.SOUTH, tabbedPane, -35, SpringLayout.SOUTH, getContentPane());
+		this.add(tabbedPane);
 
 
 		JButton btAddTask = new JButton(new AddAction());
@@ -67,17 +78,23 @@ public class TaskFrame extends JFrame {
 	}
 	
 	private void initTasks(){
-		tasksPanel.removeAll();
+		// Clear both task panels
+		todoTasksPanel.removeAll();
+		doneTasksPanel.removeAll();
+
+		// Remove active panel if it exists
 		if (activePanel != null){
 			activePanel.setVisible(false);
 			this.remove(activePanel);
 		}
-		tasksPanel.invalidate();
+
+		// Populate panels based on task state
 		for (final Task task : tasks){
 			final TaskPanel taskPanel = createTaskPanel(task);
 			taskPanel.addMouseListener(new TaskPanelMouseAdapter());
 
 			if (task.isActive()){
+				// Active task stays at top (outside tabs)
 				activePanel = taskPanel;
 				layout.putConstraint(SpringLayout.WEST, activePanel, 5, SpringLayout.WEST, getContentPane());
 				layout.putConstraint(SpringLayout.EAST, activePanel, -5, SpringLayout.EAST, getContentPane());
@@ -85,9 +102,21 @@ public class TaskFrame extends JFrame {
 				layout.putConstraint(SpringLayout.SOUTH, activePanel, 30, SpringLayout.NORTH, getContentPane());
 				this.add(activePanel);
 			} else {
-				tasksPanel.add(taskPanel);
+				// Route to appropriate tab based on state
+				if (task.getState() == TaskState.DONE) {
+					doneTasksPanel.add(taskPanel);
+				} else {
+					// PENDING or IN_PROGRESS
+					todoTasksPanel.add(taskPanel);
+				}
 			}
 		}
+
+		// Refresh all panels
+		todoTasksPanel.revalidate();
+		todoTasksPanel.repaint();
+		doneTasksPanel.revalidate();
+		doneTasksPanel.repaint();
 		this.revalidate();
 		this.repaint();
 	}
@@ -110,10 +139,7 @@ public class TaskFrame extends JFrame {
 				}
 				tasks.remove(t);
 				initTasks();
-				tasksPanel.revalidate();
-				tasksPanel.repaint();
-				this.revalidate();
-				this.repaint();
+				// initTasks() already revalidates and repaints all panels
 				saveTasks();
 			}
 		}, this::saveTasks, statisticsHook);
@@ -134,19 +160,32 @@ public class TaskFrame extends JFrame {
 	}
 
 	/**
-	 * Registers a property change listener on a task to handle auto-deactivation
-	 * when the task is set to DONE.
+	 * Registers a property change listener on a task to handle:
+	 * - Auto-deactivation when task is set to DONE
+	 * - Automatic tab switching based on task state
 	 */
 	private void registerTaskStateListener(final Task task) {
 		task.addPropertyChangeListener(evt -> {
-			if ("state".equals(evt.getPropertyName()) && evt.getNewValue() == TaskState.DONE) {
-				// If this task is active and was just set to DONE, deactivate it
-				if (task.isActive()) {
+			if ("state".equals(evt.getPropertyName())) {
+				final TaskState newState = (TaskState) evt.getNewValue();
+
+				// Auto-deactivate if set to DONE
+				if (newState == TaskState.DONE && task.isActive()) {
 					task.setActive(false);
 					taskHook.setCurrentTask(null);
-					initTasks();
-					saveTasks();
 				}
+
+				// Switch to appropriate tab based on new state
+				if (newState == TaskState.DONE) {
+					tabbedPane.setSelectedIndex(1); // Done tab
+				} else {
+					// PENDING or IN_PROGRESS
+					tabbedPane.setSelectedIndex(0); // Todo tab
+				}
+
+				// Refresh UI and save
+				initTasks();
+				saveTasks();
 			}
 		});
 	}
