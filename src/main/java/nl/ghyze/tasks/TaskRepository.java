@@ -1,6 +1,7 @@
 package nl.ghyze.tasks;
 
 import com.google.gson.*;
+import lombok.NoArgsConstructor;
 import nl.ghyze.pomodoro.persistence.PersistenceManager;
 
 import javax.swing.*;
@@ -46,14 +47,14 @@ public class TaskRepository {
      */
     private static class TaskInstanceCreator implements InstanceCreator<Task> {
         @Override
-        public Task createInstance(java.lang.reflect.Type type) {
+        public Task createInstance(final java.lang.reflect.Type type) {
             try {
                 // Create a Task with default values using reflection
                 // The pcs field will be initialized by the constructor
-                Constructor<Task> constructor = Task.class.getDeclaredConstructor(UUID.class, String.class, int.class, TaskState.class);
+                final Constructor<Task> constructor = Task.class.getDeclaredConstructor(UUID.class, String.class, int.class, TaskState.class);
                 constructor.setAccessible(true);
                 return constructor.newInstance(UUID.randomUUID(), "", 0, TaskState.PENDING);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new RuntimeException("Failed to create Task instance", e);
             }
         }
@@ -67,35 +68,35 @@ public class TaskRepository {
      * @return list of tasks (never null)
      */
     public List<Task> loadAll() {
-        Path tasksFile = PersistenceManager.getTasksFile();
+        final Path tasksFile = PersistenceManager.getTasksFile();
 
         try {
             if (!Files.exists(tasksFile)) {
                 return new ArrayList<>();
             }
 
-            String json = Files.readString(tasksFile);
+            final String json = Files.readString(tasksFile);
             if (json == null || json.trim().isEmpty()) {
                 return new ArrayList<>();
             }
 
-            TaskListWrapper wrapper = gson.fromJson(json, TaskListWrapper.class);
+            final TaskListWrapper wrapper = gson.fromJson(json, TaskListWrapper.class);
             if (wrapper == null || wrapper.tasks == null) {
                 return new ArrayList<>();
             }
 
-            List<Task> tasks = wrapper.tasks;
+            final List<Task> tasks = wrapper.tasks;
 
             // MIGRATION: Check if any tasks are missing UUIDs and generate them
             // This code can be removed after sufficient time (e.g., 1 year after release)
-            boolean needsMigration = tasks.stream().anyMatch(task -> task.getId() == null);
+            final boolean needsMigration = tasks.stream().anyMatch(task -> task.getId() == null);
             if (needsMigration) {
                 System.out.println("Migrating tasks to add UUIDs...");
-                List<Task> migratedTasks = new ArrayList<>();
-                for (Task task : tasks) {
+                final List<Task> migratedTasks = new ArrayList<>();
+                for (final Task task : tasks) {
                     if (task.getId() == null) {
                         // Create new task with generated UUID
-                        Task migratedTask = new Task(UUID.randomUUID(), task.getName(),
+                        final Task migratedTask = new Task(UUID.randomUUID(), task.getName(),
                                 task.getEstimated(), task.getState());
                         migratedTask.setActual(task.getActual());
                         migratedTask.setActive(task.isActive());
@@ -110,7 +111,7 @@ public class TaskRepository {
             }
 
             return tasks;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             System.err.println("Failed to load tasks: " + e.getMessage());
             return new ArrayList<>();
         }
@@ -121,17 +122,17 @@ public class TaskRepository {
      *
      * @param tasks the list of tasks to save
      */
-    public void saveAll(List<Task> tasks) {
+    public void saveAll(final List<Task> tasks) {
         try {
             PersistenceManager.ensureDirectoryExists();
-            Path tasksFile = PersistenceManager.getTasksFile();
+            final Path tasksFile = PersistenceManager.getTasksFile();
 
-            TaskListWrapper wrapper = new TaskListWrapper();
+            final TaskListWrapper wrapper = new TaskListWrapper();
             wrapper.tasks = tasks;
 
-            String json = gson.toJson(wrapper);
+            final String json = gson.toJson(wrapper);
             Files.writeString(tasksFile, json);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             System.err.println("Failed to save tasks: " + e.getMessage());
             e.printStackTrace();
             SwingUtilities.invokeLater(() ->
@@ -145,6 +146,7 @@ public class TaskRepository {
     /**
      * Wrapper class for JSON structure: {"tasks": [...]}
      */
+    @NoArgsConstructor
     private static class TaskListWrapper {
         List<Task> tasks;
     }

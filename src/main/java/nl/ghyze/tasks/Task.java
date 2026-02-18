@@ -2,7 +2,7 @@ package nl.ghyze.tasks;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Setter;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -14,10 +14,13 @@ public class Task {
 
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-	@Getter
+	// @Data already generates getter for id
 	private final UUID id;
 
+	@Setter
 	private String name;
+
+	@Setter
 	private int estimated;
 	private int actual;
 
@@ -58,14 +61,6 @@ public class Task {
 		final int oldActual = actual;
 		actual++;
 		pcs.firePropertyChange("actual", oldActual, actual);
-	}
-
-	public void setName(final String name) {
-		this.name = name;
-	}
-
-	public void setEstimated(final int estimated) {
-		this.estimated = estimated;
 	}
 
 	public void setState(final TaskState state) {

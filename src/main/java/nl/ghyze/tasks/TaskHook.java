@@ -1,10 +1,12 @@
 package nl.ghyze.tasks;
 
+import lombok.Setter;
 import nl.ghyze.pomodoro.controller.PomodoroHook;
 
 public class TaskHook implements PomodoroHook {
 
 	private Task currentTask;
+	@Setter
 	private TaskFrame taskFrame;
 
 	@Override
@@ -27,12 +29,8 @@ public class TaskHook implements PomodoroHook {
 		// nothing to do
 	}
 	
-	public void setCurrentTask(Task task){
+	public void setCurrentTask(final Task task){
 		assert task != null: "task should not be null";
 		currentTask = task;
-	}
-
-	public void setTaskFrame(TaskFrame taskFrame) {
-		this.taskFrame = taskFrame;
 	}
 }

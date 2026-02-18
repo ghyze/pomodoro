@@ -1,5 +1,6 @@
 package nl.ghyze.tasks;
 
+import lombok.Getter;
 import nl.ghyze.statistics.TaskStatisticsHook;
 
 import java.awt.event.ActionEvent;
@@ -17,19 +18,20 @@ import javax.swing.SpringLayout;
 
 public class TaskFrame extends JFrame {
 
-	private SpringLayout layout = new SpringLayout();
+	private final SpringLayout layout = new SpringLayout();
 
-	private TaskHook taskHook = new TaskHook();
+	@Getter
+	private final TaskHook taskHook = new TaskHook();
 	private TaskStatisticsHook statisticsHook;
 
-	private TaskRepository taskRepository;
-	private List<Task> tasks;
+	private final TaskRepository taskRepository;
+	private final List<Task> tasks;
 
-	private JPanel tasksPanel = new JPanel();
+	private final JPanel tasksPanel = new JPanel();
 
 	private TaskPanel activePanel = null;
 
-	public TaskFrame(TaskRepository taskRepository) {
+	public TaskFrame(final TaskRepository taskRepository) {
 		this.taskRepository = taskRepository;
 		this.tasks = taskRepository.loadAll();
 		this.taskHook.setTaskFrame(this);
@@ -64,8 +66,8 @@ public class TaskFrame extends JFrame {
 			this.remove(activePanel);
 		}
 		tasksPanel.invalidate();
-		for (Task task : tasks){
-			TaskPanel taskPanel = createTaskPanel(task);
+		for (final Task task : tasks){
+			final TaskPanel taskPanel = createTaskPanel(task);
 			taskPanel.addMouseListener(new TaskPanelMouseAdapter());
 
 			if (task.isActive()){
@@ -83,7 +85,7 @@ public class TaskFrame extends JFrame {
 		this.repaint();
 	}
 
-	private TaskPanel createTaskPanel(Task task) {
+	private TaskPanel createTaskPanel(final Task task) {
 		return new TaskPanel(task, t -> {
 			// Log removal before removing
 			if (statisticsHook != null) {
@@ -98,12 +100,8 @@ public class TaskFrame extends JFrame {
 			saveTasks();
 		}, this::saveTasks, statisticsHook);
 	}
-	
-	public TaskHook getTaskHook() {
-		return taskHook;
-	}
 
-	public void setStatisticsHook(TaskStatisticsHook statisticsHook) {
+	public void setStatisticsHook(final TaskStatisticsHook statisticsHook) {
 		this.statisticsHook = statisticsHook;
 		// Register hook with all existing tasks
 		tasks.forEach(statisticsHook::registerTask);
@@ -123,7 +121,7 @@ public class TaskFrame extends JFrame {
 			super("Add Task");
 		}
 
-		public void actionPerformed(ActionEvent e){
+		public void actionPerformed(final ActionEvent e){
 			TaskDialog.createTask()
 					.ifPresent(task -> {
 						tasks.add(task);
@@ -139,7 +137,7 @@ public class TaskFrame extends JFrame {
 	}
 
 	private class TaskPanelMouseAdapter extends MouseAdapter {
-		public void mouseClicked(MouseEvent e){
+		public void mouseClicked(final MouseEvent e){
 			if (e.getClickCount() >= 2){
 				// Log deactivation for the previously active task
 				if (statisticsHook != null) {
@@ -149,7 +147,7 @@ public class TaskFrame extends JFrame {
 				}
 
 				tasks.forEach(task -> task.setActive(false));
-				TaskPanel source = (TaskPanel) e.getSource();
+				final TaskPanel source = (TaskPanel) e.getSource();
 				source.getTask().setActive(true);
 				taskHook.setCurrentTask(source.getTask());
 
