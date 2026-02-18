@@ -11,13 +11,13 @@ public class BreakOptionDialogCallback implements OptionDialogCallback
    @Override
    public void ok()
    {
-      stateMachine.handleAction(OptionDialogModel.Choice.SAVE);
+      stateMachine.handleAction(OptionDialogModel.Choice.OK);
    }
 
    @Override
    public void cancel()
    {
-      stateMachine.handleAction(OptionDialogModel.Choice.DISCARD);
+      stateMachine.handleAction(OptionDialogModel.Choice.CANCEL);
    }
 
    @Override
