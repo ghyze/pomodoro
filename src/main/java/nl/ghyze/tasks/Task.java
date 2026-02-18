@@ -54,10 +54,6 @@ public class Task {
 		pcs.removePropertyChangeListener(listener);
 	}
 
-	private void changed(){
-		pcs.firePropertyChange("actual", null, actual);
-	}
-
 	public void addCompletedPomo(){
 		final int oldActual = actual;
 		actual++;
@@ -73,8 +69,10 @@ public class Task {
 	}
 
 	public void setState(final TaskState state) {
-		this.state = state;
-		pcs.firePropertyChange("state", null, state);
+        if (this.state != state) {
+            this.state = state;
+            pcs.firePropertyChange("state", null, state);
+        }
 	}
 
 	public String toString(){
