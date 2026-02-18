@@ -47,10 +47,10 @@ public class SettingsFrame extends JFrame {
         pack();
 
         // Center the window on screen
-        Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-        int midVerticalPoint = (winSize.x / 2) + (winSize.width / 2);
-        int midHorizontalPoint = (winSize.y / 2) + (winSize.height / 2);
-        this.setLocation(midVerticalPoint - (this.getWidth() / 2), midHorizontalPoint - (this.getHeight() / 2));
+        final Rectangle winSize = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+        final int centerX = (winSize.x / 2) + (winSize.width / 2);
+        final int centerY = (winSize.y / 2) + (winSize.height / 2);
+        this.setLocation(centerX - (this.getWidth() / 2), centerY - (this.getHeight() / 2));
     }
 
     private void initPanels() {
