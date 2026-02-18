@@ -36,9 +36,12 @@ public class TaskFrame extends JFrame {
 		this.tasks = taskRepository.loadAll();
 		this.taskHook.setTaskFrame(this);
 
+		// Register state change listener for all loaded tasks
+		tasks.forEach(this::registerTaskStateListener);
+
 		this.setSize(800, 600);
 		this.getContentPane().setLayout(layout);
-		
+
 		tasksPanel.setLayout(new BoxLayout(tasksPanel, BoxLayout.PAGE_AXIS	));
 		initTasks();
 
@@ -115,6 +118,24 @@ public class TaskFrame extends JFrame {
 		}
 	}
 
+	/**
+	 * Registers a property change listener on a task to handle auto-deactivation
+	 * when the task is set to DONE.
+	 */
+	private void registerTaskStateListener(final Task task) {
+		task.addPropertyChangeListener(evt -> {
+			if ("state".equals(evt.getPropertyName()) && evt.getNewValue() == TaskState.DONE) {
+				// If this task is active and was just set to DONE, deactivate it
+				if (task.isActive()) {
+					task.setActive(false);
+					taskHook.setCurrentTask(null);
+					initTasks();
+					saveTasks();
+				}
+			}
+		});
+	}
+
 	private class AddAction extends AbstractAction {
 
 		AddAction(){
@@ -125,6 +146,8 @@ public class TaskFrame extends JFrame {
 			TaskDialog.createTask()
 					.ifPresent(task -> {
 						tasks.add(task);
+						// Register state change listener for the new task
+						registerTaskStateListener(task);
 						if (statisticsHook != null) {
 							statisticsHook.registerTask(task);
 							statisticsHook.logCreated(task);
