@@ -12,11 +12,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 /**
  * Repository for loading and saving Task lists using JSON format.
  */
 public class TaskRepository {
+
+    private static final Logger logger = Logger.getLogger(TaskRepository.class.getName());
 
     private final Gson gson;
 
@@ -91,7 +94,7 @@ public class TaskRepository {
             // This code can be removed after sufficient time (e.g., 1 year after release)
             final boolean needsMigration = tasks.stream().anyMatch(task -> task.getId() == null);
             if (needsMigration) {
-                System.out.println("Migrating tasks to add UUIDs...");
+                logger.info("Migrating tasks to add UUIDs...");
                 final List<Task> migratedTasks = new ArrayList<>();
                 for (final Task task : tasks) {
                     if (task.getId() == null) {
@@ -112,7 +115,7 @@ public class TaskRepository {
 
             return tasks;
         } catch (final Exception e) {
-            System.err.println("Failed to load tasks: " + e.getMessage());
+            logger.warning("Failed to load tasks: " + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -133,8 +136,8 @@ public class TaskRepository {
             final String json = gson.toJson(wrapper);
             Files.writeString(tasksFile, json);
         } catch (final Exception e) {
-            System.err.println("Failed to save tasks: " + e.getMessage());
-            e.printStackTrace();
+            logger.severe("Failed to save tasks: " + e.getMessage());
+            logger.throwing(TaskRepository.class.getName(), "saveAll", e);
             SwingUtilities.invokeLater(() ->
                     JOptionPane.showMessageDialog(null,
                             "Failed to save tasks: " + e.getMessage(),

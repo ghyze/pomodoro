@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
@@ -17,6 +18,8 @@ import javax.swing.JScrollPane;
 import javax.swing.SpringLayout;
 
 public class TaskFrame extends JFrame {
+
+	private static final Logger logger = Logger.getLogger(TaskFrame.class.getName());
 
 	private final SpringLayout layout = new SpringLayout();
 
@@ -113,8 +116,8 @@ public class TaskFrame extends JFrame {
 	public void saveTasks() {
 		try {
 			taskRepository.saveAll(tasks);
-		} catch (Exception e) {
-			System.err.println("Failed to save tasks: " + e.getMessage());
+		} catch (final Exception e) {
+			logger.warning("Failed to save tasks: " + e.getMessage());
 		}
 	}
 
