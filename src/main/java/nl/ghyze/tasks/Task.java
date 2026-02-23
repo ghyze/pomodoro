@@ -1,7 +1,10 @@
 package nl.ghyze.tasks;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.beans.PropertyChangeListener;
@@ -10,68 +13,52 @@ import java.util.UUID;
 
 @EqualsAndHashCode(exclude = "pcs")
 @Data
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Task {
 
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-	// @Data already generates getter for id
-	private final UUID id;
+    @Builder.Default
+    private final UUID id = UUID.randomUUID();
 
-	@Setter
-	private String name;
+    @Setter
+    private String name;
 
-	@Setter
-	private int estimated;
-	private int actual;
+    @Setter
+    private int estimated;
+    private int actual;
 
-	private boolean active = false;
+    @Builder.Default
+    private boolean active = false;
 
-	private TaskState state = TaskState.PENDING;
+    @Builder.Default
+    private TaskState state = TaskState.PENDING;
 
-	public Task(final String name, final int estimated){
-		this.id = UUID.randomUUID();
-		this.name = name;
-		this.estimated = estimated;
-	}
+    public void addPropertyChangeListener(final PropertyChangeListener listener) {
+        pcs.addPropertyChangeListener(listener);
+    }
 
-	public Task(final String name, final int estimated, final TaskState state){
-		this.id = UUID.randomUUID();
-		this.name = name;
-		this.estimated = estimated;
-		this.state = state;
-	}
+    public void removePropertyChangeListener(final PropertyChangeListener listener) {
+        pcs.removePropertyChangeListener(listener);
+    }
 
-	// Constructor with explicit UUID for deserialization/migration
-	public Task(final UUID id, final String name, final int estimated, final TaskState state){
-		this.id = id;
-		this.name = name;
-		this.estimated = estimated;
-		this.state = state;
-	}
+    public void addCompletedPomo(){
+        final int oldActual = actual;
+        actual++;
+        pcs.firePropertyChange("actual", oldActual, actual);
+    }
 
-	public void addPropertyChangeListener(final PropertyChangeListener listener) {
-		pcs.addPropertyChangeListener(listener);
-	}
-
-	public void removePropertyChangeListener(final PropertyChangeListener listener) {
-		pcs.removePropertyChangeListener(listener);
-	}
-
-	public void addCompletedPomo(){
-		final int oldActual = actual;
-		actual++;
-		pcs.firePropertyChange("actual", oldActual, actual);
-	}
-
-	public void setState(final TaskState state) {
+    public void setState(final TaskState state) {
         if (this.state != state) {
             this.state = state;
             pcs.firePropertyChange("state", null, state);
         }
-	}
+    }
 
-	public String toString(){
-		return "Task name: " + name + ", estimated: " + estimated + ", actual: " + actual + ", Active: " + active;
-	}
-	
+    public String toString(){
+        return "Task name: " + name + ", estimated: " + estimated + ", actual: " + actual + ", Active: " + active;
+    }
+
 }
