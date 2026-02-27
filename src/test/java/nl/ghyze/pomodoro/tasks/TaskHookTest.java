@@ -1,8 +1,8 @@
 package nl.ghyze.pomodoro.tasks;
 
 import nl.ghyze.tasks.Task;
-import nl.ghyze.tasks.TaskFrame;
 import nl.ghyze.tasks.TaskHook;
+import nl.ghyze.tasks.TaskService;
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
@@ -48,26 +48,25 @@ public class TaskHookTest {
     }
 
     @Test
-    public void testCompleted_WithTaskFrame_SavesTasks() {
-        TaskFrame mockTaskFrame = EasyMock.createMock(TaskFrame.class);
+    public void testCompleted_WithTaskService_SavesTasks() {
+        final TaskService mockService = EasyMock.createMock(TaskService.class);
 
         taskHook.setCurrentTask(task);
-        taskHook.setTaskFrame(mockTaskFrame);
+        taskHook.setTaskService(mockService);
 
-        // Expect saveTasks to be called
-        mockTaskFrame.saveTasks();
+        mockService.save();
         EasyMock.expectLastCall();
-        EasyMock.replay(mockTaskFrame);
+        EasyMock.replay(mockService);
 
         taskHook.completed();
 
-        EasyMock.verify(mockTaskFrame);
+        EasyMock.verify(mockService);
     }
 
     @Test
-    public void testCompleted_WithoutTaskFrame_DoesNotCrash() {
+    public void testCompleted_WithoutTaskService_DoesNotCrash() {
         taskHook.setCurrentTask(task);
-        // No task frame set
+        // No task service set
 
         taskHook.completed();  // Should not throw exception
         Assert.assertEquals(1, task.getActual());

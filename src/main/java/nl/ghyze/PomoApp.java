@@ -1,12 +1,13 @@
 package nl.ghyze;
 
 import nl.ghyze.pomodoro.controller.PomoController;
-import nl.ghyze.pomodoro.controller.PomodoroHook;
 import nl.ghyze.pomodoro.optiondialog.OptionDialogController;
 import nl.ghyze.pomodoro.statemachine.PomodoroStateMachine;
 import nl.ghyze.settings.Settings;
 import nl.ghyze.settings.SettingsRepository;
+import nl.ghyze.tasks.TaskHook;
 import nl.ghyze.tasks.TaskRepository;
+import nl.ghyze.tasks.TaskService;
 import nl.ghyze.statistics.StatisticsHook;
 import nl.ghyze.statistics.StatisticsRepository;
 import nl.ghyze.statistics.TaskStatisticsHook;
@@ -29,12 +30,13 @@ public class PomoApp
 	private PomoApp(){
 		final PomoController controller = new PomoController();
 
-
         final SettingsRepository settingsRepository = new SettingsRepository();
         final Settings settings = settingsRepository.load();
 
         final TaskRepository taskRepository = new TaskRepository();
-        final TaskFrame taskFrame = new TaskFrame(taskRepository);
+        final TaskHook taskHook = new TaskHook();
+        final TaskService taskService = new TaskService(taskRepository, taskHook);
+        final TaskFrame taskFrame = new TaskFrame(taskService);
 
         final PomoFrame frame = initPomoFrame(controller, taskFrame);
 
@@ -53,12 +55,12 @@ public class PomoApp
 		final StatisticsHook statisticsHook = new StatisticsHook(statisticsRepository, stateMachine);
 		final TaskStatisticsHook taskStatisticsHook = new TaskStatisticsHook(statisticsRepository);
 
-		// Register task statistics hook with task frame
-		taskFrame.setStatisticsHook(taskStatisticsHook);
+		// Register task statistics hook with task service
+		taskService.setStatisticsHook(taskStatisticsHook);
 
 		// Register hooks with state machine
 		stateMachine.addPomodoroHook(statisticsHook);
-		stateMachine.addPomodoroHook(taskFrame.getTaskHook());
+		stateMachine.addPomodoroHook(taskHook);
 		stateMachine.updateCurrent();
 
 		final OptionDialogController dialogController = new OptionDialogController(frame);

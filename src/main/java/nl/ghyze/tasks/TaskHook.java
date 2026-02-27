@@ -9,14 +9,14 @@ import nl.ghyze.pomodoro.controller.PomodoroHook;
 public class TaskHook implements PomodoroHook {
 
 	private Task currentTask;
-	private TaskFrame taskFrame;
+	private TaskService taskService;
 
 	@Override
 	public void completed() {
 	    if (currentTask != null) {
             currentTask.addCompletedPomo();
-            if (taskFrame != null) {
-                taskFrame.saveTasks();
+            if (taskService != null) {
+                taskService.save();
             }
         }
 	}
@@ -25,7 +25,7 @@ public class TaskHook implements PomodoroHook {
 	public void canceled() {
 		// nothing to do
 	}
-	
+
 	@Override
 	public void started(){
 		// nothing to do

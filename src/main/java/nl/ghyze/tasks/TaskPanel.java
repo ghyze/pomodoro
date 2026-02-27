@@ -1,7 +1,5 @@
 package nl.ghyze.tasks;
 
-import nl.ghyze.statistics.TaskStatisticsHook;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -10,6 +8,7 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serial;
 import java.util.function.Consumer;
 
 import javax.swing.*;
@@ -19,6 +18,7 @@ public class TaskPanel extends JPanel implements PropertyChangeListener {
 	/**
 	 * <code>serialVersionUID</code> indicates/is used for.
 	 */
+	@Serial
 	private static final long serialVersionUID = 6925083513676349367L;
 
 	private final Task task;
@@ -33,24 +33,22 @@ public class TaskPanel extends JPanel implements PropertyChangeListener {
 	private final JButton btnEdit = new JButton("...");
 	private final JButton btnRemove = new JButton("X");
 	private final Consumer<Task> removeTaskCallback;
-	private final Runnable saveCallback;
-	private final TaskStatisticsHook statisticsHook;
+	private final Consumer<Task> editTaskCallback;
 
 	private final LayoutManager layout = new BoxLayout(this, BoxLayout.LINE_AXIS);
 
-	TaskPanel(final Task task, final Consumer<Task> removeTaskCallback, final Runnable saveCallback, final TaskStatisticsHook statisticsHook){
+	TaskPanel(final Task task, final Consumer<Task> removeTaskCallback, final Consumer<Task> editTaskCallback){
 		this.task = task;
 		this.removeTaskCallback = removeTaskCallback;
-		this.saveCallback = saveCallback;
-		this.statisticsHook = statisticsHook;
+		this.editTaskCallback = editTaskCallback;
 		task.addPropertyChangeListener(this);
 		init();
 	}
-	
+
 	private void init(){
 		this.setSize(200, 30);
 		this.setLayout(layout);
-		
+
 		lbName.setText(task.getName());
 		lbName.setOpaque(true);
 		lbName.setMinimumSize(new Dimension(200, 25));
@@ -98,10 +96,7 @@ public class TaskPanel extends JPanel implements PropertyChangeListener {
 				lbName.setText(task.getName());
 				lbEstimated.setText(""+task.getEstimated());
 				cbState.setSelectedItem(task.getState());
-				if (statisticsHook != null) {
-					statisticsHook.logEdited(task);
-				}
-				saveCallback.run();
+				editTaskCallback.accept(task);
 			}
 		});
 		this.add(btnEdit);
@@ -115,7 +110,7 @@ public class TaskPanel extends JPanel implements PropertyChangeListener {
 
 		this.setBorder(BorderFactory.createLineBorder(Color.black));
 	}
-	
+
 	final Task getTask(){
 		return task;
 	}
