@@ -16,7 +16,10 @@ public class TaskHookTest {
     @Before
     public void setUp() {
         taskHook = new TaskHook();
-        task = new Task("Test Task", 5);
+        task = Task.builder()
+                .name("Test Task")
+                .estimated(5)
+                .build();
     }
 
     @Test
@@ -92,8 +95,8 @@ public class TaskHookTest {
 
     @Test
     public void testSetCurrentTask_ChangesActiveTask() {
-        Task firstTask = new Task("First", 3);
-        Task secondTask = new Task("Second", 5);
+        Task firstTask = Task.builder().name("First").estimated(3).build();
+        Task secondTask = Task.builder().name("Second").estimated(5).build();
 
         taskHook.setCurrentTask(firstTask);
         taskHook.completed();
@@ -109,8 +112,8 @@ public class TaskHookTest {
 
     @Test
     public void testCompleted_AfterSwitchingTasks_UpdatesCorrectTask() {
-        Task task1 = new Task("Task 1", 2);
-        Task task2 = new Task("Task 2", 3);
+        Task task1 = Task.builder().name("Task 1").estimated(2).build();
+        Task task2 = Task.builder().name("Task 2").estimated(3).build();
 
         // Complete some for task1
         taskHook.setCurrentTask(task1);

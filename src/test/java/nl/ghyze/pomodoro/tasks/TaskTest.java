@@ -11,7 +11,10 @@ public class TaskTest {
 
     @Test
     public void testAddCompletedPomo(){
-        Task task = new Task("Test", 1);
+        Task task = Task.builder()
+                .name("Test")
+                .estimated(1)
+                .build();
         task.addPropertyChangeListener(evt -> updated = true);
 
         task.addCompletedPomo();

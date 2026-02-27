@@ -6,12 +6,10 @@ import nl.ghyze.pomodoro.persistence.PersistenceManager;
 
 import javax.swing.*;
 import java.beans.PropertyChangeSupport;
-import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -51,15 +49,7 @@ public class TaskRepository {
     private static class TaskInstanceCreator implements InstanceCreator<Task> {
         @Override
         public Task createInstance(final java.lang.reflect.Type type) {
-            try {
-                // Create a Task with default values using reflection
-                // The pcs field will be initialized by the constructor
-                final Constructor<Task> constructor = Task.class.getDeclaredConstructor(UUID.class, String.class, int.class, TaskState.class);
-                constructor.setAccessible(true);
-                return constructor.newInstance(UUID.randomUUID(), "", 0, TaskState.PENDING);
-            } catch (final Exception e) {
-                throw new RuntimeException("Failed to create Task instance", e);
-            }
+            return Task.builder().build();
         }
     }
 
@@ -99,8 +89,11 @@ public class TaskRepository {
                 for (final Task task : tasks) {
                     if (task.getId() == null) {
                         // Create new task with generated UUID
-                        final Task migratedTask = new Task(UUID.randomUUID(), task.getName(),
-                                task.getEstimated(), task.getState());
+                        final Task migratedTask = Task.builder()
+                                .name(task.getName())
+                                .estimated(task.getEstimated())
+                                .state(task.getState())
+                                .build();
                         migratedTask.setActual(task.getActual());
                         migratedTask.setActive(task.isActive());
                         migratedTasks.add(migratedTask);

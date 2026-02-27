@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 
 public class TaskFrame extends JFrame {
 
@@ -32,7 +33,7 @@ public class TaskFrame extends JFrame {
 	private final TaskRepository taskRepository;
 	private final List<Task> tasks;
 
-	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
+	private final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.BOTTOM);
 	private final JPanel todoTasksPanel = new JPanel();
 	private final JPanel doneTasksPanel = new JPanel();
 
@@ -173,14 +174,6 @@ public class TaskFrame extends JFrame {
 				if (newState == TaskState.DONE && task.isActive()) {
 					task.setActive(false);
 					taskHook.setCurrentTask(null);
-				}
-
-				// Switch to appropriate tab based on new state
-				if (newState == TaskState.DONE) {
-					tabbedPane.setSelectedIndex(1); // Done tab
-				} else {
-					// PENDING or IN_PROGRESS
-					tabbedPane.setSelectedIndex(0); // Todo tab
 				}
 
 				// Refresh UI and save

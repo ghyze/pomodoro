@@ -31,8 +31,6 @@ class TaskDialog extends JDialog {
     private final JButton btCancel = new JButton("Cancel");
 
     private Result result;
-    private boolean editMode = false;
-    private Task editTask = null;
 
     private TaskDialog(){
         super((Dialog) null, true);
@@ -84,8 +82,8 @@ class TaskDialog extends JDialog {
             @Override
             public Component getListCellRendererComponent(final JList<?> list, final Object value, final int index, final boolean isSelected, final boolean cellHasFocus) {
                 final var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof TaskState) {
-                    label.setText(((TaskState) value).getName());
+                if (value instanceof TaskState taskState) {
+                    label.setText(taskState.getName());
                 }
                 return label;
             }
@@ -115,8 +113,6 @@ class TaskDialog extends JDialog {
     }
 
     private static void showDialog(){
-        dialog.editMode = false;
-        dialog.editTask = null;
         dialog.tfName.setText("");
         dialog.spEstimate.setValue(1);
         dialog.cbState.setSelectedItem(TaskState.PENDING);
@@ -124,8 +120,6 @@ class TaskDialog extends JDialog {
     }
 
     private static void showEditDialog(final Task task){
-        dialog.editMode = true;
-        dialog.editTask = task;
         dialog.tfName.setText(task.getName());
         dialog.spEstimate.setValue(task.getEstimated());
         dialog.cbState.setSelectedItem(task.getState());
@@ -138,7 +132,11 @@ class TaskDialog extends JDialog {
             final String taskName = dialog.tfName.getText();
             final Integer taskEstimated = (Integer) dialog.spEstimate.getValue();
             final TaskState taskState = (TaskState) dialog.cbState.getSelectedItem();
-            return Optional.of(new Task(taskName, taskEstimated, taskState));
+            return Optional.of(Task.builder()
+                            .name(taskName)
+                            .estimated(taskEstimated)
+                            .state(taskState)
+                    .build());
         }
         return Optional.empty();
     }

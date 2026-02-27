@@ -188,7 +188,7 @@ public class TaskRepositoryTest {
     }
 
     @Test
-    public void testFileCreatedInCorrectLocation() throws Exception {
+    public void testFileCreatedInCorrectLocation() {
         repository.saveAll(new ArrayList<>());
 
         Path expectedFile = testDataDir.resolve("tasks.json");
@@ -199,10 +199,11 @@ public class TaskRepositoryTest {
      * Helper method to create a Task instance using reflection
      * since the Task constructor is package-private.
      */
-    private Task createTask(String name, int estimated) throws Exception {
-        Constructor<Task> constructor = Task.class.getDeclaredConstructor(String.class, int.class);
-        constructor.setAccessible(true);
-        return constructor.newInstance(name, estimated);
+    private Task createTask(String name, int estimated) {
+        return Task.builder()
+                .name(name)
+                .estimated(estimated)
+                .build();
     }
 
     /**
