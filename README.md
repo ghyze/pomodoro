@@ -25,12 +25,15 @@ This application provides a compact, always-on-top timer widget that helps you m
 
 ### Task Management
 - **Task tracking window**: Create and manage tasks with estimated pomodoros
+- **Todo/Done tabs**: Tasks organized into separate tabs — "Todo" (pending/in-progress) and "Done" (completed)
 - **Task lifecycle states**: Track tasks through PENDING → IN_PROGRESS → DONE states
+- **Auto state transitions**: Activating a task automatically transitions it to IN_PROGRESS; deactivating returns it to PENDING
+- **Auto-deactivation on completion**: Setting a task to DONE automatically deactivates it and clears the active task
 - **Edit tasks**: Modify task name, estimated pomodoros, or state via edit button
-- **Remove tasks**: Delete individual tasks with remove button
+- **Remove tasks**: Delete individual tasks with confirm dialog (prevents accidental deletion)
 - **Automatic tracking**: Completed pomodoros are automatically counted toward your active task
 - **Progress monitoring**: See estimated vs. actual pomodoros for each task
-- **Active task display**: Current task shown prominently at the top
+- **Active task display**: Current task shown prominently at the top, always visible
 - **Persistent storage**: Tasks are automatically saved and restored across application restarts
 - **Unique task identity**: Each task has a persistent UUID that survives name changes
 
@@ -97,11 +100,13 @@ A dialog will appear with options:
 1. Access the task window via the right-click menu or task button on main window
 2. Click "Add Task" to create a new task
 3. Enter task name, estimated number of pomodoros, and optional state
-4. Double-click a task to make it active
+4. Double-click a task to make it active — it automatically transitions to **In Progress**
 5. Completed pomodoros automatically increment the active task counter
 6. Edit tasks using the "..." button (change name, estimate, or state)
 7. Change task state via dropdown (Pending, In Progress, Done)
-8. Remove tasks using the "X" button
+   - Setting a task to **Done** automatically deactivates it and moves it to the Done tab
+8. Remove tasks using the "X" button (confirmation required)
+9. Switch between **Todo** and **Done** tabs to review completed tasks
 
 ### Customizing Settings
 1. Right-click on the timer window
