@@ -3,6 +3,7 @@ package nl.ghyze.tasks;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import javax.swing.AbstractAction;
@@ -12,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
@@ -24,6 +26,9 @@ public class TaskFrame extends JFrame {
 	private final JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.BOTTOM);
 	private final JPanel todoTasksPanel = new JPanel();
 	private final JPanel doneTasksPanel = new JPanel();
+
+	private final TaskDetailPanel detailPanel = new TaskDetailPanel();
+	private UUID selectedTaskId = null;
 
 	private TaskPanel activePanel = null;
 
@@ -43,11 +48,13 @@ public class TaskFrame extends JFrame {
 
 		initTasks();
 
-		layout.putConstraint(SpringLayout.WEST, tabbedPane, 5, SpringLayout.WEST, getContentPane());
-		layout.putConstraint(SpringLayout.EAST, tabbedPane, -5, SpringLayout.EAST, getContentPane());
-		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 35, SpringLayout.NORTH, getContentPane());
-		layout.putConstraint(SpringLayout.SOUTH, tabbedPane, -35, SpringLayout.SOUTH, getContentPane());
-		this.add(tabbedPane);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tabbedPane, detailPanel);
+		splitPane.setResizeWeight(0.7);
+		layout.putConstraint(SpringLayout.WEST, splitPane, 5, SpringLayout.WEST, getContentPane());
+		layout.putConstraint(SpringLayout.EAST, splitPane, -5, SpringLayout.EAST, getContentPane());
+		layout.putConstraint(SpringLayout.NORTH, splitPane, 35, SpringLayout.NORTH, getContentPane());
+		layout.putConstraint(SpringLayout.SOUTH, splitPane, -35, SpringLayout.SOUTH, getContentPane());
+		this.add(splitPane);
 
 		JButton btAddTask = new JButton(new AddAction());
 		layout.putConstraint(SpringLayout.WEST, btAddTask, -120, SpringLayout.EAST, getContentPane());
@@ -71,8 +78,11 @@ public class TaskFrame extends JFrame {
 			taskPanel.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(final MouseEvent e) {
+					final Task clicked = ((TaskPanel) e.getSource()).getTask();
+					selectedTaskId = clicked.getId();
+					detailPanel.showTask(clicked);
 					if (e.getClickCount() >= 2) {
-						taskService.activateTask(((TaskPanel) e.getSource()).getTask());
+						taskService.activateTask(clicked);
 					}
 				}
 			});
@@ -91,6 +101,13 @@ public class TaskFrame extends JFrame {
 					todoTasksPanel.add(taskPanel);
 				}
 			}
+		}
+
+		if (selectedTaskId != null) {
+			taskService.getTasks().stream()
+					.filter(t -> selectedTaskId.equals(t.getId()))
+					.findFirst()
+					.ifPresentOrElse(detailPanel::showTask, detailPanel::clear);
 		}
 
 		todoTasksPanel.revalidate();

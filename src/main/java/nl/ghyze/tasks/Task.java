@@ -36,6 +36,9 @@ public class Task {
     @Builder.Default
     private TaskState state = TaskState.PENDING;
 
+    @Setter
+    private String notes;
+
     public void addPropertyChangeListener(final PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }

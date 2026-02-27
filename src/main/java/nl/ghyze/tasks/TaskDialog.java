@@ -27,6 +27,10 @@ class TaskDialog extends JDialog {
     private final JSpinner spEstimate = new JSpinner(new SpinnerNumberModel(1,0,25,1));
     private final JComboBox<TaskState> cbState = new JComboBox<>(TaskState.values());
 
+    private final JLabel lbNotes = new JLabel("Notes");
+    private final JTextArea txNotes = new JTextArea();
+    private final JScrollPane scNotes = new JScrollPane(txNotes);
+
     private final JButton btAdd = new JButton("OK");
     private final JButton btCancel = new JButton("Cancel");
 
@@ -39,7 +43,7 @@ class TaskDialog extends JDialog {
     }
 
     private void init(){
-        this.setSize(300, 240);
+        this.setSize(300, 320);
         this.getContentPane().setLayout(layout);
 
         layout.putConstraint(SpringLayout.WEST, lbName, 5, SpringLayout.WEST, getContentPane());
@@ -77,6 +81,20 @@ class TaskDialog extends JDialog {
         layout.putConstraint(SpringLayout.NORTH, cbState, 5, SpringLayout.SOUTH, spEstimate);
         layout.putConstraint(SpringLayout.SOUTH, cbState, ELEMENT_HEIGHT, SpringLayout.SOUTH, spEstimate);
         this.getContentPane().add(cbState);
+
+        layout.putConstraint(SpringLayout.WEST, lbNotes, 5, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.EAST, lbNotes, -5, SpringLayout.EAST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, lbNotes, 5, SpringLayout.SOUTH, lbState);
+        layout.putConstraint(SpringLayout.SOUTH, lbNotes, ELEMENT_HEIGHT, SpringLayout.SOUTH, lbState);
+        this.getContentPane().add(lbNotes);
+
+        txNotes.setLineWrap(true);
+        txNotes.setWrapStyleWord(true);
+        layout.putConstraint(SpringLayout.WEST, scNotes, 5, SpringLayout.WEST, getContentPane());
+        layout.putConstraint(SpringLayout.EAST, scNotes, -5, SpringLayout.EAST, getContentPane());
+        layout.putConstraint(SpringLayout.NORTH, scNotes, 5, SpringLayout.SOUTH, lbNotes);
+        layout.putConstraint(SpringLayout.SOUTH, scNotes, ELEMENT_HEIGHT * 3, SpringLayout.SOUTH, lbNotes);
+        this.getContentPane().add(scNotes);
 
         cbState.setRenderer(new DefaultListCellRenderer() {
             @Override
@@ -116,6 +134,7 @@ class TaskDialog extends JDialog {
         dialog.tfName.setText("");
         dialog.spEstimate.setValue(1);
         dialog.cbState.setSelectedItem(TaskState.PENDING);
+        dialog.txNotes.setText("");
         dialog.setVisible(true);
     }
 
@@ -123,6 +142,7 @@ class TaskDialog extends JDialog {
         dialog.tfName.setText(task.getName());
         dialog.spEstimate.setValue(task.getEstimated());
         dialog.cbState.setSelectedItem(task.getState());
+        dialog.txNotes.setText(task.getNotes() != null ? task.getNotes() : "");
         dialog.setVisible(true);
     }
 
@@ -136,6 +156,7 @@ class TaskDialog extends JDialog {
                             .name(taskName)
                             .estimated(taskEstimated)
                             .state(taskState)
+                            .notes(dialog.txNotes.getText())
                     .build());
         }
         return Optional.empty();
@@ -147,6 +168,7 @@ class TaskDialog extends JDialog {
             task.setName(dialog.tfName.getText());
             task.setEstimated((Integer) dialog.spEstimate.getValue());
             task.setState((TaskState) dialog.cbState.getSelectedItem());
+            task.setNotes(dialog.txNotes.getText());
             return true;
         }
         return false;
