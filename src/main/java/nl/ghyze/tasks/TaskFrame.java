@@ -17,7 +17,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeListener;
+
+import nl.ghyze.AppIcon;
 
 public class TaskFrame extends JFrame {
 
@@ -38,6 +39,7 @@ public class TaskFrame extends JFrame {
 		taskService.setOnChanged(this::initTasks);
 
 		this.setSize(800, 600);
+		this.setIconImage(AppIcon.ICON);
 		this.getContentPane().setLayout(layout);
 
 		todoTasksPanel.setLayout(new BoxLayout(todoTasksPanel, BoxLayout.PAGE_AXIS));

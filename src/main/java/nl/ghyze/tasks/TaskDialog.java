@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Optional;
 
+import nl.ghyze.AppIcon;
+
 class TaskDialog extends JDialog {
 
     private enum Result {
@@ -44,6 +46,7 @@ class TaskDialog extends JDialog {
 
     private void init(){
         this.setSize(300, 320);
+        this.setIconImage(AppIcon.ICON);
         this.getContentPane().setLayout(layout);
 
         layout.putConstraint(SpringLayout.WEST, lbName, 5, SpringLayout.WEST, getContentPane());

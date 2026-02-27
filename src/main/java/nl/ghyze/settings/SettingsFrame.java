@@ -9,9 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SpringLayout;
 
-/**
- * Main settings dialog frame that coordinates all settings panels.
- */
+import nl.ghyze.AppIcon;
+
 public class SettingsFrame extends JFrame {
     private final Settings settings;
     private final SettingsRepository settingsRepository;
@@ -39,6 +38,7 @@ public class SettingsFrame extends JFrame {
 
     private void initUI() {
         this.setPreferredSize(new Dimension(400, 400));
+        this.setIconImage(AppIcon.ICON);
         this.getContentPane().setLayout(layout);
 
         initPanels();
