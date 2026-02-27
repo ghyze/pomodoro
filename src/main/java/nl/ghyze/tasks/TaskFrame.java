@@ -17,6 +17,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeListener;
 
 public class TaskFrame extends JFrame {
 
@@ -62,6 +63,16 @@ public class TaskFrame extends JFrame {
 		layout.putConstraint(SpringLayout.NORTH, btAddTask, -30, SpringLayout.SOUTH, getContentPane());
 		layout.putConstraint(SpringLayout.SOUTH, btAddTask, -5, SpringLayout.SOUTH, getContentPane());
 		this.add(btAddTask);
+
+		JButton btRemoveDone = new JButton(new RemoveAllDoneAction());
+		layout.putConstraint(SpringLayout.WEST, btRemoveDone, 5, SpringLayout.WEST, getContentPane());
+		layout.putConstraint(SpringLayout.EAST, btRemoveDone, 155, SpringLayout.WEST, getContentPane());
+		layout.putConstraint(SpringLayout.NORTH, btRemoveDone, -30, SpringLayout.SOUTH, getContentPane());
+		layout.putConstraint(SpringLayout.SOUTH, btRemoveDone, -5, SpringLayout.SOUTH, getContentPane());
+		btRemoveDone.setVisible(false);
+		this.add(btRemoveDone);
+
+		tabbedPane.addChangeListener(e -> btRemoveDone.setVisible(tabbedPane.getSelectedIndex() == 1));
 	}
 
 	private void initTasks() {
@@ -142,6 +153,26 @@ public class TaskFrame extends JFrame {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
 			TaskDialog.createTask().ifPresent(taskService::addTask);
+		}
+	}
+
+	private class RemoveAllDoneAction extends AbstractAction {
+
+		RemoveAllDoneAction() {
+			super("Remove All Done");
+		}
+
+		@Override
+		public void actionPerformed(final ActionEvent e) {
+			final int result = JOptionPane.showConfirmDialog(
+					TaskFrame.this,
+					"Remove all done tasks?",
+					"Confirm Removal",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (result == JOptionPane.YES_OPTION) {
+				taskService.removeAllDoneTasks();
+			}
 		}
 	}
 }

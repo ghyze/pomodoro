@@ -84,6 +84,23 @@ public class TaskService {
         notifyChanged();
     }
 
+    public void removeAllDoneTasks() {
+        List<Task> doneTasks = tasks.stream()
+                .filter(t -> t.getState() == TaskState.DONE)
+                .toList();
+        if (doneTasks.isEmpty()) {
+            return;
+        }
+        doneTasks.forEach(t -> {
+            if (statisticsHook != null) {
+                statisticsHook.logRemoved(t);
+            }
+        });
+        tasks.removeAll(doneTasks);
+        save();
+        notifyChanged();
+    }
+
     public void editTask(final Task task) {
         if (statisticsHook != null) {
             statisticsHook.logEdited(task);

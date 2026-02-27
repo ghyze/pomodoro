@@ -29,8 +29,11 @@ This application provides a compact, always-on-top timer widget that helps you m
 - **Task lifecycle states**: Track tasks through PENDING → IN_PROGRESS → DONE states
 - **Auto state transitions**: Activating a task automatically transitions it to IN_PROGRESS; deactivating returns it to PENDING
 - **Auto-deactivation on completion**: Setting a task to DONE automatically deactivates it and clears the active task
-- **Edit tasks**: Modify task name, estimated pomodoros, or state via edit button
+- **Task notes**: Add free-text notes to any task for context, blockers, or progress details
+- **Task detail panel**: Single-click any task to view its name and notes in a resizable panel below the list
+- **Edit tasks**: Modify task name, estimated pomodoros, state, or notes via edit button
 - **Remove tasks**: Delete individual tasks with confirm dialog (prevents accidental deletion)
+- **Bulk remove done tasks**: Remove all completed tasks at once from the Done tab (confirmation required)
 - **Automatic tracking**: Completed pomodoros are automatically counted toward your active task
 - **Progress monitoring**: See estimated vs. actual pomodoros for each task
 - **Active task display**: Current task shown prominently at the top, always visible
@@ -99,14 +102,17 @@ A dialog will appear with options:
 ### Managing Tasks
 1. Access the task window via the right-click menu or task button on main window
 2. Click "Add Task" to create a new task
-3. Enter task name, estimated number of pomodoros, and optional state
-4. Double-click a task to make it active — it automatically transitions to **In Progress**
-5. Completed pomodoros automatically increment the active task counter
-6. Edit tasks using the "..." button (change name, estimate, or state)
-7. Change task state via dropdown (Pending, In Progress, Done)
+3. Enter task name, estimated number of pomodoros, optional state, and optional notes
+4. Single-click a task to view its details in the panel below the list
+5. Double-click a task to make it active — it automatically transitions to **In Progress**
+6. Completed pomodoros automatically increment the active task counter
+7. Edit tasks using the "..." button (change name, estimate, state, or notes)
+8. Change task state via dropdown (Pending, In Progress, Done)
    - Setting a task to **Done** automatically deactivates it and moves it to the Done tab
-8. Remove tasks using the "X" button (confirmation required)
-9. Switch between **Todo** and **Done** tabs to review completed tasks
+9. Remove tasks using the "X" button (confirmation required)
+10. Switch between **Todo** and **Done** tabs to review completed tasks
+11. Click "Remove All Done" (visible on the Done tab) to bulk-delete all completed tasks
+11. Drag the divider between the task list and detail panel to resize
 
 ### Customizing Settings
 1. Right-click on the timer window
