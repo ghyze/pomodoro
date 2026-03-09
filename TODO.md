@@ -8,6 +8,7 @@
 - Note and actual time spent should be visible on a detail panel.
 - Introduce TaskService. Handling of tasks is now done in TaskFrame, but it should be done in a separate service. TaskFrame should only be responsible for displaying the tasks and handling user input. TaskService should handle the logic of adding, removing, updating and retrieving tasks. - DONE
 - Increase scrolling speed of task list.
+- When creating task, add option to set as active task.
 
 # Statemachine
 - force continue pomodoro (in case of meetings), count towards second pomodoro. - DONE 
